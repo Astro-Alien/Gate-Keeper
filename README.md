@@ -10,9 +10,9 @@ Project recreated in Maven, this was done to eliminate the need to include the d
 |:---|:---|:---|:---|
 |Team Leader|216049245| Brandon Kruger | Visitor Registration / Visitor Database / Inventory System.
 |Secretary|220112010| Ethan Lesar | Parking Bay spots / Dashboard.
-|Member|220498385|Charles Lemmert | Login Verification / Timestamp.
-|Member|218316038|Sibusiso Kubalo | To be updated.
-|Member|218341156|Aidan Lesch | Admin/DBMS to manage/manipulate employee information.
-|Member|220008922|Sinenhlanhla Zondi | WebCam intergration / Registration Format.
+|Team Member|220498385|Charles Lemmert | Login Verification / Timestamp.
+|Team Member|218316038|Sibusiso Kubalo | To be updated.
+|Team Member|218341156|Aidan Lesch | Admin/DBMS to manage/manipulate employee information.
+|Team Member|220008922|Sinenhlanhla Zondi | WebCam intergration / Registration Format.
 
 
