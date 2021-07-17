@@ -8,20 +8,20 @@ Project recreated in Maven, this was done to eliminate the need to include the d
 
 |Role | Student No  | Name  | Assigned Task(s)  |
 |---|---|---|---|
-|Team Leader   |   |   |   |
-|Secretary  |   |   |   |
-|Team Member   |   |   |   |
-|Team Member  |   |   |   |
-|Team Member   |   |   |   |
-|Team Member   |   |   |   |
-|Team Member   |   |   |   |
+|Team Leader   |216049245   |  Brandon Kruger | Visitor Registration / Visitor Database / Inventory System.
+|Secretary  |220112010   | Ethan Lesar | Parking Bay spots / Dashboard.
+|Team Member   |220498385   |   |   |
+|Team Member  |218316038   |   |   |
+|Team Member   |218341156   |   |   |
+|Team Member   |220008922   |   |   |
+
 
 Role | Student No | Student Name | Assigned Task(s)
 | :--- | :--- | :--- | ---: | :---: |
- | 216049245 | Brandon Kruger | Visitor Registration / Visitor Database / Inventory System.
- | 220112010  | Ethan Lesar | Parking Bay spots / Dashboard.
- | 220498385  | Charles Lemmert | Login Verification / Timestamp.
- | 218316038  | Sibusiso Kubalo | To be updated.
-Team Member | 218341156  | Aidan Lesch | Admin/DBMS to manage/manipulate employee information.
-Team Member | 220008922  | Sinenhlanhla Zondi | WebCam intergration / Registration Format.
+ |  | 
+ |   | 
+ |   | Charles Lemmert | Login Verification / Timestamp.
+ |   | Sibusiso Kubalo | To be updated.
+Team Member |   | Aidan Lesch | Admin/DBMS to manage/manipulate employee information.
+Team Member |   | Sinenhlanhla Zondi | WebCam intergration / Registration Format.
 
