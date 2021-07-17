@@ -6,7 +6,17 @@ Project recreated in Maven, this was done to eliminate the need to include the d
 
 ## Team Members ##
 
-Role |Student No | Student Name | Assigned Task(s)
+|Role   |   |   |   |
+|---|---|---|---|
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+|   |   |   |   |
+
+Role | Student No | Student Name | Assigned Task(s)
 | :--- | :--- | :--- | ---: | :---: |
 Team Leader | 216049245 | Brandon Kruger | Visitor Registration / Visitor Database / Inventory System.
 Secretary | 220112010  | Ethan Lesar | Parking Bay spots / Dashboard.
