@@ -6,7 +6,7 @@ Project recreated in Maven, this was done to eliminate the need to include the d
 
 ## Team Members ##
 
-|Role   |   |   |   |
+|Role | Student No  | Name  | Assigned Task(s)  |
 |---|---|---|---|
 |   |   |   |   |
 |   |   |   |   |
