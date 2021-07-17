@@ -8,7 +8,7 @@ Project recreated in Maven, this was done to eliminate the need to include the d
 
 |Role|Student No| Name|Assigned Task(s)|
 |:---|:---|:---|:---|
-|Team Leader|216049245| Brandon Kruger | Markup : * Visitor Registration / Visitor Database / Inventory System.
+|Team Leader|216049245| Brandon Kruger | Visitor Registration / Visitor Database / Inventory System.
 |Secretary|220112010| Ethan Lesar | Parking Bay spots / Dashboard.
 |Team Member|220498385|Charles Lemmert | Login Verification / Timestamp.
 |Team Member|218316038|Sibusiso Kubalo | To be updated.
