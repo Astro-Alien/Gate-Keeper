@@ -8,6 +8,10 @@ Project recreated in Maven, this was done to eliminate the need to include the d
 
 Student No | Student Name | Assigned Task(s)
 | :--- | ---: | :---:
-216049245  | Brandon Kruger | Visitor Registration / Visitor Database / Inventory System
-Content Cell  | Content Cell | Content Cell
+216049245  | Brandon Kruger | Visitor Registration / Visitor Database / Inventory System.
+220498385  | Charles Lemmert | Login Verification / Timestamp.
+218316038  | Sibusiso Kubalo | To be updated.
+220112010  | Ethan Lesar | Parking Bay spots / Dashboard.
+218341156  | Aidan Lesch | Admin/DBMS to manage/manipulate employee information.
+220008922  | Sinenhlanhla Zondi | WebCam intergration / Registration Format.
 
