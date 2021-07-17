@@ -1,4 +1,4 @@
-Markup :  # Gatekeeperv2 #
+# Gatekeeperv2 #
 
 Version 1 of the project can found at https://github.com/Group-24-PRT262S/Gatekeeper, it is no longer being worked on.
 
@@ -9,7 +9,7 @@ Student No | Student Name | Assigned Task(s)
 216049245  | Brandon Kruger | Visitor Registration / Visitor Database / Inventory System
 Content Cell  | Content Cell | Content Cell
 
-Markup :  ## Team Members ##
+## Team Members ##
 
 Brandon Kruger - 216049245
 
