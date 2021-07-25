@@ -225,19 +225,19 @@ public class VisitorRegistration extends JFrame {
         
         firstname = new JTextField();
         firstname.setFont(new Font("roman", Font.ITALIC, 12));
-        firstname.setBounds(150,150,400,30);
+        firstname.setBounds(150,150,200,30);
         contentPane.add(firstname);
         firstname.setColumns(10);
 
         lastname = new JTextField();
         lastname.setFont(new Font("roman", Font.ITALIC, 12));
-        lastname.setBounds(150,200,400,30);
+        lastname.setBounds(150,200,200,30);
         contentPane.add(lastname);
         lastname.setColumns(10);
 
         company = new JTextField();
         company.setFont(new Font("roman", Font.ITALIC, 12));
-        company.setBounds(150,300,300,30);
+        company.setBounds(150,300,200,30);
         contentPane.add(company);
         company.setColumns(10);
 
