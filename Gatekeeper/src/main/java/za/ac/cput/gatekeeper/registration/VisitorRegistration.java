@@ -58,7 +58,7 @@ public class VisitorRegistration extends JFrame {
             public void run() {
                 try {
                     VisitorRegistration frame = new VisitorRegistration();
-                    frame.setVisible(true);
+                    frame.welcomeWindow();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
