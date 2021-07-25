@@ -118,6 +118,70 @@ public class VisitorRegistration extends JFrame {
         return welcome;
     }
     
+    public JFrame verifyIdentityWindow()
+    {
+        JFrame webcamWindow = new JFrame("Camera");
+        
+        JButton takePic = new JButton("Take picture");
+        JButton exitCam = new JButton("Exit camera");
+        
+        webcamWindow.getContentPane();
+        webcamWindow.setSize(450, 550);
+        webcamWindow.setLocationRelativeTo(null);
+        webcamWindow.setVisible(true);
+        
+        webcamWindow.getContentPane().setLayout(null);
+        
+        Webcam w = Webcam.getDefault();
+        
+        //setting the size of the webcam display, then add the display to the frame
+        w.setViewSize(WebcamResolution.VGA.getSize());
+        WebcamPanel p = new WebcamPanel(w);
+        p.setSize(450, 450);
+        webcamWindow.add(p);
+        
+        //setting button size & position, then adding the buttons to the frame
+        takePic.setBounds(70, 460, 150, 30);
+        exitCam.setBounds(240, 460, 150, 30);
+        webcamWindow.add(takePic);
+        webcamWindow.add(exitCam);
+        
+        takePic.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                try
+                {
+                    /*
+                    writes the image that was recieved from the time the webcam was opened
+                    and saves it
+                    */
+                    
+                    ImageIO.write(w.getImage(), "png", new File("image.png"));
+                    webcamWindow.setVisible(false);
+                }
+                
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+        
+        exitCam.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                webcamWindow.setVisible(false);
+                w.close();//switches off the webcam
+            }
+        });
+        
+        return webcamWindow;
+    }
+    
     /**
      * Create the frame.
      */
