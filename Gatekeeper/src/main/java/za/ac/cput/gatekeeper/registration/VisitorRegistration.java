@@ -287,8 +287,24 @@ public class VisitorRegistration extends JFrame {
                 }
             }
         });
+        
+        webcamBtn = new JButton("Verify your identity");
+        webcamBtn.setFont(new Font("roman", Font.BOLD, 14));
+        webcamBtn.setBounds(205, 367, 180, 37);
+        webcamBtn.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                VisitorRegistration v = new VisitorRegistration();
+                v.verifyIdentityWindow();
+            }
+        });
+        
         btnNewButton.setFont(new Font("roman", Font.BOLD, 14));
-        btnNewButton.setBounds(150, 350, 180, 37);
+        btnNewButton.setBounds(190, 450, 220, 37);
+        
+        contentPane.add(webcamBtn);
         contentPane.add(btnNewButton);
     }
 }
