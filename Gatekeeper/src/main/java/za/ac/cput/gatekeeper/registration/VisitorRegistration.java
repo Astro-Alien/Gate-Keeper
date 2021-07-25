@@ -189,8 +189,10 @@ public class VisitorRegistration extends JFrame {
     public VisitorRegistration() {
         setIconImage(Toolkit.getDefaultToolkit().getImage("logo.png"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(450, 190, 600, 480);
+        setBounds(450, 190, 600, 700);
         setResizable(false);
+        setLocationRelativeTo(null);
+        
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
