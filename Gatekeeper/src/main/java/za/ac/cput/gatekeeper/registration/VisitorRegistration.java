@@ -43,7 +43,12 @@ public class VisitorRegistration extends JFrame {
     private JTextField company;
     private JTextField mob;
     private JButton btnNewButton;
-
+    
+    private JButton webcamBtn;
+    
+    private JButton regUser;
+    private JButton newUser;
+    
     /**
      * Launch the application.
      * Main method
