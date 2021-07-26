@@ -20,6 +20,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+//Webcam imports
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamPanel;
+import com.github.sarxos.webcam.WebcamResolution;
+
+//Image and File imports
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
 /**
  * User Registration
  * @author: 216049245
@@ -33,7 +43,12 @@ public class VisitorRegistration extends JFrame {
     private JTextField company;
     private JTextField mob;
     private JButton btnNewButton;
-
+    
+    private JButton webcamBtn;
+    
+    private JButton regUser;
+    private JButton newUser;
+    
     /**
      * Launch the application.
      * Main method
@@ -43,14 +58,130 @@ public class VisitorRegistration extends JFrame {
             public void run() {
                 try {
                     VisitorRegistration frame = new VisitorRegistration();
-                    frame.setVisible(true);
+                    frame.welcomeWindow();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
-
+    
+    public JFrame welcomeWindow()
+    {
+        JFrame welcome = new JFrame("Gatekeeper");
+        
+        JLabel lblNewUserRegister = new JLabel("Gatekeeper Visitor Registration");
+        lblNewUserRegister.setFont(new Font("Times New Roman", Font.ITALIC, 30));
+        lblNewUserRegister.setBounds(50, 100, 500, 50);
+        
+        JButton regUser = new JButton("I am a registered user");
+        JButton newUser = new JButton("I am not a registered user");
+        
+        newUser.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                VisitorRegistration vr = new VisitorRegistration();
+                
+                welcome.setVisible(false);
+                vr.setVisible(true);
+            }
+        });
+        
+        regUser.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                welcome.setVisible(false);
+                //add code for registration window here...
+            }
+        });
+        
+        welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        welcome.setSize(500, 600);
+        welcome.setLocationRelativeTo(null);
+        welcome.setVisible(true);
+        welcome.getContentPane().setLayout(null);
+        
+        regUser.setFont(new Font("roman", Font.BOLD, 14));
+        regUser.setBounds(130, 300, 210, 37);
+        
+        newUser.setFont(new Font("roman", Font.BOLD, 14));
+        newUser.setBounds(125, 400, 220, 37);
+        
+        welcome.add(lblNewUserRegister);
+        welcome.add(regUser);
+        welcome.add(newUser);
+        
+        return welcome;
+    }
+    
+    public JFrame verifyIdentityWindow()
+    {
+        JFrame webcamWindow = new JFrame("Camera");
+        
+        JButton takePic = new JButton("Take picture");
+        JButton exitCam = new JButton("Exit camera");
+        
+        webcamWindow.getContentPane();
+        webcamWindow.setSize(450, 550);
+        webcamWindow.setLocationRelativeTo(null);
+        webcamWindow.setVisible(true);
+        
+        webcamWindow.getContentPane().setLayout(null);
+        
+        Webcam w = Webcam.getDefault();
+        
+        //setting the size of the webcam display, then add the display to the frame
+        w.setViewSize(WebcamResolution.VGA.getSize());
+        WebcamPanel p = new WebcamPanel(w);
+        p.setSize(450, 450);
+        webcamWindow.add(p);
+        
+        //setting button size & position, then adding the buttons to the frame
+        takePic.setBounds(70, 460, 150, 30);
+        exitCam.setBounds(240, 460, 150, 30);
+        webcamWindow.add(takePic);
+        webcamWindow.add(exitCam);
+        
+        takePic.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                try
+                {
+                    /*
+                    writes the image that was recieved from the time the webcam was opened
+                    and saves it
+                    */
+                    
+                    ImageIO.write(w.getImage(), "png", new File("image.png"));
+                    webcamWindow.setVisible(false);
+                }
+                
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+        
+        exitCam.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                webcamWindow.setVisible(false);
+                w.close();//switches off the webcam
+            }
+        });
+        
+        return webcamWindow;
+    }
+    
     /**
      * Create the frame.
      */
@@ -58,8 +189,10 @@ public class VisitorRegistration extends JFrame {
     public VisitorRegistration() {
         setIconImage(Toolkit.getDefaultToolkit().getImage("logo.png"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(450, 190, 600, 480);
+        setBounds(450, 190, 600, 700);
         setResizable(false);
+        setLocationRelativeTo(null);
+        
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -92,19 +225,19 @@ public class VisitorRegistration extends JFrame {
         
         firstname = new JTextField();
         firstname.setFont(new Font("roman", Font.ITALIC, 12));
-        firstname.setBounds(150,150,400,30);
+        firstname.setBounds(150,150,200,30);
         contentPane.add(firstname);
         firstname.setColumns(10);
 
         lastname = new JTextField();
         lastname.setFont(new Font("roman", Font.ITALIC, 12));
-        lastname.setBounds(150,200,400,30);
+        lastname.setBounds(150,200,200,30);
         contentPane.add(lastname);
         lastname.setColumns(10);
 
         company = new JTextField();
         company.setFont(new Font("roman", Font.ITALIC, 12));
-        company.setBounds(150,300,300,30);
+        company.setBounds(150,300,200,30);
         contentPane.add(company);
         company.setColumns(10);
 
@@ -154,8 +287,24 @@ public class VisitorRegistration extends JFrame {
                 }
             }
         });
+        
+        webcamBtn = new JButton("Verify your identity");
+        webcamBtn.setFont(new Font("roman", Font.BOLD, 14));
+        webcamBtn.setBounds(205, 367, 180, 37);
+        webcamBtn.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                VisitorRegistration v = new VisitorRegistration();
+                v.verifyIdentityWindow();
+            }
+        });
+        
         btnNewButton.setFont(new Font("roman", Font.BOLD, 14));
-        btnNewButton.setBounds(150, 350, 180, 37);
+        btnNewButton.setBounds(190, 450, 220, 37);
+        
+        contentPane.add(webcamBtn);
         contentPane.add(btnNewButton);
     }
 }

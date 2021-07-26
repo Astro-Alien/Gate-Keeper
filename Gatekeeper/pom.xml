@@ -10,12 +10,25 @@
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
     </properties>
+    
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
-<dependency>
-    <groupId>org.xerial</groupId>
-    <artifactId>sqlite-jdbc</artifactId>
-    <version>3.36.0.1</version>
-</dependency>
+        <dependency>
+            
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.36.0.1</version>
+        
+        </dependency>
+        
+        <dependency>
+            <!-- https://mvnrepository.com/artifact/com.github.sarxos/webcam-capture -->
+            <groupId>com.github.sarxos</groupId>
+            <artifactId>webcam-capture</artifactId>
+            <version>0.3.12</version>
+            
+        </dependency>
+        
     </dependencies>
+    
 </project>
