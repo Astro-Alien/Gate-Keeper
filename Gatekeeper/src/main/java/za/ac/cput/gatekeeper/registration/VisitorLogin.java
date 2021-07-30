@@ -23,9 +23,9 @@ import javax.imageio.ImageIO;
  */
 public class VisitorLogin extends DbConnection implements ActionListener {
 
-    private Connection conn = null;
-    private PreparedStatement stmt = null;
-    private ResultSet results = null;
+    Connection conn = null;
+    PreparedStatement stmt = null;
+    ResultSet results = null;
 
     //--------------------------------------------------------------------------J Labels and Textfields
     //Username
@@ -133,7 +133,7 @@ public class VisitorLogin extends DbConnection implements ActionListener {
 
     //--------------------------------------------------------------------------call data from visitor database and verify if user is registered or not
     public void userVerification() {
-
+        //BUG DOUBLE VERIFICATION BUSY FIXING IT 
         String query = "Select * FROM visitors WHERE id LIKE ? AND Mobile LIKE ?; ";
 
         try {
@@ -147,44 +147,31 @@ public class VisitorLogin extends DbConnection implements ActionListener {
             if (results.next()) {
 
                 JOptionPane.showMessageDialog(null, "LOGIN SUCCESSFULL");
-
+                
             } else {
 
                 JOptionPane.showMessageDialog(null, "USER NOT FOUND");
-
+               
             }
+            
         } catch (Exception e) {
 
             System.out.println("PROCESS FAILED!!!");
         }
+        
     }
 
     //--------------------------------------------------------------------------timestamp function or method save time stamp to the database 
     /*public void checkInTime(){
         
-    
+                //check in time method code will be added here 
     
     }*/
-    //--------------------------------------------------------------------------Image called for specific user
-    public void imageCaller() {
-        JPanel images = new JPanel();
-        images.setPreferredSize(new Dimension(277, 196));
-        images.setBounds(150, 100, 165, 25);
-        try {
-            BufferedImage myPicture = ImageIO.read(new File("C:\\Users\\Charles\\Downloads\\Projects\\GatekeeperV2\\Gatekeeper\\src\\main\\java\\za\\ac\\cput\\gatekeeper\\registration\\images\\apples.jpg"));
-            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-            images.add(picLabel);
-        } catch (IOException e) {
-
-            System.out.println("Failed to retrieve image");
-        }
-
-    }
-
     //--------------------------------------------------------------------------Action Listener onclick functionality implemented here:User Verification
     @Override
     public void actionPerformed(ActionEvent e) {
         userVerification();
+        
     }
 
     //--------------------------------------------------------------------------main function calls starter method to run program
