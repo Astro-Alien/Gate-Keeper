@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
+import java.awt.event.WindowEvent;
 
 //Image and File imports
 import java.io.File;
@@ -35,7 +36,7 @@ import javax.imageio.ImageIO;
  * @author: 216049245
  *
  */
-public class VisitorRegistration extends JFrame {
+public class VisitorRegistration extends JFrame implements ActionListener{
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JTextField firstname;
@@ -46,78 +47,14 @@ public class VisitorRegistration extends JFrame {
     
     private JButton webcamBtn;
     
-    private JButton regUser;
-    private JButton newUser;
+    private JButton btnReturn;
+    
     
     /**
      * Launch the application.
      * Main method
      */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    VisitorRegistration frame = new VisitorRegistration();
-                    frame.welcomeWindow();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-    
-    public JFrame welcomeWindow()
-    {
-        JFrame welcome = new JFrame("Gatekeeper");
-        
-        JLabel lblNewUserRegister = new JLabel("Gatekeeper Visitor Registration");
-        lblNewUserRegister.setFont(new Font("Times New Roman", Font.ITALIC, 30));
-        lblNewUserRegister.setBounds(50, 100, 500, 50);
-        
-        JButton regUser = new JButton("I am a registered user");
-        JButton newUser = new JButton("I am not a registered user");
-        
-        newUser.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                VisitorRegistration vr = new VisitorRegistration();
-                
-                welcome.setVisible(false);
-                vr.setVisible(true);
-            }
-        });
-        
-        regUser.addActionListener(new ActionListener() 
-        {
-            @Override
-            public void actionPerformed(ActionEvent ae)
-            {
-                welcome.setVisible(false);
-                //add code for registration window here...
-            }
-        });
-        
-        welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        welcome.setSize(500, 600);
-        welcome.setLocationRelativeTo(null);
-        welcome.setVisible(true);
-        welcome.getContentPane().setLayout(null);
-        
-        regUser.setFont(new Font("roman", Font.BOLD, 14));
-        regUser.setBounds(130, 300, 210, 37);
-        
-        newUser.setFont(new Font("roman", Font.BOLD, 14));
-        newUser.setBounds(125, 400, 220, 37);
-        
-        welcome.add(lblNewUserRegister);
-        welcome.add(regUser);
-        welcome.add(newUser);
-        
-        return welcome;
-    }
-    
+   
     public JFrame verifyIdentityWindow()
     {
         JFrame webcamWindow = new JFrame("Camera");
@@ -158,7 +95,7 @@ public class VisitorRegistration extends JFrame {
                     and saves it
                     */
                     
-                    ImageIO.write(w.getImage(), "png", new File("image.png"));
+                    ImageIO.write(w.getImage(), "jpg", new File("images\\image.jpg"));
                     webcamWindow.setVisible(false);
                 }
                 
@@ -255,7 +192,7 @@ public class VisitorRegistration extends JFrame {
                 String lastName = lastname.getText();
                 String Company = company.getText();
                 String mobileNumber = mob.getText();
-                int id = 1;
+                int id=1;
                 
                 int len = mobileNumber.length();
                
@@ -267,7 +204,7 @@ public class VisitorRegistration extends JFrame {
 
                 try {
                     //Class.forName("org.sqlite.JDBC");
-                    Connection connection = DriverManager.getConnection("jdbc:sqlite:/C:\\Users\\Brandon\\Documents\\Maven\\Gatekeeper\\src\\main\\java\\za\\ac\\cput\\gatekeeper\\registration\\Database\\visitors.db");
+                    Connection connection = DriverManager.getConnection("jdbc:sqlite:Database\\visitors.db");
                     System.out.println("Connection established");
                     //String query = "INSERT INTO visitors values('" + firstName + "','" + lastName + "','" + mobileNumber + "','" + Company + "')";
                     String query = "INSERT INTO visitors values('" + id + "','" + firstName + "','" + lastName + "','" + mobileNumber + "','" + Company + "')";
@@ -288,6 +225,10 @@ public class VisitorRegistration extends JFrame {
             }
         });
         
+        btnReturn = new JButton("Return");
+        btnReturn.setBounds(190,490,220,37);
+        btnReturn.addActionListener(this);
+        
         webcamBtn = new JButton("Verify your identity");
         webcamBtn.setFont(new Font("roman", Font.BOLD, 14));
         webcamBtn.setBounds(205, 367, 180, 37);
@@ -306,5 +247,14 @@ public class VisitorRegistration extends JFrame {
         
         contentPane.add(webcamBtn);
         contentPane.add(btnNewButton);
+        contentPane.add(btnReturn);
+        
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+                
+                Main rg = new Main();
+                rg.startProgram();
+                dispose();
     }
 }
