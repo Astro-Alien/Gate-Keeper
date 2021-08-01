@@ -5,17 +5,18 @@
  */
 package za.ac.cput.gatekeeper.registration;
 
-import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import javax.swing.*;
 import java.sql.*;
-import javax.imageio.ImageIO;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -27,6 +28,8 @@ public class VisitorLogin extends DbConnection implements ActionListener {
     PreparedStatement stmt = null;
     ResultSet results = null;
 
+    private JLabel label;
+    private JPanel images;
     //--------------------------------------------------------------------------J Labels and Textfields
     //Username
     private JLabel lblUsername;
@@ -44,15 +47,15 @@ public class VisitorLogin extends DbConnection implements ActionListener {
     public VisitorLogin() {
 
         //---------------------------------------------------Username label and textfield
-        lblUsername = new JLabel("Username: ");
+        lblUsername = new JLabel("Username");
         txtUsername = new JTextField(16);
 
         //---------------------------------------------------Password label and textfield
-        lblPassword = new JLabel("Password: ");
+        lblPassword = new JLabel("Password");
         pwdPassword = new JPasswordField(16);
 
         //---------------------------------------------------Login button & Registration button
-        btnLogin = new JButton("Login");
+        btnLogin = new JButton("Checkin");
         btnReturn = new JButton("Return");
 
     }
@@ -63,56 +66,52 @@ public class VisitorLogin extends DbConnection implements ActionListener {
         conn = DbConnection.ConnectDb();
 
         //---------------------------------------------------Creating window and setting window Size
-        JFrame window = new JFrame("Login");
-        window.setSize(600, 500);
+        JFrame window = new JFrame();
+        window.setSize(876, 497);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        
+
         //---------------------------------------------------Creating panel to place textfields and labels in
         JPanel border = new JPanel();
         window.add(border);
         border.setLayout(null);
+        //---------------------------------------------------Login panel
+        JPanel outline = new JPanel();
+        border.add(outline);
+        outline.setBounds(37, 45, 294, 371);
+        outline.setLayout(null);
 
-        //---------------------------------------------------creating Default image panel
-        JPanel images = new JPanel();
-        
-        images.setBounds(155, 18, 277, 196);
-        try {
-            BufferedImage myPicture = ImageIO.read(new File("images\\logo.jpg"));
-            Image userImage = myPicture.getScaledInstance(200, 150, Image.SCALE_DEFAULT);
-            JLabel picLabel = new JLabel(new ImageIcon(userImage));
-            images.add(picLabel);
-            
-        } catch (IOException e) {
-
-            System.out.println("Failed to retrieve image");
-        }
+        images = new JPanel();
         border.add(images);
-        
+        label = new JLabel();
+        border.add(label);
+
+        scalingImg();
         //---------------------------------------------------JLabel
-        JLabel lblUser = new JLabel("Gatekeeper Visitor Login");
-        lblUser.setFont(new Font("Times New Roman", Font.ITALIC, 30));
-        lblUser.setBounds(150, 200, 500, 50);
-        border.add(lblUser);
+        JLabel lblUser = new JLabel("GATEKEEPER");
+        lblUser.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 25));
+        lblUser.setForeground(Color.BLACK);
+        lblUser.setBounds(59, 17, 210, 60);
+        outline.add(lblUser);
         //---------------------------------------------------positioning Username label and textfield
-        lblUsername.setBounds(80, 267, 80, 25);
-        border.add(lblUsername);
-        txtUsername.setBounds(180, 270, 229, 25);
-        border.add(txtUsername);
+        lblUsername.setBounds(47, 90, 100, 40);
+        outline.add(lblUsername);
+        txtUsername.setBounds(47, 130, 200, 30);
+        outline.add(txtUsername);
 
         //---------------------------------------------------positioning Password label and textfield
-        lblPassword.setBounds(80, 317, 80, 25);
-        border.add(lblPassword);
-        pwdPassword.setBounds(180, 320, 229, 25);
-        border.add(pwdPassword);
+        lblPassword.setBounds(47, 160, 100, 40);
+        outline.add(lblPassword);
+        pwdPassword.setBounds(47, 200, 200, 30);
+        outline.add(pwdPassword);
 
         //---------------------------------------------------positioning login button and adding action listener
-        btnLogin.setBounds(255, 370, 80, 25);
-        border.add(btnLogin);
+        btnLogin.setBounds(82, 245, 130, 33);
+        outline.add(btnLogin);
         btnLogin.addActionListener(this);
         //---------------------------------------------------positioning  Submit button 
-        btnReturn.setBounds(250, 400, 90, 25);
-        border.add(btnReturn);
+        btnReturn.setBounds(82, 295, 130, 33);
+        outline.add(btnReturn);
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
@@ -129,6 +128,49 @@ public class VisitorLogin extends DbConnection implements ActionListener {
 
             }
         });
+
+        //-------------------------------------------------------------------------------------------------------Design
+        //---------------------------------------------------Design JFrame
+        //form title bar 
+        window.setTitle("Login");
+        ImageIcon img = new ImageIcon("images\\anu.jpg");
+        window.setIconImage(img.getImage());//changes the icon of the frame
+
+        //---------------------------------------------------Design JPanels
+        //Panel Colour
+        border.setBackground(new Color(0x005ba3));
+        outline.setBackground(new Color(0x03a9f4));
+        images.setBackground(new Color(0x005ba3));
+
+        //---------------------------------------------------Design JLabel
+        lblUsername.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 18));
+        lblUsername.setForeground(Color.BLACK);
+        lblPassword.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 18));
+        lblPassword.setForeground(Color.BLACK);
+        txtUsername.setBorder(BorderFactory.createLineBorder(new Color(0x005ba3),3));
+        pwdPassword.setBorder(BorderFactory.createLineBorder(new Color(0x005ba3),3));
+        //---------------------------------------------------Design JButton
+        btnLogin.setBorder(BorderFactory.createLineBorder(new Color(0x005ba3), 2));
+        btnReturn.setBorder(BorderFactory.createLineBorder(new Color(0x005ba3), 2));
+        //btnLogin.setBorder(new LineBorder(Color.BLACK));
+        //btnLogin.setContentAreaFilled(false);
+        //btnLogin.setFocusPainted(false);
+        //btnLogin.setBorder(new RoundedBorder(10));
+    }
+
+    public void scalingImg() {
+
+        //images.setLayout(null);
+        images.setBounds(400, 0, 462, 462);
+
+        ImageIcon icon = new ImageIcon("images\\bg1.png ");
+        label.setLocation(400, 2);
+        Image img = icon.getImage();
+        Image imgScale = img.getScaledInstance(462, 462, Image.SCALE_SMOOTH);
+        ImageIcon ScaledIcon = new ImageIcon(imgScale);
+        label.setIcon(ScaledIcon);
+        images.add(label);
+
     }
 
     //--------------------------------------------------------------------------call data from visitor database and verify if user is registered or not
@@ -147,18 +189,18 @@ public class VisitorLogin extends DbConnection implements ActionListener {
             if (results.next()) {
 
                 JOptionPane.showMessageDialog(null, "LOGIN SUCCESSFULL");
-                
+
             } else {
 
                 JOptionPane.showMessageDialog(null, "USER NOT FOUND");
-               
+
             }
-            
+
         } catch (Exception e) {
 
             System.out.println("PROCESS FAILED!!!");
         }
-        
+
     }
 
     //--------------------------------------------------------------------------timestamp function or method save time stamp to the database 
@@ -171,7 +213,7 @@ public class VisitorLogin extends DbConnection implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         userVerification();
-        
+
     }
 
     //--------------------------------------------------------------------------main function calls starter method to run program
@@ -179,4 +221,20 @@ public class VisitorLogin extends DbConnection implements ActionListener {
         new VisitorLogin().StartGUI();
 
     }
+    /*class RoundedBorder implements Border {
+        int radius;
+        RoundedBorder(int radius) {
+            this.radius = radius;
+        }
+        public Insets getBorderInsets(Component c) {
+            return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+        }
+        public boolean isBorderOpaque() {
+            return true;
+        }
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            g.drawRoundRect(x,y,width-1,height-1,radius,radius);
+        }
+    }*/
+    
 }
