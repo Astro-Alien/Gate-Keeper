@@ -12,7 +12,7 @@ public class DbConnection {
         
         try{
             Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:visitors.db");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:Database\\visitors.db");
             System.out.println("Connection Succeeded");
             return conn;
         }
