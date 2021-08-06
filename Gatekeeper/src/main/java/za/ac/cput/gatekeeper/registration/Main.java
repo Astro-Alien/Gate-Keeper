@@ -27,16 +27,16 @@ public class Main extends JFrame {
         lblNewUserRegister.setFont(new Font("Times New Roman", Font.ITALIC, 30));
         lblNewUserRegister.setBounds(50, 100, 500, 50);
 
-        JButton regUser = new JButton("I am a registered user");
-        JButton newUser = new JButton("I am not a registered user");
+        JButton regUser = new JButton("VISITOR");
+        JButton newUser = new JButton("EMPLOYEE");
         welcome.setResizable(false);
         newUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VisitorRegistration vr = new VisitorRegistration();
-
+                //VisitorRegistration vr = new VisitorRegistration();
+                EmployeeLogin vr = new EmployeeLogin();
                 welcome.setVisible(false);
-                vr.setVisible(true);
+                vr.starter();
             }
         });
 

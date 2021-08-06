@@ -11,16 +11,24 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
- * @author Charles Lemmert Student No: 220498385
+ * @author Charles
  */
-public class VisitorLogin extends DbConnection implements ActionListener {
+public class EmployeeLogin extends DbConnection implements ActionListener {
 
     Connection conn = null;
     PreparedStatement stmt = null;
@@ -37,15 +45,12 @@ public class VisitorLogin extends DbConnection implements ActionListener {
     private JLabel lblPassword;
     private JPasswordField pwdPassword;
 
-    //Hyperlink
-    private JLabel lblLink;
-    private JLabel lblQuestion;
     //Buttons
     private JButton btnLogin;
     private JButton btnReturn;
 
     //--------------------------------------------------------------------------Login Constructor
-    public VisitorLogin() {
+    public EmployeeLogin() {
 
         //---------------------------------------------------Username label and textfield
         lblUsername = new JLabel("Username");
@@ -55,11 +60,8 @@ public class VisitorLogin extends DbConnection implements ActionListener {
         lblPassword = new JLabel("Password");
         pwdPassword = new JPasswordField(16);
 
-        //---------------------------------------------------Hyperlink label
-        lblQuestion = new JLabel("Do you have an account? ");
-        lblLink = new JLabel("Register");
         //---------------------------------------------------Login button & Registration button
-        btnLogin = new JButton("CHECKIN");
+        btnLogin = new JButton("SIGNIN");
         btnReturn = new JButton("RETURN");
 
     }
@@ -92,14 +94,11 @@ public class VisitorLogin extends DbConnection implements ActionListener {
 
         scalingImg();
         //---------------------------------------------------JLabel
-        JLabel lblUser = new JLabel("GATEKEEPER");
+        JLabel lblUser = new JLabel("ADMINISTRATOR");
         lblUser.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 25));
         lblUser.setForeground(Color.BLACK);
-        lblUser.setBounds(59, 17, 210, 60);
+        lblUser.setBounds(50, 17, 210, 60);
         outline.add(lblUser);
-        outline.add(lblQuestion);
-        outline.add(lblLink);
-        
         //---------------------------------------------------positioning Username label and textfield
         lblUsername.setBounds(47, 90, 100, 40);
         outline.add(lblUsername);
@@ -116,14 +115,9 @@ public class VisitorLogin extends DbConnection implements ActionListener {
         btnLogin.setBounds(82, 245, 130, 33);
         outline.add(btnLogin);
         btnLogin.addActionListener(this);
-
         //---------------------------------------------------positioning  Submit button 
         btnReturn.setBounds(82, 295, 130, 33);
         outline.add(btnReturn);
-
-        //---------------------------------------------------positioning Register hyperlink
-        lblQuestion.setBounds(50,325,148,33);
-        lblLink.setBounds(194, 325, 100, 33);
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
@@ -139,28 +133,6 @@ public class VisitorLogin extends DbConnection implements ActionListener {
                 rg.startProgram();
 
             }
-        });
-        //---------------------------------------------------Creating HyperLink
-        lblLink.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                window.setVisible(false);
-                VisitorRegistration rg = new VisitorRegistration();
-                window.setVisible(false);
-                rg.setVisible(true);
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                lblLink.setForeground(new Color(0x005ba3));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                lblLink.setForeground(Color.WHITE);
-            }
-
         });
 
         //-------------------------------------------------------------------------------------------------------Design
@@ -198,39 +170,31 @@ public class VisitorLogin extends DbConnection implements ActionListener {
         btnLogin.setForeground(Color.WHITE);
         btnReturn.setBackground(new Color(0x424242));
         btnReturn.setForeground(Color.WHITE);
-
-        //---------------------------------------------------Hyperlink design
-        lblLink.setForeground(Color.WHITE);
-
-        //changing cursor icon to hand cursor 
-        lblLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+       
+        //Hover colour change when the cursor hovers over the Login Jbutton
         btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnReturn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        //Hover colour change when the cursor hovers over the Login Jbutton
-        btnLogin.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
+    
+        btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
                 btnLogin.setBackground(new Color(0x005ba3));
             }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
+            public void mouseExited(java.awt.event.MouseEvent e) {
                 btnLogin.setBackground(new Color(0x424242));
             }
         });
-        btnReturn.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
+        btnReturn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
                 btnReturn.setBackground(new Color(0x005ba3));
             }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
+            public void mouseExited(java.awt.event.MouseEvent e) {
                 btnReturn.setBackground(new Color(0x424242));
             }
         });
-
+        
     }
 
     public void scalingImg() {
@@ -287,15 +251,16 @@ public class VisitorLogin extends DbConnection implements ActionListener {
     //--------------------------------------------------------------------------Action Listener onclick functionality implemented here:User Verification
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()== btnLogin){
-            userVerification();
-        }
+        userVerification();
+
     }
 
     //--------------------------------------------------------------------------main function calls starter method to run program
     public void starter() {
-        new VisitorLogin().StartGUI();
+        new EmployeeLogin().StartGUI();
 
     }
+    
 
 }
+
