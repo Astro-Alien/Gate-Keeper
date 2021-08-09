@@ -15,12 +15,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
  * @author Charles Lemmert Student No: 220498385
  */
-public class VisitorLogin extends DbConnection implements ActionListener {
+public class VisitorLogin implements ActionListener {
 
     Connection conn = null;
     PreparedStatement stmt = null;
@@ -28,6 +30,7 @@ public class VisitorLogin extends DbConnection implements ActionListener {
 
     private JLabel label;
     private JPanel images;
+    private JFrame window;
     //--------------------------------------------------------------------------J Labels and Textfields
     //Username
     private JLabel lblUsername;
@@ -70,7 +73,7 @@ public class VisitorLogin extends DbConnection implements ActionListener {
         conn = DbConnection.ConnectDb();
 
         //---------------------------------------------------Creating window and setting window Size
-        JFrame window = new JFrame();
+        window = new JFrame();
         window.setSize(876, 497);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
@@ -99,7 +102,7 @@ public class VisitorLogin extends DbConnection implements ActionListener {
         outline.add(lblUser);
         outline.add(lblQuestion);
         outline.add(lblLink);
-        
+
         //---------------------------------------------------positioning Username label and textfield
         lblUsername.setBounds(47, 90, 100, 40);
         outline.add(lblUsername);
@@ -122,13 +125,12 @@ public class VisitorLogin extends DbConnection implements ActionListener {
         outline.add(btnReturn);
 
         //---------------------------------------------------positioning Register hyperlink
-        lblQuestion.setBounds(50,325,148,33);
+        lblQuestion.setBounds(50, 325, 148, 33);
         lblLink.setBounds(194, 325, 100, 33);
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
-        btnLogin.addActionListener(this);
         //--------------------------------------------------returns the user to the main page
         btnReturn.addActionListener(new ActionListener() {
 
@@ -235,7 +237,7 @@ public class VisitorLogin extends DbConnection implements ActionListener {
 
     public void scalingImg() {
 
-        //images.setLayout(null);
+       
         images.setBounds(400, 0, 462, 462);
 
         ImageIcon icon = new ImageIcon("images\\bg1.png ");
@@ -250,7 +252,7 @@ public class VisitorLogin extends DbConnection implements ActionListener {
 
     //--------------------------------------------------------------------------call data from visitor database and verify if user is registered or not
     public void userVerification() {
-        //BUG DOUBLE VERIFICATION BUSY FIXING IT 
+        
         String query = "Select * FROM visitors WHERE id LIKE ? AND Mobile LIKE ?; ";
 
         try {
@@ -262,12 +264,20 @@ public class VisitorLogin extends DbConnection implements ActionListener {
             results = stmt.executeQuery();
 
             if (results.next()) {
-
-                JOptionPane.showMessageDialog(null, "LOGIN SUCCESSFULL");
+                window.setVisible(false);
+                VisitorOption rg = new VisitorOption();
+                window.setVisible(false);
+                rg.Start();
+                
+                //checkInTime();
 
             } else {
+                UIManager UI = new UIManager();
+                UI.put("OptionPane.background",new Color(0x03a9f4));
+                UI.put("Panel.background", new Color(0x03a9f4));
+                
 
-                JOptionPane.showMessageDialog(null, "USER NOT FOUND");
+               JOptionPane.showMessageDialog(null, "Incorrect Username/Password\n      USER NOT FOUND");
 
             }
 
@@ -281,14 +291,23 @@ public class VisitorLogin extends DbConnection implements ActionListener {
     //--------------------------------------------------------------------------timestamp function or method save time stamp to the database 
     /*public void checkInTime(){
         
-                //check in time method code will be added here 
-    
+    //------------------------------------------------check in time method code will be added here
+        Date recentDate = new Date();
+       
+        SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
+        String dateuser = dateStamp.format(recentDate);
+        String timeuser = timeStamp.format(recentDate);
+        
+        // save this to the database for the specific user that is logging in
+       
     }*/
     //--------------------------------------------------------------------------Action Listener onclick functionality implemented here:User Verification
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()== btnLogin){
+        if (e.getSource() == btnLogin) {
             userVerification();
+
         }
     }
 
@@ -297,5 +316,5 @@ public class VisitorLogin extends DbConnection implements ActionListener {
         new VisitorLogin().StartGUI();
 
     }
-
+    
 }

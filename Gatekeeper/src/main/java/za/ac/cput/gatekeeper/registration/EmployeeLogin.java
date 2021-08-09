@@ -28,7 +28,7 @@ import javax.swing.JTextField;
  *
  * @author Charles
  */
-public class EmployeeLogin extends DbConnection implements ActionListener {
+public class EmployeeLogin implements ActionListener {
 
     Connection conn = null;
     PreparedStatement stmt = null;
@@ -69,7 +69,7 @@ public class EmployeeLogin extends DbConnection implements ActionListener {
     //--------------------------------------------------------------------------GUI layout for Login and Registration test
     public void StartGUI() {
         //starting connection
-        conn = DbConnection.ConnectDb();
+        conn = DbConnection.ConnectDb();//should be replaced with the connection to the employee database
 
         //---------------------------------------------------Creating window and setting window Size
         JFrame window = new JFrame();
@@ -122,7 +122,6 @@ public class EmployeeLogin extends DbConnection implements ActionListener {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
-        btnLogin.addActionListener(this);
         //--------------------------------------------------returns the user to the main page
         btnReturn.addActionListener(new ActionListener() {
 
@@ -170,12 +169,11 @@ public class EmployeeLogin extends DbConnection implements ActionListener {
         btnLogin.setForeground(Color.WHITE);
         btnReturn.setBackground(new Color(0x424242));
         btnReturn.setForeground(Color.WHITE);
-        
-       
+
         //Hover colour change when the cursor hovers over the Login Jbutton
         btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnReturn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    
+
         btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent e) {
                 btnLogin.setBackground(new Color(0x005ba3));
@@ -194,7 +192,7 @@ public class EmployeeLogin extends DbConnection implements ActionListener {
                 btnReturn.setBackground(new Color(0x424242));
             }
         });
-        
+
     }
 
     public void scalingImg() {
@@ -245,7 +243,12 @@ public class EmployeeLogin extends DbConnection implements ActionListener {
     //--------------------------------------------------------------------------timestamp function or method save time stamp to the database 
     /*public void checkInTime(){
         
-                //check in time method code will be added here 
+        Date recentDate = new Date();
+       
+        SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
+        String dateuser = dateStamp.format(recentDate);
+        String timeuser = timeStamp.format(recentDate);
     
     }*/
     //--------------------------------------------------------------------------Action Listener onclick functionality implemented here:User Verification
@@ -260,7 +263,5 @@ public class EmployeeLogin extends DbConnection implements ActionListener {
         new EmployeeLogin().StartGUI();
 
     }
-    
 
 }
-
