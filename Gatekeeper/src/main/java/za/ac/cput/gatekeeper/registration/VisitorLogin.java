@@ -382,7 +382,7 @@ public class VisitorLogin implements ActionListener {
     //--------------------------------------------------------------------------call data from visitor database and verify if user is registered or not
     public void userVerification() {
 
-        String query = "Select * FROM visitors WHERE id LIKE ?; ";
+        String query = "Select * FROM visitors WHERE firstName LIKE ?; ";
 
         try {
 
@@ -392,16 +392,12 @@ public class VisitorLogin implements ActionListener {
             results = stmt.executeQuery();
 
             if (results.next()) {
-                /*window.setVisible(false);
-                VisitorOption rg = new VisitorOption();
-                window.setVisible(false);
-                rg.Start();*/
 
                 images.setVisible(false);
                 imgPanel.setVisible(true);
-                String userName = results.getString("first Name");
+                String userName = results.getString("firstName");
                 lblName.setText(userName);
-                String userSurname = results.getString("last Name");
+                String userSurname = results.getString("lastName");
                 lblSurname.setText(userSurname);
                 optionPanelDesign();
                 //checkInTime();
