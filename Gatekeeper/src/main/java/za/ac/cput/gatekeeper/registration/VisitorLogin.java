@@ -15,8 +15,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  *
@@ -36,10 +34,6 @@ public class VisitorLogin implements ActionListener {
     private JLabel lblUsername;
     private JTextField txtUsername;
 
-    //Password
-    private JLabel lblPassword;
-    private JPasswordField pwdPassword;
-
     //Hyperlink
     private JLabel lblLink;
     private JLabel lblQuestion;
@@ -47,24 +41,46 @@ public class VisitorLogin implements ActionListener {
     private JButton btnLogin;
     private JButton btnReturn;
 
+    //Secondary panel
+    private JPanel imgPanel;
+    private JLabel lblName;
+    private JLabel lblSurname;
+    private JLabel lblWelcome;
+    private JLabel lblInstruction;
+    //Secondary panel Buttons
+    private JButton btnMeeting;
+    private JButton btnInterview;
+    private JButton btnVisitor;
+    private JButton btnDelivery;
+    private JButton btnCheckIn;
+
     //--------------------------------------------------------------------------Login Constructor
     public VisitorLogin() {
 
         //---------------------------------------------------Username label and textfield
         lblUsername = new JLabel("Username");
         txtUsername = new JTextField(16);
-
-        //---------------------------------------------------Password label and textfield
-        lblPassword = new JLabel("Password");
-        pwdPassword = new JPasswordField(16);
+        imgPanel = new JPanel();
 
         //---------------------------------------------------Hyperlink label
         lblQuestion = new JLabel("Do you have an account? ");
         lblLink = new JLabel("Register");
         //---------------------------------------------------Login button & Registration button
-        btnLogin = new JButton("CHECKIN");
+        btnLogin = new JButton("SEARCH");
         btnReturn = new JButton("RETURN");
 
+        //option welcome message
+        lblWelcome = new JLabel("WELCOME");
+        lblName = new JLabel();
+        lblSurname = new JLabel();
+        lblInstruction = new JLabel("Please select the reason for your visit today.");
+
+        //secondary panel buttons
+        btnMeeting = new JButton("Meeting");
+        btnInterview = new JButton("Interview");
+        btnVisitor = new JButton("Visiting");
+        btnDelivery = new JButton("Delivery");
+        btnCheckIn = new JButton("CHECKIN");
     }
 
     //--------------------------------------------------------------------------GUI layout for Login and Registration test
@@ -85,7 +101,7 @@ public class VisitorLogin implements ActionListener {
         //---------------------------------------------------Login panel
         JPanel outline = new JPanel();
         border.add(outline);
-        outline.setBounds(37, 45, 294, 371);
+        outline.setBounds(37, 22, 294, 420);
         outline.setLayout(null);
 
         images = new JPanel();
@@ -94,6 +110,17 @@ public class VisitorLogin implements ActionListener {
         border.add(label);
 
         scalingImg();
+
+        //---------------------------------------------------Secondary panel
+        border.add(imgPanel);
+
+        //layout and size
+        imgPanel.setLayout(null);
+        imgPanel.setBounds(353, 22, 480, 420);
+        imgPanel.setBackground(new Color(0x03a9f4));
+        imgPanel.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+
+        imgPanel.setVisible(false);
         //---------------------------------------------------JLabel
         JLabel lblUser = new JLabel("GATEKEEPER");
         lblUser.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 25));
@@ -104,16 +131,10 @@ public class VisitorLogin implements ActionListener {
         outline.add(lblLink);
 
         //---------------------------------------------------positioning Username label and textfield
-        lblUsername.setBounds(47, 90, 100, 40);
+        lblUsername.setBounds(47, 150, 100, 40);
         outline.add(lblUsername);
-        txtUsername.setBounds(47, 130, 200, 30);
+        txtUsername.setBounds(47, 190, 200, 30);
         outline.add(txtUsername);
-
-        //---------------------------------------------------positioning Password label and textfield
-        lblPassword.setBounds(47, 160, 100, 40);
-        outline.add(lblPassword);
-        pwdPassword.setBounds(47, 200, 200, 30);
-        outline.add(pwdPassword);
 
         //---------------------------------------------------positioning login button and adding action listener
         btnLogin.setBounds(82, 245, 130, 33);
@@ -181,17 +202,11 @@ public class VisitorLogin implements ActionListener {
         //---------------------------------------------------Design JLabel
         lblUsername.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 18));
         lblUsername.setForeground(Color.BLACK);
-        lblPassword.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 18));
-        lblPassword.setForeground(Color.BLACK);
         txtUsername.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
-        pwdPassword.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
         txtUsername.setBackground(new Color(0x424242));
-        pwdPassword.setBackground(new Color(0x424242));
         txtUsername.setForeground(Color.WHITE);
-        pwdPassword.setForeground(Color.WHITE);
         txtUsername.setCaretColor(Color.WHITE);
         txtUsername.setCaretColor(Color.WHITE);
-        pwdPassword.setCaretColor(Color.WHITE);
 
         //---------------------------------------------------Design JButton
         btnLogin.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
@@ -237,7 +252,6 @@ public class VisitorLogin implements ActionListener {
 
     public void scalingImg() {
 
-       
         images.setBounds(400, 0, 462, 462);
 
         ImageIcon icon = new ImageIcon("images\\bg1.png ");
@@ -250,34 +264,166 @@ public class VisitorLogin implements ActionListener {
 
     }
 
+    public void optionPanelDesign() {
+
+        //call image from database when code is written to save the image in the database
+        ImageIcon userimage = new ImageIcon("images\\default.jpg");
+        label.setBounds(150, 15, 180, 160);
+        label.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        Image img = userimage.getImage();
+        Image imgScale = img.getScaledInstance(180, 160, Image.SCALE_SMOOTH);
+        ImageIcon ScaledIcon = new ImageIcon(imgScale);
+        label.setIcon(ScaledIcon);
+        imgPanel.add(label);
+
+        //welcome message and name 
+        imgPanel.add(lblWelcome);
+        lblWelcome.setBounds(190, 180, 150, 35);
+        lblWelcome.setFont(new Font("SourceSansPro", Font.BOLD, 20));
+        lblWelcome.setForeground(Color.WHITE);
+
+        imgPanel.add(lblName);
+        lblName.setBounds(160, 210, 100, 35);
+        lblName.setFont(new Font("SourceSansPro", Font.BOLD, 20));
+        lblName.setForeground(Color.WHITE);
+
+        imgPanel.add(lblSurname);
+        lblSurname.setBounds(255, 210, 100, 35);
+        lblSurname.setFont(new Font("SourceSansPro", Font.BOLD, 20));
+        lblSurname.setForeground(Color.WHITE);
+
+        imgPanel.add(lblInstruction);
+        lblInstruction.setBounds(80, 250, 330, 35);
+        lblInstruction.setFont(new Font("SourceSansPro", Font.BOLD, 15));
+        lblInstruction.setForeground(Color.WHITE);
+
+        //option buttons
+        imgPanel.add(btnMeeting);
+        imgPanel.add(btnInterview);
+        imgPanel.add(btnVisitor);
+        imgPanel.add(btnDelivery);
+        imgPanel.add(btnCheckIn);
+
+        //button layout design
+        btnMeeting.setBounds(150, 290, 90, 30);
+        btnInterview.setBounds(250, 290, 90, 30);
+        btnVisitor.setBounds(150, 330, 90, 30);
+        btnDelivery.setBounds(250, 330, 90, 30);
+        btnCheckIn.setBounds(180, 377, 130, 33);
+
+        //----------------------------------------Button design
+        btnMeeting.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        btnMeeting.setBackground(new Color(0x424242));
+        btnMeeting.setForeground(Color.WHITE);
+
+        btnInterview.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        btnInterview.setBackground(new Color(0x424242));
+        btnInterview.setForeground(Color.WHITE);
+
+        btnDelivery.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        btnDelivery.setBackground(new Color(0x424242));
+        btnDelivery.setForeground(Color.WHITE);
+
+        btnVisitor.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        btnVisitor.setBackground(new Color(0x424242));
+        btnVisitor.setForeground(Color.WHITE);
+
+        btnCheckIn.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        btnCheckIn.setBackground(new Color(0x424242));
+        btnCheckIn.setForeground(Color.WHITE);
+
+        //----------------------------------------------------------------------Button hover methods
+        //Hover colour change when the cursor hovers over the Login Jbutton
+        btnMeeting.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnMeeting.setBackground(new Color(0x005ba3));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnMeeting.setBackground(new Color(0x424242));
+            }
+        });
+        btnInterview.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnInterview.setBackground(new Color(0x005ba3));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnInterview.setBackground(new Color(0x424242));
+            }
+        });
+        btnDelivery.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnDelivery.setBackground(new Color(0x005ba3));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnDelivery.setBackground(new Color(0x424242));
+            }
+        });
+        btnVisitor.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnVisitor.setBackground(new Color(0x005ba3));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnVisitor.setBackground(new Color(0x424242));
+            }
+        });
+        btnCheckIn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnCheckIn.setBackground(new Color(0x005ba3));
+                btnCheckIn.setForeground(Color.WHITE);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnCheckIn.setBackground(Color.WHITE);
+                btnCheckIn.setForeground(Color.BLACK);
+
+            }
+        });
+    }
+
     //--------------------------------------------------------------------------call data from visitor database and verify if user is registered or not
     public void userVerification() {
-        
-        String query = "Select * FROM visitors WHERE id LIKE ? AND Mobile LIKE ?; ";
+
+        String query = "Select * FROM visitors WHERE id LIKE ?; ";
 
         try {
 
             stmt = conn.prepareStatement(query);
             stmt.setString(1, txtUsername.getText());
-            stmt.setString(2, pwdPassword.getText());
 
             results = stmt.executeQuery();
 
             if (results.next()) {
-                window.setVisible(false);
+                /*window.setVisible(false);
                 VisitorOption rg = new VisitorOption();
                 window.setVisible(false);
-                rg.Start();
-                
+                rg.Start();*/
+
+                images.setVisible(false);
+                imgPanel.setVisible(true);
+                String userName = results.getString("first Name");
+                lblName.setText(userName);
+                String userSurname = results.getString("last Name");
+                lblSurname.setText(userSurname);
+                optionPanelDesign();
                 //checkInTime();
 
             } else {
-                UIManager UI = new UIManager();
-                UI.put("OptionPane.background",new Color(0x03a9f4));
-                UI.put("Panel.background", new Color(0x03a9f4));
-                
 
-               JOptionPane.showMessageDialog(null, "Incorrect Username/Password\n      USER NOT FOUND");
+                JOptionPane.showMessageDialog(null, "     USER NOT FOUND");
 
             }
 
@@ -299,7 +445,7 @@ public class VisitorLogin implements ActionListener {
         String dateuser = dateStamp.format(recentDate);
         String timeuser = timeStamp.format(recentDate);
         
-        // save this to the database for the specific user that is logging in
+        //save this to the database for the specific user that is logging in
        
     }*/
     //--------------------------------------------------------------------------Action Listener onclick functionality implemented here:User Verification
@@ -316,5 +462,5 @@ public class VisitorLogin implements ActionListener {
         new VisitorLogin().StartGUI();
 
     }
-    
+
 }

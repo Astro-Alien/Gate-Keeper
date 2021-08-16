@@ -253,8 +253,9 @@ public class VisitorRegistration extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
                 
-                VisitorLogin rg = new VisitorLogin();
-                rg.starter();
+               
+                Main rg = new Main();
+                rg.startProgram();
                 dispose();
     }
 }
