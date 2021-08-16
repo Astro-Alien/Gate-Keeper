@@ -372,8 +372,8 @@ public class VisitorLogin implements ActionListener {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                btnCheckIn.setBackground(Color.WHITE);
-                btnCheckIn.setForeground(Color.BLACK);
+                btnCheckIn.setBackground(new Color(0x424242));
+                btnCheckIn.setForeground(Color.WHITE);
 
             }
         });
