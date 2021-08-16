@@ -18,6 +18,7 @@ public class Main extends JFrame {
 
     private JButton regUser;
     private JButton newUser;
+    private JButton btnEmp;
 
     public JFrame welcomeWindow() {
 
@@ -27,16 +28,27 @@ public class Main extends JFrame {
         lblNewUserRegister.setFont(new Font("Times New Roman", Font.ITALIC, 30));
         lblNewUserRegister.setBounds(50, 100, 500, 50);
 
-        JButton regUser = new JButton("I am a registered user");
-        JButton newUser = new JButton("I am not a registered user");
+        regUser = new JButton("VISITOR");
+        newUser = new JButton("NEW VISITOR");
+        btnEmp = new JButton("EMPLOYEE");
         welcome.setResizable(false);
+        btnEmp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //VisitorRegistration vr = new VisitorRegistration();
+                EmployeeLogin vr = new EmployeeLogin();
+                welcome.setVisible(false);
+                vr.starter();
+            }
+        });
         newUser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VisitorRegistration vr = new VisitorRegistration();
-
+                
                 welcome.setVisible(false);
-                vr.setVisible(true);
+                VisitorRegistration rg = new VisitorRegistration();
+                welcome.setVisible(false);
+                rg.setVisible(true);
             }
         });
 
@@ -63,13 +75,17 @@ public class Main extends JFrame {
 
         regUser.setFont(new Font("roman", Font.BOLD, 14));
         regUser.setBounds(130, 300, 210, 37);
-
+        
         newUser.setFont(new Font("roman", Font.BOLD, 14));
-        newUser.setBounds(125, 400, 220, 37);
+        newUser.setBounds(130, 350, 210, 37);
+
+        btnEmp.setFont(new Font("roman", Font.BOLD, 14));
+        btnEmp.setBounds(130, 400, 210, 37);
 
         welcome.add(lblNewUserRegister);
         welcome.add(regUser);
         welcome.add(newUser);
+        welcome.add(btnEmp);
 
         return welcome;
     }

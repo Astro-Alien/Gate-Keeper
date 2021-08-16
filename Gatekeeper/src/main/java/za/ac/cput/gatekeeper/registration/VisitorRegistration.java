@@ -1,4 +1,5 @@
 
+
 package za.ac.cput.gatekeeper.registration;
 
 //AWT imports
@@ -255,6 +256,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
                 
+               
                 Main rg = new Main();
                 rg.startProgram();
                 dispose();
