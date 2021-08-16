@@ -1,4 +1,5 @@
 
+
 package za.ac.cput.gatekeeper.registration;
 
 //AWT imports
@@ -192,7 +193,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                 String lastName = lastname.getText();
                 String Company = company.getText();
                 String mobileNumber = mob.getText();
-                int id=1;
+                
                 
                 int len = mobileNumber.length();
                
@@ -201,15 +202,15 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                 if (len != 10) {
                     JOptionPane.showMessageDialog(btnNewButton, "Enter a valid mobile number");
                 }
+                
+                //Inserts registration form data into database.
 
                 try {
-                    //Class.forName("org.sqlite.JDBC");
+                    Class.forName("org.sqlite.JDBC");
                     Connection connection = DriverManager.getConnection("jdbc:sqlite:Database\\visitors.db");
                     System.out.println("Connection established");
-                    //String query = "INSERT INTO visitors values('" + firstName + "','" + lastName + "','" + mobileNumber + "','" + Company + "')";
-                    String query = "INSERT INTO visitors values('" + id + "','" + firstName + "','" + lastName + "','" + mobileNumber + "','" + Company + "')";
+                    String query = "INSERT INTO visitors values('" + firstName + "','" + lastName + "','" + mobileNumber + "','" + Company + "')";
                     
-
                     Statement sta = connection.createStatement();
                     int x = sta.executeUpdate(query);
                     if (x == 0) {
@@ -220,7 +221,9 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                     }
                     connection.close();
                 } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
                     exception.printStackTrace();
+                    
                 }
             }
         });

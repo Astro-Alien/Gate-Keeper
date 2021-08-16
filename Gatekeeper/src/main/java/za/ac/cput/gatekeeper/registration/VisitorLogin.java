@@ -27,16 +27,16 @@ public class VisitorLogin implements ActionListener {
     ResultSet results = null;
 
     private JLabel label;
+    private JLabel lblIcon;
     private JPanel images;
     private JFrame window;
+    private JPanel outline;
     //--------------------------------------------------------------------------J Labels and Textfields
     //Username
     private JLabel lblUsername;
     private JTextField txtUsername;
 
-    //Hyperlink
-    private JLabel lblLink;
-    private JLabel lblQuestion;
+    
     //Buttons
     private JButton btnLogin;
     private JButton btnReturn;
@@ -62,9 +62,7 @@ public class VisitorLogin implements ActionListener {
         txtUsername = new JTextField(16);
         imgPanel = new JPanel();
 
-        //---------------------------------------------------Hyperlink label
-        lblQuestion = new JLabel("Do you have an account? ");
-        lblLink = new JLabel("Register");
+        
         //---------------------------------------------------Login button & Registration button
         btnLogin = new JButton("SEARCH");
         btnReturn = new JButton("RETURN");
@@ -81,6 +79,7 @@ public class VisitorLogin implements ActionListener {
         btnVisitor = new JButton("Visiting");
         btnDelivery = new JButton("Delivery");
         btnCheckIn = new JButton("CHECKIN");
+        lblIcon = new JLabel();
     }
 
     //--------------------------------------------------------------------------GUI layout for Login and Registration test
@@ -99,7 +98,7 @@ public class VisitorLogin implements ActionListener {
         window.add(border);
         border.setLayout(null);
         //---------------------------------------------------Login panel
-        JPanel outline = new JPanel();
+        outline = new JPanel();
         border.add(outline);
         outline.setBounds(37, 22, 294, 420);
         outline.setLayout(null);
@@ -108,9 +107,9 @@ public class VisitorLogin implements ActionListener {
         border.add(images);
         label = new JLabel();
         border.add(label);
-
+        outline.add(lblIcon);
         scalingImg();
-
+        iconImg();
         //---------------------------------------------------Secondary panel
         border.add(imgPanel);
 
@@ -127,27 +126,22 @@ public class VisitorLogin implements ActionListener {
         lblUser.setForeground(Color.BLACK);
         lblUser.setBounds(59, 17, 210, 60);
         outline.add(lblUser);
-        outline.add(lblQuestion);
-        outline.add(lblLink);
+       
 
         //---------------------------------------------------positioning Username label and textfield
-        lblUsername.setBounds(47, 150, 100, 40);
+        lblUsername.setBounds(47, 180, 100, 40);
         outline.add(lblUsername);
-        txtUsername.setBounds(47, 190, 200, 30);
+        txtUsername.setBounds(47, 220, 200, 30);
         outline.add(txtUsername);
 
         //---------------------------------------------------positioning login button and adding action listener
-        btnLogin.setBounds(82, 245, 130, 33);
+        btnLogin.setBounds(82, 270, 130, 33);
         outline.add(btnLogin);
         btnLogin.addActionListener(this);
 
         //---------------------------------------------------positioning  Submit button 
-        btnReturn.setBounds(82, 295, 130, 33);
+        btnReturn.setBounds(82, 325, 130, 33);
         outline.add(btnReturn);
-
-        //---------------------------------------------------positioning Register hyperlink
-        lblQuestion.setBounds(50, 325, 148, 33);
-        lblLink.setBounds(194, 325, 100, 33);
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
@@ -163,30 +157,7 @@ public class VisitorLogin implements ActionListener {
 
             }
         });
-        //---------------------------------------------------Creating HyperLink
-        lblLink.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                window.setVisible(false);
-                VisitorRegistration rg = new VisitorRegistration();
-                window.setVisible(false);
-                rg.setVisible(true);
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                lblLink.setForeground(new Color(0x005ba3));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                lblLink.setForeground(Color.WHITE);
-            }
-
-        });
-
-        //-------------------------------------------------------------------------------------------------------Design
+        //------------------------------------------------------------------------------Design
         //---------------------------------------------------Design JFrame
         //form title bar 
         window.setTitle("Login");
@@ -215,12 +186,7 @@ public class VisitorLogin implements ActionListener {
         btnLogin.setForeground(Color.WHITE);
         btnReturn.setBackground(new Color(0x424242));
         btnReturn.setForeground(Color.WHITE);
-
-        //---------------------------------------------------Hyperlink design
-        lblLink.setForeground(Color.WHITE);
-
-        //changing cursor icon to hand cursor 
-        lblLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
         btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnReturn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -264,6 +230,20 @@ public class VisitorLogin implements ActionListener {
 
     }
 
+    public void iconImg() {
+        
+        ImageIcon userimage = new ImageIcon("images\\icon.png");
+        lblIcon.setBounds(60, 60, 180, 140);
+        
+        Image img = userimage.getImage();
+        Image imgScale = img.getScaledInstance(180, 140, Image.SCALE_SMOOTH);
+        ImageIcon ScaledIcon = new ImageIcon(imgScale);
+        lblIcon.setIcon(ScaledIcon);
+        outline.add(lblIcon);
+
+        
+    }
+
     public void optionPanelDesign() {
 
         //call image from database when code is written to save the image in the database
@@ -279,21 +259,21 @@ public class VisitorLogin implements ActionListener {
         //welcome message and name 
         imgPanel.add(lblWelcome);
         lblWelcome.setBounds(190, 180, 150, 35);
-        lblWelcome.setFont(new Font("SourceSansPro", Font.BOLD, 20));
+        lblWelcome.setFont(new Font("SourceSansPro", Font.BOLD, 21));
         lblWelcome.setForeground(Color.WHITE);
 
         imgPanel.add(lblName);
         lblName.setBounds(160, 210, 100, 35);
-        lblName.setFont(new Font("SourceSansPro", Font.BOLD, 20));
+        lblName.setFont(new Font("SourceSansPro", Font.BOLD, 21));
         lblName.setForeground(Color.WHITE);
 
         imgPanel.add(lblSurname);
-        lblSurname.setBounds(255, 210, 100, 35);
-        lblSurname.setFont(new Font("SourceSansPro", Font.BOLD, 20));
+        lblSurname.setBounds(250, 210, 100, 35);
+        lblSurname.setFont(new Font("SourceSansPro", Font.BOLD, 21));
         lblSurname.setForeground(Color.WHITE);
 
         imgPanel.add(lblInstruction);
-        lblInstruction.setBounds(80, 250, 330, 35);
+        lblInstruction.setBounds(80, 245, 330, 35);
         lblInstruction.setFont(new Font("SourceSansPro", Font.BOLD, 15));
         lblInstruction.setForeground(Color.WHITE);
 
@@ -304,11 +284,16 @@ public class VisitorLogin implements ActionListener {
         imgPanel.add(btnDelivery);
         imgPanel.add(btnCheckIn);
 
+        btnMeeting.addActionListener(this);
+        btnInterview.addActionListener(this);
+        btnVisitor.addActionListener(this);
+        btnDelivery.addActionListener(this);
+        btnCheckIn.addActionListener(this);
         //button layout design
-        btnMeeting.setBounds(150, 290, 90, 30);
-        btnInterview.setBounds(250, 290, 90, 30);
-        btnVisitor.setBounds(150, 330, 90, 30);
-        btnDelivery.setBounds(250, 330, 90, 30);
+        btnMeeting.setBounds(150, 285, 90, 30);
+        btnInterview.setBounds(250, 285, 90, 30);
+        btnVisitor.setBounds(150, 325, 90, 30);
+        btnDelivery.setBounds(250, 325, 90, 30);
         btnCheckIn.setBounds(180, 377, 130, 33);
 
         //----------------------------------------Button design
@@ -453,6 +438,41 @@ public class VisitorLogin implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnLogin) {
             userVerification();
+
+        } else if (e.getSource() == btnMeeting) {
+            String reasonForVisit = "Meeting";
+            System.out.println(reasonForVisit);
+            //still writing the code to save the reason for the visit  to the database
+            //that code will come here
+
+        } else if (e.getSource() == btnInterview) {
+            String reasonForVisit = "Interview";
+            System.out.println(reasonForVisit);
+            //still writing the code to save the reason for the visit  to the database
+            //that code will come here
+
+        } else if (e.getSource() == btnVisitor) {
+            String reasonForVisit = "Visiting";
+            System.out.println(reasonForVisit);
+            //still writing the code to save the reason for the visit  to the database
+            //that code will come here
+
+        } else if (e.getSource() == btnDelivery) {
+            String reasonForVisit = "Delivery";
+            System.out.println(reasonForVisit);
+            //still writing the code to save the reason for the visit  to the database
+            //that code will come here
+
+        } else if (e.getSource() == btnCheckIn) {
+            String reasonForVisit = "Welcome";
+            System.out.println(reasonForVisit);
+            //still writing the code to save the time stamp to the database
+            //that code will come here***
+            //checkInTime();
+            window.setVisible(false);
+            VisitorOption view = new VisitorOption();
+            window.setVisible(false);
+            view.Start();
 
         }
     }
