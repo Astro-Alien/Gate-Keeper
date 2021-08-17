@@ -58,16 +58,16 @@ public class VisitorLogin implements ActionListener {
     public VisitorLogin() {
 
         //---------------------------------------------------Username label and textfield
-        lblUsername = new JLabel("Username");
+        lblUsername = new JLabel("Enter Your Name");
         txtUsername = new JTextField(16);
         imgPanel = new JPanel();
-
+        
         
         //---------------------------------------------------Login button & Registration button
         btnLogin = new JButton("SEARCH");
         btnReturn = new JButton("RETURN");
 
-        //option welcome message
+        //---------------------------------------------------option welcome message
         lblWelcome = new JLabel("WELCOME");
         lblName = new JLabel();
         lblSurname = new JLabel();
@@ -129,7 +129,7 @@ public class VisitorLogin implements ActionListener {
        
 
         //---------------------------------------------------positioning Username label and textfield
-        lblUsername.setBounds(47, 180, 100, 40);
+        lblUsername.setBounds(47, 180, 150, 40);
         outline.add(lblUsername);
         txtUsername.setBounds(47, 220, 200, 30);
         outline.add(txtUsername);
@@ -171,7 +171,7 @@ public class VisitorLogin implements ActionListener {
         images.setBackground(new Color(0x005ba3));
         outline.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
         //---------------------------------------------------Design JLabel
-        lblUsername.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 18));
+        lblUsername.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 16));
         lblUsername.setForeground(Color.BLACK);
         txtUsername.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
         txtUsername.setBackground(new Color(0x424242));
