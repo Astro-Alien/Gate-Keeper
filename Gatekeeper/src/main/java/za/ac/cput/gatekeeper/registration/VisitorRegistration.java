@@ -219,6 +219,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                         JOptionPane.showMessageDialog(btnNewButton,
                             "Welcome, " + msg + "Your account is sucessfully created");
                     }
+                    //Catch error if the mobile number is in use by another user.
                     connection.close();
                 } catch (Exception exception) {
                     JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
