@@ -31,6 +31,7 @@ public class VisitorLogin implements ActionListener {
     private JPanel images;
     private JFrame window;
     private JPanel outline;
+    
     //--------------------------------------------------------------------------J Labels and Textfields
     //Username
     private JLabel lblUsername;
@@ -47,6 +48,7 @@ public class VisitorLogin implements ActionListener {
     private JLabel lblSurname;
     private JLabel lblWelcome;
     private JLabel lblInstruction;
+    
     //Secondary panel Buttons
     private JButton btnMeeting;
     private JButton btnInterview;
@@ -55,13 +57,12 @@ public class VisitorLogin implements ActionListener {
     private JButton btnCheckIn;
 
     //--------------------------------------------------------------------------Login Constructor
-    public VisitorLogin() {
+    public VisitorLogin(){
 
         //---------------------------------------------------Username label and textfield
         lblUsername = new JLabel("Enter Your Name");
         txtUsername = new JTextField(16);
         imgPanel = new JPanel();
-        
         
         //---------------------------------------------------Login button & Registration button
         btnLogin = new JButton("SEARCH");
@@ -73,13 +74,14 @@ public class VisitorLogin implements ActionListener {
         lblSurname = new JLabel();
         lblInstruction = new JLabel("Please select the reason for your visit today.");
 
-        //secondary panel buttons
+        //---------------------------------------------------secondary panel buttons
         btnMeeting = new JButton("Meeting");
         btnInterview = new JButton("Interview");
         btnVisitor = new JButton("Visiting");
         btnDelivery = new JButton("Delivery");
         btnCheckIn = new JButton("CHECKIN");
         lblIcon = new JLabel();
+        
     }
 
     //--------------------------------------------------------------------------GUI layout for Login and Registration test
@@ -129,18 +131,18 @@ public class VisitorLogin implements ActionListener {
        
 
         //---------------------------------------------------positioning Username label and textfield
-        lblUsername.setBounds(47, 180, 150, 40);
+        lblUsername.setBounds(47, 200, 150, 40);
         outline.add(lblUsername);
-        txtUsername.setBounds(47, 220, 200, 30);
+        txtUsername.setBounds(47, 240, 200, 30);
         outline.add(txtUsername);
 
         //---------------------------------------------------positioning login button and adding action listener
-        btnLogin.setBounds(82, 270, 130, 33);
+        btnLogin.setBounds(82, 290, 130, 33);
         outline.add(btnLogin);
         btnLogin.addActionListener(this);
 
         //---------------------------------------------------positioning  Submit button 
-        btnReturn.setBounds(82, 325, 130, 33);
+        btnReturn.setBounds(82, 340, 130, 33);
         outline.add(btnReturn);
 
         window.setLocationRelativeTo(null);
@@ -149,6 +151,7 @@ public class VisitorLogin implements ActionListener {
         //--------------------------------------------------returns the user to the main page
         btnReturn.addActionListener(new ActionListener() {
 
+            @Override
             public void actionPerformed(ActionEvent ae) {
                 window.setVisible(false);
                 Main rg = new Main();
@@ -178,7 +181,7 @@ public class VisitorLogin implements ActionListener {
         txtUsername.setForeground(Color.WHITE);
         txtUsername.setCaretColor(Color.WHITE);
         txtUsername.setCaretColor(Color.WHITE);
-
+        
         //---------------------------------------------------Design JButton
         btnLogin.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
         btnReturn.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
@@ -233,10 +236,10 @@ public class VisitorLogin implements ActionListener {
     public void iconImg() {
         
         ImageIcon userimage = new ImageIcon("images\\icon.png");
-        lblIcon.setBounds(60, 60, 180, 140);
+        lblIcon.setBounds(50, 48, 200, 180);
         
         Image img = userimage.getImage();
-        Image imgScale = img.getScaledInstance(180, 140, Image.SCALE_SMOOTH);
+        Image imgScale = img.getScaledInstance(200, 180, Image.SCALE_SMOOTH);
         ImageIcon ScaledIcon = new ImageIcon(imgScale);
         lblIcon.setIcon(ScaledIcon);
         outline.add(lblIcon);
