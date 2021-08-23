@@ -138,6 +138,9 @@ public class VisitorRegistration extends JFrame implements ActionListener{
     /**
      * Create the frame.
      */
+    /**
+     * Create the frame.
+     */
 
     public void VisitorRegistrationGUI() {
         window = new JFrame();
@@ -265,7 +268,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
         btnReturn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         //Hover colour change when the cursor hovers over the Login Jbutton
-        webcamBtn.addMouseListener(new MouseAdapter() {
+        /*webcamBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 webcamBtn.setBackground(new Color(0x005ba3));
@@ -276,7 +279,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
             public void mouseExited(MouseEvent e) {
                 webcamBtn.setBackground(new Color(0x424242));
             }
-        });
+        });*/
         btnReturn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -355,9 +358,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                 }
             }
         });
-        
-        
-        
+  
         
         webcamBtn.addActionListener(new ActionListener() 
         {
