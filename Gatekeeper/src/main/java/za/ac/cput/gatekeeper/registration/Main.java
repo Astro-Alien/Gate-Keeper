@@ -8,86 +8,161 @@ package za.ac.cput.gatekeeper.registration;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 
 /**
  *
  * @author Charles
  */
-public class Main extends JFrame {
+public class Main implements ActionListener {
 
     private JButton regUser;
     private JButton newUser;
     private JButton btnEmp;
+    private ImageIcon icon;
+    private Image image;
+    private JFrame welcome;
 
-    public JFrame welcomeWindow() {
+    public void welcomeWindow() {
 
-        JFrame welcome = new JFrame("Gatekeeper");
+        welcome = new JFrame("Gatekeeper");
+        welcome.setSize(876, 497);
+        welcome.setResizable(false);
 
-        JLabel lblNewUserRegister = new JLabel("Gatekeeper Visitor Registration");
-        lblNewUserRegister.setFont(new Font("Times New Roman", Font.ITALIC, 30));
-        lblNewUserRegister.setBounds(50, 100, 500, 50);
+        JPanel border = new JPanel();
+        border.setSize(876, 497);
+        border.setLayout(null);
+        border.setBackground(new Color(0x005ba3));
+        welcome.add(border);
+
+        //----------------------------------------------------------------------Secondary Panel
+        JPanel secondBorder = new JPanel();
+        secondBorder.setLayout(null);
+        secondBorder.setBackground(new Color(0x03a9f4));
+        secondBorder.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        secondBorder.setBounds(39, 43, 785, 370);
+        border.add(secondBorder);
+
+        JLabel lblNewUserRegister = new JLabel("Gatekeeper");
+        secondBorder.add(lblNewUserRegister);
+        lblNewUserRegister.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 60));
+        lblNewUserRegister.setForeground(Color.BLACK);
+        lblNewUserRegister.setBounds(255, 35, 500, 50);
 
         regUser = new JButton("VISITOR");
+        regUser.setFont(new Font("roman", Font.BOLD, 14));
+        regUser.setBounds(290, 190, 210, 37);
+
         newUser = new JButton("NEW VISITOR");
+        newUser.setFont(new Font("roman", Font.BOLD, 14));
+        newUser.setBounds(290, 240, 210, 37);
+
         btnEmp = new JButton("EMPLOYEE");
-        welcome.setResizable(false);
-        btnEmp.addActionListener(new ActionListener() {
+        btnEmp.setFont(new Font("roman", Font.BOLD, 14));
+        btnEmp.setBounds(290, 290, 210, 37);
+
+        secondBorder.add(regUser);
+        secondBorder.add(newUser);
+        secondBorder.add(btnEmp);
+        //-----------------------------------------------------image
+
+        //---------------------------------------------------Design JButton
+        regUser.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        newUser.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        btnEmp.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        regUser.setBackground(new Color(0x424242));
+        regUser.setForeground(Color.WHITE);
+        newUser.setBackground(new Color(0x424242));
+        newUser.setForeground(Color.WHITE);
+        btnEmp.setBackground(new Color(0x424242));
+        btnEmp.setForeground(Color.WHITE);
+
+        newUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        regUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnEmp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        //Hover colour change when the cursor hovers over the Login Jbutton
+        newUser.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                //VisitorRegistration vr = new VisitorRegistration();
-                EmployeeLogin vr = new EmployeeLogin();
-                welcome.setVisible(false);
-                vr.starter();
+            public void mouseEntered(MouseEvent e) {
+                newUser.setBackground(new Color(0x005ba3));
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                newUser.setBackground(new Color(0x424242));
             }
         });
-        newUser.addActionListener(new ActionListener() {
+        regUser.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                welcome.setVisible(false);
-                VisitorRegistration rg = new VisitorRegistration();
-                welcome.setVisible(false);
-                rg.setVisible(true);
+            public void mouseEntered(MouseEvent e) {
+                regUser.setBackground(new Color(0x005ba3));
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                regUser.setBackground(new Color(0x424242));
+            }
+        });
+        btnEmp.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnEmp.setBackground(new Color(0x005ba3));
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnEmp.setBackground(new Color(0x424242));
             }
         });
 
-        regUser.addActionListener(new ActionListener() {
-            /**
+        //-----------------------------------------------------Action Listeners for buttons
+        regUser.addActionListener(this);
+        newUser.addActionListener(this);
+        btnEmp.addActionListener(this);
+ 
+           
+        //-----------------------------------------------------------------------
+        welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        welcome.setLocationRelativeTo(null);
+        welcome.setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        /**
              * Added code to call the login form
              *
              * @author Charles
              */
+        if (e.getSource() == newUser) {
 
-            public void actionPerformed(ActionEvent ae) {
+            welcome.setVisible(false);
+            VisitorRegistration rg = new VisitorRegistration();
+            rg.VisitorRegistrationGUI();
+            welcome.dispose();
+        } else if (e.getSource() == regUser) {
+            welcome.setVisible(false);
+            VisitorLogin rg = new VisitorLogin();
+            rg.starter();
+            welcome.dispose();
+
+        }
+        else if(e.getSource() == btnEmp){
+                
+            
                 welcome.setVisible(false);
-                VisitorLogin rg = new VisitorLogin();
-                welcome.setVisible(false);
-                rg.starter();
-            }
-        });
-
-        welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        welcome.setSize(500, 600);
-        welcome.setLocationRelativeTo(null);
-        welcome.setVisible(true);
-        welcome.getContentPane().setLayout(null);
-
-        regUser.setFont(new Font("roman", Font.BOLD, 14));
-        regUser.setBounds(130, 300, 210, 37);
+                EmployeeLogin vr = new EmployeeLogin();
+                vr.starter();
+                welcome.dispose();
         
-        newUser.setFont(new Font("roman", Font.BOLD, 14));
-        newUser.setBounds(130, 350, 210, 37);
+        
+        }
 
-        btnEmp.setFont(new Font("roman", Font.BOLD, 14));
-        btnEmp.setBounds(130, 400, 210, 37);
-
-        welcome.add(lblNewUserRegister);
-        welcome.add(regUser);
-        welcome.add(newUser);
-        welcome.add(btnEmp);
-
-        return welcome;
     }
 
     public void startProgram() {
@@ -98,7 +173,6 @@ public class Main extends JFrame {
         new Main().welcomeWindow();
 
     }
-
     public static void main(String[] args) {
         Main st = new Main();
         st.startProgram();

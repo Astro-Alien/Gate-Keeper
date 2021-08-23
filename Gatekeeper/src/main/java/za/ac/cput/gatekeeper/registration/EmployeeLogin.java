@@ -14,6 +14,9 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,6 +39,8 @@ public class EmployeeLogin implements ActionListener {
 
     private JLabel label;
     private JPanel images;
+    
+    private JPanel outline;
     //--------------------------------------------------------------------------J Labels and Textfields
     //Username
     private JLabel lblUsername;
@@ -45,6 +50,9 @@ public class EmployeeLogin implements ActionListener {
     private JLabel lblPassword;
     private JPasswordField pwdPassword;
 
+    //image
+    private JLabel lblIcon;
+    
     //Buttons
     private JButton btnLogin;
     private JButton btnReturn;
@@ -52,8 +60,10 @@ public class EmployeeLogin implements ActionListener {
     //--------------------------------------------------------------------------Login Constructor
     public EmployeeLogin() {
 
+        outline = new JPanel();
+        lblIcon = new JLabel();
         //---------------------------------------------------Username label and textfield
-        lblUsername = new JLabel("Username");
+        lblUsername = new JLabel("ID/Passport-No");
         txtUsername = new JTextField(16);
 
         //---------------------------------------------------Password label and textfield
@@ -69,7 +79,7 @@ public class EmployeeLogin implements ActionListener {
     //--------------------------------------------------------------------------GUI layout for Login and Registration test
     public void StartGUI() {
         //starting connection
-        conn = DbConnection.ConnectDb();//should be replaced with the connection to the employee database
+        conn = DbConnection.ConnectEmpDb();//should be replaced with the connection to the employee database
 
         //---------------------------------------------------Creating window and setting window Size
         JFrame window = new JFrame();
@@ -82,11 +92,15 @@ public class EmployeeLogin implements ActionListener {
         window.add(border);
         border.setLayout(null);
         //---------------------------------------------------Login panel
-        JPanel outline = new JPanel();
+        
         border.add(outline);
-        outline.setBounds(37, 45, 294, 371);
+        outline.setBounds(37, 22, 294, 420);
         outline.setLayout(null);
-
+        
+        outline.add(lblIcon);
+        iconImg();
+        
+   
         images = new JPanel();
         border.add(images);
         label = new JLabel();
@@ -95,28 +109,28 @@ public class EmployeeLogin implements ActionListener {
         scalingImg();
         //---------------------------------------------------JLabel
         JLabel lblUser = new JLabel("ADMINISTRATOR");
-        lblUser.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 25));
+        lblUser.setFont(new Font("SourceSansPro", Font.BOLD, 25));
         lblUser.setForeground(Color.BLACK);
-        lblUser.setBounds(50, 17, 210, 60);
+        lblUser.setBounds(45, 5, 210, 60);
         outline.add(lblUser);
         //---------------------------------------------------positioning Username label and textfield
-        lblUsername.setBounds(47, 90, 100, 40);
+        lblUsername.setBounds(47, 180, 150, 40);
         outline.add(lblUsername);
-        txtUsername.setBounds(47, 130, 200, 30);
+        txtUsername.setBounds(47, 215, 200, 30);
         outline.add(txtUsername);
 
         //---------------------------------------------------positioning Password label and textfield
-        lblPassword.setBounds(47, 160, 100, 40);
+        lblPassword.setBounds(47, 238, 200, 40);
         outline.add(lblPassword);
-        pwdPassword.setBounds(47, 200, 200, 30);
+        pwdPassword.setBounds(47, 273, 200, 30);
         outline.add(pwdPassword);
 
         //---------------------------------------------------positioning login button and adding action listener
-        btnLogin.setBounds(82, 245, 130, 33);
+        btnLogin.setBounds(82, 320, 130, 33);
         outline.add(btnLogin);
         btnLogin.addActionListener(this);
         //---------------------------------------------------positioning  Submit button 
-        btnReturn.setBounds(82, 295, 130, 33);
+        btnReturn.setBounds(82, 365, 130, 33);
         outline.add(btnReturn);
 
         window.setLocationRelativeTo(null);
@@ -209,11 +223,28 @@ public class EmployeeLogin implements ActionListener {
         images.add(label);
 
     }
+    
 
+    public void iconImg(){
+       
+        ImageIcon userimg = new ImageIcon("images\\icon.png");
+        lblIcon.setBounds(50, 30, 200, 180);
+        Image img = userimg.getImage();
+        
+        Image imgScale = img.getScaledInstance(200, 180, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        lblIcon.setIcon(scaledIcon);
+        outline.add(lblIcon);
+        
+        
+    
+    
+    
+    }
     //--------------------------------------------------------------------------call data from visitor database and verify if user is registered or not
     public void userVerification() {
         //BUG DOUBLE VERIFICATION BUSY FIXING IT 
-        String query = "Select * FROM visitors WHERE id LIKE ? AND Mobile LIKE ?; ";
+        String query = "Select * FROM employee WHERE id_no = ? AND password = ?; ";
 
         try {
 
@@ -224,8 +255,8 @@ public class EmployeeLogin implements ActionListener {
             results = stmt.executeQuery();
 
             if (results.next()) {
-
-                JOptionPane.showMessageDialog(null, "LOGIN SUCCESSFULL");
+                  checkInTime();
+                 //Open inventory system or dashboard here
 
             } else {
 
@@ -241,21 +272,41 @@ public class EmployeeLogin implements ActionListener {
     }
 
     //--------------------------------------------------------------------------timestamp function or method save time stamp to the database 
-    /*public void checkInTime(){
-        
+    public void checkInTime() {
+
+        //------------------------------------------------check in time method code will be added here
         Date recentDate = new Date();
-       
+
         SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
         String dateuser = dateStamp.format(recentDate);
         String timeuser = timeStamp.format(recentDate);
-    
-    }*/
+
+        int ID = Integer.parseInt(txtUsername.getText());
+       
+        try {
+            String querysql = "update employee set time_in='" + timeuser + "',date='" + dateuser + "' where id_no='" + ID + "' ";
+            stmt = conn.prepareStatement(querysql);
+            stmt.execute();
+            System.out.println("It has worked!!!");
+            
+            conn.close();
+           
+        } catch (SQLException e) {
+
+            System.out.println("Failed to update");
+
+        }
+
+    }
+
     //--------------------------------------------------------------------------Action Listener onclick functionality implemented here:User Verification
     @Override
     public void actionPerformed(ActionEvent e) {
         userVerification();
-
+        
+        
+       
     }
 
     //--------------------------------------------------------------------------main function calls starter method to run program
