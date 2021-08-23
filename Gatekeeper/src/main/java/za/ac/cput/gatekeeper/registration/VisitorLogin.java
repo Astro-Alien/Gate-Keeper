@@ -14,7 +14,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
+import java.util.Date;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -31,13 +33,15 @@ public class VisitorLogin implements ActionListener {
     private JPanel images;
     private JFrame window;
     private JPanel outline;
-    
+
+    private String temp;
     //--------------------------------------------------------------------------J Labels and Textfields
-    //Username
+    //Firstname
     private JLabel lblUsername;
     private JTextField txtUsername;
-
-    
+    //Lastname
+    private JLabel lblLastname;
+    private JTextField txtLastname;
     //Buttons
     private JButton btnLogin;
     private JButton btnReturn;
@@ -48,7 +52,7 @@ public class VisitorLogin implements ActionListener {
     private JLabel lblSurname;
     private JLabel lblWelcome;
     private JLabel lblInstruction;
-    
+
     //Secondary panel Buttons
     private JButton btnMeeting;
     private JButton btnInterview;
@@ -56,14 +60,24 @@ public class VisitorLogin implements ActionListener {
     private JButton btnDelivery;
     private JButton btnCheckIn;
 
+    //time and date
+    private String dateuser;
+    private String timeuser;
+
+    private String userN;
+
     //--------------------------------------------------------------------------Login Constructor
-    public VisitorLogin(){
+    public VisitorLogin() {
 
         //---------------------------------------------------Username label and textfield
         lblUsername = new JLabel("Enter Your Name");
         txtUsername = new JTextField(16);
+
+        lblLastname = new JLabel("Enter Your Surname");
+        txtLastname = new JTextField(16);
+
         imgPanel = new JPanel();
-        
+
         //---------------------------------------------------Login button & Registration button
         btnLogin = new JButton("SEARCH");
         btnReturn = new JButton("RETURN");
@@ -81,7 +95,7 @@ public class VisitorLogin implements ActionListener {
         btnDelivery = new JButton("Delivery");
         btnCheckIn = new JButton("CHECKIN");
         lblIcon = new JLabel();
-        
+
     }
 
     //--------------------------------------------------------------------------GUI layout for Login and Registration test
@@ -126,23 +140,26 @@ public class VisitorLogin implements ActionListener {
         JLabel lblUser = new JLabel("GATEKEEPER");
         lblUser.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 25));
         lblUser.setForeground(Color.BLACK);
-        lblUser.setBounds(59, 17, 210, 60);
+        lblUser.setBounds(59, 5, 210, 60);
         outline.add(lblUser);
-       
 
         //---------------------------------------------------positioning Username label and textfield
-        lblUsername.setBounds(47, 200, 150, 40);
+        lblUsername.setBounds(47, 180, 150, 40);
         outline.add(lblUsername);
-        txtUsername.setBounds(47, 240, 200, 30);
+        txtUsername.setBounds(47, 215, 200, 30);
         outline.add(txtUsername);
 
+        lblLastname.setBounds(47, 238, 200, 40);
+        outline.add(lblLastname);
+        txtLastname.setBounds(47, 273, 200, 30);
+        outline.add(txtLastname);
         //---------------------------------------------------positioning login button and adding action listener
-        btnLogin.setBounds(82, 290, 130, 33);
+        btnLogin.setBounds(82, 320, 130, 33);
         outline.add(btnLogin);
         btnLogin.addActionListener(this);
 
         //---------------------------------------------------positioning  Submit button 
-        btnReturn.setBounds(82, 340, 130, 33);
+        btnReturn.setBounds(82, 365, 130, 33);
         outline.add(btnReturn);
 
         window.setLocationRelativeTo(null);
@@ -181,7 +198,14 @@ public class VisitorLogin implements ActionListener {
         txtUsername.setForeground(Color.WHITE);
         txtUsername.setCaretColor(Color.WHITE);
         txtUsername.setCaretColor(Color.WHITE);
-        
+        lblLastname.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 16));
+        lblLastname.setForeground(Color.BLACK);
+        txtLastname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        txtLastname.setBackground(new Color(0x424242));
+        txtLastname.setForeground(Color.WHITE);
+        txtLastname.setCaretColor(Color.WHITE);
+        txtLastname.setCaretColor(Color.WHITE);
+
         //---------------------------------------------------Design JButton
         btnLogin.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
         btnReturn.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
@@ -189,7 +213,7 @@ public class VisitorLogin implements ActionListener {
         btnLogin.setForeground(Color.WHITE);
         btnReturn.setBackground(new Color(0x424242));
         btnReturn.setForeground(Color.WHITE);
-        
+
         btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnReturn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -234,17 +258,16 @@ public class VisitorLogin implements ActionListener {
     }
 
     public void iconImg() {
-        
+
         ImageIcon userimage = new ImageIcon("images\\icon.png");
-        lblIcon.setBounds(50, 48, 200, 180);
-        
+        lblIcon.setBounds(50, 30, 200, 180);
+
         Image img = userimage.getImage();
         Image imgScale = img.getScaledInstance(200, 180, Image.SCALE_SMOOTH);
         ImageIcon ScaledIcon = new ImageIcon(imgScale);
         lblIcon.setIcon(ScaledIcon);
         outline.add(lblIcon);
 
-        
     }
 
     public void optionPanelDesign() {
@@ -384,13 +407,13 @@ public class VisitorLogin implements ActionListener {
 
     //--------------------------------------------------------------------------call data from visitor database and verify if user is registered or not
     public void userVerification() {
-
-        String query = "Select * FROM visitors WHERE first_name LIKE ?; ";
+        String query = "Select * FROM visitors WHERE first_name = ? AND last_name = ?; ";
 
         try {
 
             stmt = conn.prepareStatement(query);
             stmt.setString(1, txtUsername.getText());
+            stmt.setString(2, txtLastname.getText());
 
             results = stmt.executeQuery();
 
@@ -403,6 +426,7 @@ public class VisitorLogin implements ActionListener {
                 String userSurname = results.getString("last_name");
                 lblSurname.setText(userSurname);
                 optionPanelDesign();
+                temp = userName;
                 //checkInTime();
 
             } else {
@@ -419,55 +443,113 @@ public class VisitorLogin implements ActionListener {
     }
 
     //--------------------------------------------------------------------------timestamp function or method save time stamp to the database 
-    /*public void checkInTime(){
-        
-    //------------------------------------------------check in time method code will be added here
+    public void checkInTime() {
+
+        //------------------------------------------------check in time method code will be added here
         Date recentDate = new Date();
-       
+
         SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
         String dateuser = dateStamp.format(recentDate);
         String timeuser = timeStamp.format(recentDate);
-        
-        //save this to the database for the specific user that is logging in
+
+        userN = txtUsername.getText();
        
-    }*/
+        try {
+            String querysql = "update visitors set time_in='" + timeuser + "',date='" + dateuser + "' where first_name='" + userN + "' ";
+            stmt = conn.prepareStatement(querysql);
+            stmt.execute();
+            System.out.println("It has worked!!!");
+            
+            conn.close();
+           
+        } catch (SQLException e) {
+
+            System.out.println("Failed to update");
+
+        }
+
+    }
+
     //--------------------------------------------------------------------------Action Listener onclick functionality implemented here:User Verification
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnLogin) {
             userVerification();
 
-        } else if (e.getSource() == btnMeeting) {
-            String reasonForVisit = "Meeting";
-            System.out.println(reasonForVisit);
-            //still writing the code to save the reason for the visit  to the database
-            //that code will come here
+        } 
+        
+        else if (e.getSource() == btnMeeting) {
 
-        } else if (e.getSource() == btnInterview) {
-            String reasonForVisit = "Interview";
-            System.out.println(reasonForVisit);
-            //still writing the code to save the reason for the visit  to the database
-            //that code will come here
+            String reasons = "Meeting";
 
-        } else if (e.getSource() == btnVisitor) {
-            String reasonForVisit = "Visiting";
-            System.out.println(reasonForVisit);
-            //still writing the code to save the reason for the visit  to the database
-            //that code will come here
+            try {
+                String username = txtUsername.getText();
+                
+                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
+                stmt = conn.prepareStatement(querysql);
+                stmt.execute();
+                System.out.println("Reason Updated!!!");
 
-        } else if (e.getSource() == btnDelivery) {
-            String reasonForVisit = "Delivery";
-            System.out.println(reasonForVisit);
-            //still writing the code to save the reason for the visit  to the database
-            //that code will come here
+            } catch (SQLException ex) {
 
-        } else if (e.getSource() == btnCheckIn) {
-            String reasonForVisit = "Welcome";
-            System.out.println(reasonForVisit);
-            //still writing the code to save the time stamp to the database
-            //that code will come here***
-            //checkInTime();
+                System.out.println("Failed to update");
+
+            }
+
+        } 
+        
+        else if (e.getSource() == btnInterview) {
+            String reasons = "Interview";
+            try {
+                String username = txtUsername.getText();
+                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
+                stmt = conn.prepareStatement(querysql);
+                stmt.execute();
+                System.out.println("Reason Updated!!!");
+
+            } catch (SQLException ex) {
+
+                System.out.println("Failed to update");
+
+            }
+        } 
+        
+        else if (e.getSource() == btnVisitor) {
+            String reasons = "Visiting";
+            try {
+                String username = txtUsername.getText();
+                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
+                stmt = conn.prepareStatement(querysql);
+                stmt.execute();
+                System.out.println("Reason Updated!!!");
+
+            } catch (SQLException ex) {
+
+                System.out.println("Failed to update");
+
+            }
+        } 
+        
+        else if (e.getSource() == btnDelivery) {
+            String reasons = "Delivery";
+            try {
+                String username = txtUsername.getText();
+                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
+                stmt = conn.prepareStatement(querysql);
+                stmt.execute();
+                System.out.println("Reason Updated!!!");
+
+            } catch (SQLException ex) {
+
+                System.out.println("Failed to update");
+
+            }
+
+        }else if (e.getSource() == btnCheckIn) {
+
+            // save the time stamp to the database
+            checkInTime();
             window.setVisible(false);
             VisitorOption view = new VisitorOption();
             window.setVisible(false);
@@ -480,6 +562,10 @@ public class VisitorLogin implements ActionListener {
     public void starter() {
         new VisitorLogin().StartGUI();
 
+    }
+
+    public static void main(String[] args) {
+        new VisitorLogin().checkInTime();
     }
 
 }

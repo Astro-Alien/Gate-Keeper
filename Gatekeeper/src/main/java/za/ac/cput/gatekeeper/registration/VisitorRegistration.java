@@ -35,6 +35,8 @@ import java.awt.event.WindowEvent;
 //Image and File imports
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -304,11 +306,20 @@ public class VisitorRegistration extends JFrame implements ActionListener{
         
         btnNewButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                Date recentDate = new Date();
+       
+                SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
+                String dateuser = dateStamp.format(recentDate);
+                String timeuser = timeStamp.format(recentDate);
+                
                 String firstName = firstname.getText();
                 String lastName = lastname.getText();
                 String Company = company.getText();
                 String mobileNumber = mob.getText();
-                
+                String date = dateuser;
+                String time_In = timeuser;
+                String reason = "default";
                 
                 int len = mobileNumber.length();
                
@@ -324,10 +335,11 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                     Class.forName("org.sqlite.JDBC");
                     Connection connection = DriverManager.getConnection("jdbc:sqlite:Database\\visitors.db");
                     System.out.println("Connection established");
-                    String query = "INSERT INTO visitors values('" + firstName + "','" + lastName + "','" + mobileNumber + "','" + Company + "')";
+                    String query = "INSERT INTO visitors values('" + firstName + "','" + lastName + "','" + mobileNumber + "','" + Company +"','"+ time_In+"','"+ date+"','"+reason+"')";
                     
                     Statement sta = connection.createStatement();
                     int x = sta.executeUpdate(query);
+                    
                     if (x == 0) {
                         JOptionPane.showMessageDialog(btnNewButton, "This user already exists");
                     } else {
