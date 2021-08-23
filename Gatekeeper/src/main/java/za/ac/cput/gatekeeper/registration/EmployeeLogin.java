@@ -227,7 +227,7 @@ public class EmployeeLogin implements ActionListener {
 
     public void iconImg(){
        
-        ImageIcon userimg = new ImageIcon("images\\ico.png");
+        ImageIcon userimg = new ImageIcon("images\\icon.png");
         lblIcon.setBounds(50, 30, 200, 180);
         Image img = userimg.getImage();
         
