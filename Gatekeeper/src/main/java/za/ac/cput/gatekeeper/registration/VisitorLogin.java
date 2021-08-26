@@ -174,6 +174,7 @@ public class VisitorLogin implements ActionListener {
                 Main rg = new Main();
                 window.setVisible(false);
                 rg.startProgram();
+                
 
             }
         });
@@ -490,6 +491,7 @@ public class VisitorLogin implements ActionListener {
                 stmt = conn.prepareStatement(querysql);
                 stmt.execute();
                 System.out.println("Reason Updated!!!");
+                
 
             } catch (SQLException ex) {
 
@@ -562,10 +564,6 @@ public class VisitorLogin implements ActionListener {
     public void starter() {
         new VisitorLogin().StartGUI();
 
-    }
-
-    public static void main(String[] args) {
-        new VisitorLogin().checkInTime();
     }
 
 }
