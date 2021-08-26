@@ -79,11 +79,11 @@ public class VisitorLogin implements ActionListener {
         imgPanel = new JPanel();
 
         //---------------------------------------------------Login button & Registration button
-        btnLogin = new JButton("Search");
-        btnReturn = new JButton("Return");
+        btnLogin = new JButton("SEARCH");
+        btnReturn = new JButton("RETURN");
 
         //---------------------------------------------------option welcome message
-        lblWelcome = new JLabel("Welcome");
+        lblWelcome = new JLabel("WELCOME");
         lblName = new JLabel();
         lblSurname = new JLabel();
         lblInstruction = new JLabel("Please select the reason for your visit today.");
@@ -93,7 +93,7 @@ public class VisitorLogin implements ActionListener {
         btnInterview = new JButton("Interview");
         btnVisitor = new JButton("Visiting");
         btnDelivery = new JButton("Delivery");
-        btnCheckIn = new JButton("Check in.");
+        btnCheckIn = new JButton("CHECKIN");
         lblIcon = new JLabel();
 
     }
@@ -137,7 +137,7 @@ public class VisitorLogin implements ActionListener {
 
         imgPanel.setVisible(false);
         //---------------------------------------------------JLabel
-        JLabel lblUser = new JLabel("Group 24 inc.");
+        JLabel lblUser = new JLabel("GATEKEEPER");
         lblUser.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 25));
         lblUser.setForeground(Color.BLACK);
         lblUser.setBounds(59, 5, 210, 60);
