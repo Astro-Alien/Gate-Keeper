@@ -79,11 +79,11 @@ public class VisitorLogin implements ActionListener {
         imgPanel = new JPanel();
 
         //---------------------------------------------------Login button & Registration button
-        btnLogin = new JButton("SEARCH");
-        btnReturn = new JButton("RETURN");
+        btnLogin = new JButton("Search");
+        btnReturn = new JButton("Return");
 
         //---------------------------------------------------option welcome message
-        lblWelcome = new JLabel("WELCOME");
+        lblWelcome = new JLabel("Welcome");
         lblName = new JLabel();
         lblSurname = new JLabel();
         lblInstruction = new JLabel("Please select the reason for your visit today.");
@@ -93,7 +93,7 @@ public class VisitorLogin implements ActionListener {
         btnInterview = new JButton("Interview");
         btnVisitor = new JButton("Visiting");
         btnDelivery = new JButton("Delivery");
-        btnCheckIn = new JButton("CHECKIN");
+        btnCheckIn = new JButton("Check in.");
         lblIcon = new JLabel();
 
     }
@@ -137,7 +137,7 @@ public class VisitorLogin implements ActionListener {
 
         imgPanel.setVisible(false);
         //---------------------------------------------------JLabel
-        JLabel lblUser = new JLabel("GATEKEEPER");
+        JLabel lblUser = new JLabel("Group 24 inc.");
         lblUser.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 25));
         lblUser.setForeground(Color.BLACK);
         lblUser.setBounds(59, 5, 210, 60);
@@ -174,7 +174,6 @@ public class VisitorLogin implements ActionListener {
                 Main rg = new Main();
                 window.setVisible(false);
                 rg.startProgram();
-                
 
             }
         });
@@ -491,7 +490,6 @@ public class VisitorLogin implements ActionListener {
                 stmt = conn.prepareStatement(querysql);
                 stmt.execute();
                 System.out.println("Reason Updated!!!");
-                
 
             } catch (SQLException ex) {
 

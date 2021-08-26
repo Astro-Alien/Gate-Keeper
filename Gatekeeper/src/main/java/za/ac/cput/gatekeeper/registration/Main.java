@@ -24,6 +24,8 @@ public class Main implements ActionListener {
     private ImageIcon icon;
     private Image image;
     private JFrame welcome;
+    private JLabel lblLink;
+    private JLabel lblQ;
 
     public void welcomeWindow() {
 
@@ -63,9 +65,43 @@ public class Main implements ActionListener {
         btnEmp.setFont(new Font("roman", Font.BOLD, 14));
         btnEmp.setBounds(290, 290, 210, 37);
 
+        lblQ = new JLabel("Are you an employee?");
+        lblQ.setFont(new Font("roman", Font.BOLD, 13));
+        lblQ.setBounds(300, 325, 210, 37);
+
+        lblLink = new JLabel("Login");
+        lblLink.setFont(new Font("roman", Font.BOLD, 13));
+        lblLink.setBounds(440, 325, 210, 37);
+        lblLink.setForeground(new Color(0xffffff));
+
+        //----------------------------------------------------------------------HyperLink
+        lblLink.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                welcome.setVisible(false);
+                garageEntrance opn = new garageEntrance();
+                opn.loginFrame();
+                welcome.dispose();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                lblLink.setForeground(Color.RED);
+                lblLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                lblLink.setForeground(new Color(0xffffff));
+            }
+        });
+        //----------------------------------------------------------------------adding elements to border
         secondBorder.add(regUser);
         secondBorder.add(newUser);
         secondBorder.add(btnEmp);
+        secondBorder.add(lblQ);
+        secondBorder.add(lblLink);
         //-----------------------------------------------------image
 
         //---------------------------------------------------Design JButton
@@ -88,7 +124,7 @@ public class Main implements ActionListener {
             @Override
             public void mouseEntered(MouseEvent e) {
                 newUser.setBackground(new Color(0x005ba3));
-                
+
             }
 
             @Override
@@ -125,8 +161,7 @@ public class Main implements ActionListener {
         regUser.addActionListener(this);
         newUser.addActionListener(this);
         btnEmp.addActionListener(this);
- 
-           
+
         //-----------------------------------------------------------------------
         welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         welcome.setLocationRelativeTo(null);
@@ -135,10 +170,10 @@ public class Main implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         /**
-             * Added code to call the login form
-             *
-             * @author Charles
-             */
+         * Added code to call the login form
+         *
+         * @author Charles
+         */
         if (e.getSource() == newUser) {
 
             welcome.setVisible(false);
@@ -151,16 +186,13 @@ public class Main implements ActionListener {
             rg.starter();
             welcome.dispose();
 
-        }
-        else if(e.getSource() == btnEmp){
-                
-            
-                welcome.setVisible(false);
-                EmployeeLogin vr = new EmployeeLogin();
-                vr.starter();
-                welcome.dispose();
-        
-        
+        } else if (e.getSource() == btnEmp) {
+
+            welcome.setVisible(false);
+            EmployeeLogin vr = new EmployeeLogin();
+            vr.starter();
+            welcome.dispose();
+
         }
 
     }
@@ -173,6 +205,7 @@ public class Main implements ActionListener {
         new Main().welcomeWindow();
 
     }
+
     public static void main(String[] args) {
         Main st = new Main();
         st.startProgram();
