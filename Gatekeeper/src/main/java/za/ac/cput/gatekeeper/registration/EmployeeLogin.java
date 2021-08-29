@@ -63,7 +63,7 @@ public class EmployeeLogin implements ActionListener {
         outline = new JPanel();
         lblIcon = new JLabel();
         //---------------------------------------------------Username label and textfield
-        lblUsername = new JLabel("ID/Passport-No");
+        lblUsername = new JLabel("Username");
         txtUsername = new JTextField(16);
 
         //---------------------------------------------------Password label and textfield

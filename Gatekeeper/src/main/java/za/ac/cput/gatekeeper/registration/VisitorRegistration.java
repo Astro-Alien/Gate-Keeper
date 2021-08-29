@@ -268,7 +268,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
         btnReturn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         //Hover colour change when the cursor hovers over the Login Jbutton
-        /*webcamBtn.addMouseListener(new MouseAdapter() {
+        webcamBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 webcamBtn.setBackground(new Color(0x005ba3));
@@ -279,7 +279,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
             public void mouseExited(MouseEvent e) {
                 webcamBtn.setBackground(new Color(0x424242));
             }
-        });*/
+        });
         btnReturn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -304,10 +304,8 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                 btnNewButton.setBackground(new Color(0x424242));
             }
         });
-
-        
-        
         btnNewButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 Date recentDate = new Date();
        
@@ -343,15 +341,16 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                     Statement sta = connection.createStatement();
                     int x = sta.executeUpdate(query);
                     
-                    if (x == 0) {
+                    if(x == 0) {
                         JOptionPane.showMessageDialog(btnNewButton, "This user already exists");
-                    } else {
+                    } 
+                    else{
                         JOptionPane.showMessageDialog(btnNewButton,
                             "Welcome, " + msg + "Your account is sucessfully created");
                     }
                     //Catch error if the mobile number is in use by another user.
                     connection.close();
-                } catch (Exception exception) {
+                } catch(Exception exception) {
                     JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
                     exception.printStackTrace();
                     
@@ -423,7 +422,6 @@ public class VisitorRegistration extends JFrame implements ActionListener{
         lblIcon.setIcon(ScaledIcon);
         secondBorder.add(lblIcon);
 
-        
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -432,5 +430,6 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                 Main rg = new Main();
                 rg.startProgram();
                 dispose();
+                
     }
 }

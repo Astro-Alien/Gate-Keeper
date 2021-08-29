@@ -13,20 +13,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.*;
-import java.util.Date;
-import java.sql.*;
-import java.text.SimpleDateFormat;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Random;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
- * @author Charles Lemmert Student No: 220498385
+ * @author Sine
  */
-public class VisitorLogin implements ActionListener {
+public class garageEntrance implements ActionListener {
 
-    Connection conn = null;
-    PreparedStatement stmt = null;
-    ResultSet results = null;
+    DbConnection db;
 
     private JLabel label;
     private JLabel lblIcon;
@@ -66,9 +72,9 @@ public class VisitorLogin implements ActionListener {
 
     private String userN;
 
-    //--------------------------------------------------------------------------Login Constructor
-    public VisitorLogin() {
+    public garageEntrance() {
 
+        //--------Login frame labels and buttons----------------//
         //---------------------------------------------------Username label and textfield
         lblUsername = new JLabel("Enter Your Name");
         txtUsername = new JTextField(16);
@@ -95,13 +101,11 @@ public class VisitorLogin implements ActionListener {
         btnDelivery = new JButton("Delivery");
         btnCheckIn = new JButton("CHECKIN");
         lblIcon = new JLabel();
-
+        //-----------------------------------------------------//
     }
 
-    //--------------------------------------------------------------------------GUI layout for Login and Registration test
-    public void StartGUI() {
-        //starting connection
-        conn = DbConnection.ConnectDb();
+    //takes and verifies username and password credentials
+    public void loginFrame() {
 
         //---------------------------------------------------Creating window and setting window Size
         window = new JFrame();
@@ -269,7 +273,6 @@ public class VisitorLogin implements ActionListener {
         outline.add(lblIcon);
 
     }
-
     public void optionPanelDesign() {
 
         //call image from database when code is written to save the image in the database
@@ -404,164 +407,128 @@ public class VisitorLogin implements ActionListener {
             }
         });
     }
-
-    //--------------------------------------------------------------------------call data from visitor database and verify if user is registered or not
-    public void userVerification() {
-        String query = "Select * FROM visitors WHERE first_name = ? AND last_name = ?; ";
-
-        try {
-
-            stmt = conn.prepareStatement(query);
-            stmt.setString(1, txtUsername.getText());
-            stmt.setString(2, txtLastname.getText());
-
-            results = stmt.executeQuery();
-
-            if (results.next()) {
-
-                images.setVisible(false);
-                imgPanel.setVisible(true);
-                String userName = results.getString("first_name");
-                lblName.setText(userName);
-                String userSurname = results.getString("last_name");
-                lblSurname.setText(userSurname);
-                optionPanelDesign();
-                temp = userName;
-                //checkInTime();
-
-            } else {
-
-                JOptionPane.showMessageDialog(null, "     USER NOT FOUND");
-
-            }
-
-        } catch (Exception e) {
-
-            System.out.println("PROCESS FAILED!!!");
-        }
-
-    }
-
-    //--------------------------------------------------------------------------timestamp function or method save time stamp to the database 
-    public void checkInTime() {
-
-        //------------------------------------------------check in time method code will be added here
-        Date recentDate = new Date();
-
-        SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
-        String dateuser = dateStamp.format(recentDate);
-        String timeuser = timeStamp.format(recentDate);
-
-        userN = txtUsername.getText();
-       
-        try {
-            String querysql = "update visitors set time_in='" + timeuser + "',date='" + dateuser + "' where first_name='" + userN + "' ";
-            stmt = conn.prepareStatement(querysql);
-            stmt.execute();
-            System.out.println("It has worked!!!");
-            
-            conn.close();
-           
-        } catch (SQLException e) {
-
-            System.out.println("Failed to update");
-
-        }
-
-    }
-
-    //--------------------------------------------------------------------------Action Listener onclick functionality implemented here:User Verification
+    
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnLogin) {
-            userVerification();
-
-        } 
+        if(e.getSource() == btnLogin){
+            images.setVisible(false);
+            imgPanel.setVisible(true);
+            optionPanelDesign();
         
-        else if (e.getSource() == btnMeeting) {
-
-            String reasons = "Meeting";
-
-            try {
-                String username = txtUsername.getText();
-                
-                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
-                stmt = conn.prepareStatement(querysql);
-                stmt.execute();
-                System.out.println("Reason Updated!!!");
-
-            } catch (SQLException ex) {
-
-                System.out.println("Failed to update");
-
-            }
-
-        } 
         
-        else if (e.getSource() == btnInterview) {
-            String reasons = "Interview";
-            try {
-                String username = txtUsername.getText();
-                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
-                stmt = conn.prepareStatement(querysql);
-                stmt.execute();
-                System.out.println("Reason Updated!!!");
-
-            } catch (SQLException ex) {
-
-                System.out.println("Failed to update");
-
-            }
-        } 
-        
-        else if (e.getSource() == btnVisitor) {
-            String reasons = "Visiting";
-            try {
-                String username = txtUsername.getText();
-                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
-                stmt = conn.prepareStatement(querysql);
-                stmt.execute();
-                System.out.println("Reason Updated!!!");
-
-            } catch (SQLException ex) {
-
-                System.out.println("Failed to update");
-
-            }
-        } 
-        
-        else if (e.getSource() == btnDelivery) {
-            String reasons = "Delivery";
-            try {
-                String username = txtUsername.getText();
-                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
-                stmt = conn.prepareStatement(querysql);
-                stmt.execute();
-                System.out.println("Reason Updated!!!");
-
-            } catch (SQLException ex) {
-
-                System.out.println("Failed to update");
-
-            }
-
-        }else if (e.getSource() == btnCheckIn) {
-
-            // save the time stamp to the database
-            checkInTime();
-            window.setVisible(false);
-            VisitorOption view = new VisitorOption();
-            window.setVisible(false);
-            view.Start();
-
         }
     }
+    /* //USER ICON-------------------------------------------------------------
+        JLabel image_label = new JLabel();
+        ImageIcon user_image = new ImageIcon("images\\icon.png");
+        image_label.setBounds(50, 30, 200, 180);
 
-    //--------------------------------------------------------------------------main function calls starter method to run program
-    public void starter() {
-        new VisitorLogin().StartGUI();
+        Image img = user_image.getImage();
+        Image scale_img = img.getScaledInstance(200, 180, Image.SCALE_SMOOTH);
+        ImageIcon scaled_img = new ImageIcon(scale_img);
+        image_label.setIcon(scaled_img);
+        panel_outline.add(image_label);
+        //----------------------------------------------------------------------
 
-    }
+        parking_bay_frame.add(panel_outline);
 
+        //----------------------------------------------------------------------
+        //PARKING SPOT ASSIGNMENT-----------------------------------------------
+        Random rnd_num = new Random();
+        int i = (int) (1 + rnd_num.nextInt(25));
+        String spot_selector = "Bay " + i;
+
+        //----------------------------------------------------------------------
+        //PARKING ALLOCATION FRAME
+        JFrame parking_allo = new JFrame("Group 24 inc.");
+        parking_allo.getContentPane().setBackground(new Color(0x005ba3));
+        parking_allo.setSize(876, 497);
+        parking_allo.setLocationRelativeTo(null);
+        parking_allo.setVisible(false);
+        parking_allo.getContentPane().setLayout(null);
+
+        JLabel greeting = new JLabel("Good morning Beth!");
+        JLabel parking_spot_label = new JLabel();
+        JPanel parking_panel = new JPanel();
+
+        parking_panel.setLayout(null);
+        parking_panel.setBounds(30, 22, 800, 405);
+        parking_panel.setBackground(new Color(0x03a9f4));
+        parking_panel.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+
+        greeting.setFont(new Font("SourceSansPro", Font.BOLD, 30));
+        greeting.setForeground(Color.BLACK);
+        greeting.setBounds(250, 50, 400, 60);
+        parking_panel.add(greeting);
+
+        parking_spot_label.setFont(new Font("SourceSansPro", Font.BOLD, 20));
+        parking_spot_label.setForeground(Color.BLACK);
+        parking_spot_label.setBounds(230, 300, 400, 60);
+        parking_spot_label.setText("Your parking spot for today is: " + spot_selector);
+        parking_panel.add(parking_spot_label);
+
+        parking_allo.add(parking_panel);
+
+        parking_bay_frame.setLocationRelativeTo(null);
+        parking_bay_frame.setVisible(true);
+    }*/
+
+ /* login.addActionListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae)
+            {
+                try
+                {
+                    
+                    String fetch_username = "SELECT * FROM LOGIN WHERE USER_NAME = ?";
+                    String fetch_pass = "SELECT * FROM LOGIN WHERE USER_PASS = ?";
+                    String fetch_user = "SELECT EMP_NAME FROM EMPLOYEE";
+                    
+                    PreparedStatement user_state = db.conn.prepareStatement(fetch_username);
+                    PreparedStatement pass_state = db.conn.prepareStatement(fetch_pass);
+                    PreparedStatement name_state = db.conn.prepareStatement(fetch_user);
+                    
+                    user_state.setString(1, username_field.getText());
+                    pass_state.setString(1, pass_field.getText());
+                    name_state.setString(1, fetch_user);
+                    
+                    ResultSet user_results, pass_results, name_results;
+                    
+                    user_results = user_state.executeQuery();
+                    pass_results = pass_state.executeQuery();
+                    name_results = name_state.executeQuery();
+                    
+                    if(pass_results.next())
+                    {
+                        parking_bay_frame.setVisible(false);
+                        parking_allo.setVisible(true);
+                        
+                        while(name_results.next())
+                        {
+                            //greeting.setText("Good morning "+name_results.getString(1)+"!");
+                        }                        
+                        greeting.setBounds(100,80,700,300);
+                        
+                        parking_allo.add(greeting);
+
+                        user_state.close();
+                        pass_state.close();
+                        //name_state.close();
+                        user_results.close();
+                        pass_results.close();
+                        //name_results.close();
+                        db.conn.close();
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null, "Login credentials not found.");
+                    }
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });*/
 }
