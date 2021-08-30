@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import za.ac.cput.gatekeeper.registration.Database.InventoryView;
 
 /**
  *
@@ -39,7 +40,7 @@ public class EmployeeLogin implements ActionListener {
 
     private JLabel label;
     private JPanel images;
-    
+    private JFrame window;
     private JPanel outline;
     //--------------------------------------------------------------------------J Labels and Textfields
     //Username
@@ -82,7 +83,7 @@ public class EmployeeLogin implements ActionListener {
         conn = DbConnection.ConnectEmpDb();//should be replaced with the connection to the employee database
 
         //---------------------------------------------------Creating window and setting window Size
-        JFrame window = new JFrame();
+        window = new JFrame();
         window.setSize(876, 497);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
@@ -257,7 +258,10 @@ public class EmployeeLogin implements ActionListener {
             if (results.next()) {
                   checkInTime();
                  //Open inventory system or dashboard here
-
+                 window.setVisible(false);
+                 InventoryView opn = new InventoryView();
+                 window.dispose();
+                 
             } else {
 
                 JOptionPane.showMessageDialog(null, "USER NOT FOUND");
