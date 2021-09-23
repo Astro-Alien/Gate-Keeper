@@ -3,14 +3,10 @@
 package za.ac.cput.gatekeeper.registration;
 
 //AWT imports
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 
 //Swing imports
 import javax.swing.JButton;
@@ -19,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 //Webcam imports
 import com.github.sarxos.webcam.Webcam;
@@ -30,11 +25,14 @@ import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
 
 //Image and File imports
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
@@ -65,6 +63,8 @@ public class VisitorRegistration extends JFrame implements ActionListener{
     
     private JButton btnReturn;
     
+    
+    Connection conn;
     
     /**
      * Launch the application.
@@ -104,18 +104,18 @@ public class VisitorRegistration extends JFrame implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent ae)
             {
+                 conn = DbConnection.ConnectDb();
+                
                 try
                 {
                     /*
                     writes the image that was recieved from the time the webcam was opened
                     and saves it
                     */
-                    
                     ImageIO.write(w.getImage(), "jpg", new File("images\\image.jpg"));
                     w.close();
                     webcamWindow.setVisible(false);
                 }
-                
                 catch(IOException e)
                 {
                     e.printStackTrace();
@@ -128,8 +128,8 @@ public class VisitorRegistration extends JFrame implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                webcamWindow.setVisible(false);
                 w.close();//switches off the webcam
+                webcamWindow.setVisible(false);
             }
         });
         
@@ -317,7 +317,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                 
                 String firstName = firstname.getText();
                 String lastName = lastname.getText();
-                String Company = company.getText();
+                String companyName = company.getText();
                 String mobileNumber = mob.getText();
                 String date = dateuser;
                 String time_In = timeuser;
@@ -327,34 +327,62 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                
                 String msg = "" + firstName;
                 msg += " \n";
-                if (len != 10) {
+                if (len != 10)
+                {
                     JOptionPane.showMessageDialog(btnNewButton, "Enter a valid mobile number");
                 }
                 
                 //Inserts registration form data into database.
 
-                try {
-                    Class.forName("org.sqlite.JDBC");
-                    Connection connection = DriverManager.getConnection("jdbc:sqlite:Database\\visitors.db");
+                try 
+                {
+                    conn = DbConnection.ConnectDb();
+                    
+                    InputStream i = new FileInputStream("images\\image.jpg");
+                    
                     System.out.println("Connection established");
-                    String query = "INSERT INTO visitors values('" + firstName + "','" + lastName + "','" + mobileNumber + "','" + Company +"','"+ time_In+"','"+ date+"','"+reason+"')";
+                    String query = "INSERT INTO visitors VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
                     
-                    Statement sta = connection.createStatement();
-                    int x = sta.executeUpdate(query);
+                    PreparedStatement p = conn.prepareStatement(query);
                     
-                    if(x == 0) {
-                        JOptionPane.showMessageDialog(btnNewButton, "This user already exists");
+                    p.setString(1, mobileNumber);
+                    p.setString(2, firstName);
+                    p.setString(3, lastName);
+                    p.setString(4, companyName);
+                    p.setTimestamp(5, new java.sql.Timestamp(new java.util.Date().getTime()));
+                    p.setString(6, dateuser);
+                    p.setString(7, reason);
+                    p.setBlob(8, i);
+                    
+                    p.execute();
+                    
+                    //Fetches current records for comparison
+                    String numberVerification = "SELECT mobileNumber FROM visitors";
+                    
+                    PreparedStatement pTwo = conn.prepareStatement(numberVerification);
+                    
+                    pTwo.setString(1, mobileNumber);
+                    
+                    ResultSet r = pTwo.executeQuery();
+                    
+                    //Statement sta = conn.createStatement();
+                    //int x = sta.executeUpdate(query);
+                    
+                    if(r.next())
+                    {
+                        JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
+                        //JOptionPane.showMessageDialog(btnNewButton, "This user already exists");
                     } 
-                    else{
+                    else
+                    {
                         JOptionPane.showMessageDialog(btnNewButton,
                             "Welcome, " + msg + "Your account is sucessfully created");
                     }
-                    //Catch error if the mobile number is in use by another user.
-                    connection.close();
-                } catch(Exception exception) {
-                    JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
-                    exception.printStackTrace();
-                    
+                    conn.close();
+                } 
+                catch(Exception exception) 
+                {
+                    exception.printStackTrace();    
                 }
             }
         });
