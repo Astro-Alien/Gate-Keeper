@@ -81,7 +81,7 @@ public class garageEntrance implements ActionListener {
     JLabel parking_spot_label;
     JPanel parking_panel;
     
-    Connection conn = null;
+    Connection conn;
     
     //PARKING SPOT ASSIGNMENT-----------------------------------------------
     Random rnd_num = new Random();
