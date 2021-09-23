@@ -112,6 +112,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                     */
                     
                     ImageIO.write(w.getImage(), "jpg", new File("images\\image.jpg"));
+                    w.close();
                     webcamWindow.setVisible(false);
                 }
                 
