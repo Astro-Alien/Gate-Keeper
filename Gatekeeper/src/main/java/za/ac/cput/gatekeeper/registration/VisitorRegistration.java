@@ -26,15 +26,24 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import java.io.ByteArrayOutputStream;
+
 //Image and File imports
 import java.io.File;
 import java.io.FileInputStream;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import java.sql.SQLException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -63,9 +72,10 @@ public class VisitorRegistration extends JFrame implements ActionListener{
     
     private JButton btnReturn;
     
-    
+
     Connection conn;
-    
+    Connection conn = null;
+
     /**
      * Launch the application.
      * Main method
@@ -144,6 +154,8 @@ public class VisitorRegistration extends JFrame implements ActionListener{
      */
 
     public void VisitorRegistrationGUI() {
+        conn = DbConnection.ConnectDb();
+        System.out.println("Connection Made");
         window = new JFrame();
         window.setSize(876, 497);
         window.setResizable(false);
@@ -345,6 +357,27 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                     
                     PreparedStatement p = conn.prepareStatement(query);
                     
+                     
+                    
+                    FileInputStream fis;
+                    int numberOfRows = 0;
+                    File img = new File("images\\image.jpg");
+                    fis = new FileInputStream(img);
+                    
+                    //creating byte array 
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    for(int readNumber;(readNumber = fis.read(buffer)) != -1;){
+                    
+                        baos.write(buffer, 0, readNumber);
+                    }
+                    fis.close();
+                    
+                    
+                    String query = "INSERT INTO visitors(mobileNumber,firstName,lastName,company,time_in,date,reason,image) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+                    
+                    PreparedStatement p = conn.prepareStatement(query);
+                    
                     p.setString(1, mobileNumber);
                     p.setString(2, firstName);
                     p.setString(3, lastName);
@@ -356,6 +389,15 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                     
                     p.execute();
                     
+                    p.setString(5, timeuser);
+                    p.setString(6, dateuser);
+                    p.setString(7, reason);
+                    p.setBytes(8, baos.toByteArray());
+                    
+                    numberOfRows = p.executeUpdate();
+                    if(numberOfRows > 0){
+                        System.out.println("Data has been stored");
+                    }
                     //Fetches current records for comparison
                     String numberVerification = "SELECT mobileNumber FROM visitors";
                     
@@ -383,6 +425,17 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                 catch(Exception exception) 
                 {
                     exception.printStackTrace();    
+                    p.close();
+                    pTwo.close();
+                    conn.close();
+                } 
+                catch(SQLException ex) 
+                {
+                    System.out.println("Error is: "+ ex); 
+                } catch (FileNotFoundException ex) {
+                    System.out.println("Image Error: "+ex);;
+                } catch (IOException ex) {
+                    System.out.println("Error is:" + ex);
                 }
             }
         });

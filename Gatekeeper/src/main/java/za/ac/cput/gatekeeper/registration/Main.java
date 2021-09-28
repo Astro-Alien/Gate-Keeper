@@ -67,11 +67,14 @@ public class Main implements ActionListener {
 
         lblQ = new JLabel("Logging in via the garage?");
         lblQ.setFont(new Font("roman", Font.BOLD, 13));
-        lblQ.setBounds(300, 325, 210, 37);
+        lblQ.setBounds(290, 325, 210, 37);
 
         lblLink = new JLabel("Login");
         lblLink.setFont(new Font("roman", Font.BOLD, 13));
+
         lblLink.setBounds(475, 325, 210, 37);
+
+        lblLink.setBounds(460, 325, 210, 37);
         lblLink.setForeground(new Color(0xffffff));
 
         //----------------------------------------------------------------------HyperLink
