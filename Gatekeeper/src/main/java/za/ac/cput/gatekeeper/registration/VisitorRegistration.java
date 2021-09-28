@@ -25,17 +25,21 @@ import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import java.io.ByteArrayOutputStream;
 
 //Image and File imports
 import java.io.File;
 import java.io.FileInputStream;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -68,9 +72,10 @@ public class VisitorRegistration extends JFrame implements ActionListener{
     
     private JButton btnReturn;
     
-    
+
+    Connection conn;
     Connection conn = null;
-    
+
     /**
      * Launch the application.
      * Main method
@@ -109,7 +114,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                 
+                 conn = DbConnection.ConnectDb();
                 
                 try
                 {
@@ -343,6 +348,15 @@ public class VisitorRegistration extends JFrame implements ActionListener{
 
                 try 
                 {
+                    conn = DbConnection.ConnectDb();
+                    
+                    InputStream i = new FileInputStream("images\\image.jpg");
+                    
+                    System.out.println("Connection established");
+                    String query = "INSERT INTO visitors VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+                    
+                    PreparedStatement p = conn.prepareStatement(query);
+                    
                      
                     
                     FileInputStream fis;
@@ -368,6 +382,13 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                     p.setString(2, firstName);
                     p.setString(3, lastName);
                     p.setString(4, companyName);
+                    p.setTimestamp(5, new java.sql.Timestamp(new java.util.Date().getTime()));
+                    p.setString(6, dateuser);
+                    p.setString(7, reason);
+                    p.setBlob(8, i);
+                    
+                    p.execute();
+                    
                     p.setString(5, timeuser);
                     p.setString(6, dateuser);
                     p.setString(7, reason);
@@ -392,7 +413,6 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                     if(r.next())
                     {
                         JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
-                        
                         //JOptionPane.showMessageDialog(btnNewButton, "This user already exists");
                     } 
                     else
@@ -400,6 +420,11 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                         JOptionPane.showMessageDialog(btnNewButton,
                             "Welcome, " + msg + "Your account is sucessfully created");
                     }
+                    conn.close();
+                } 
+                catch(Exception exception) 
+                {
+                    exception.printStackTrace();    
                     p.close();
                     pTwo.close();
                     conn.close();

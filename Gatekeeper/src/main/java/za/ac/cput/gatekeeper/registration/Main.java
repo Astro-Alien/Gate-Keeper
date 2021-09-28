@@ -71,6 +71,9 @@ public class Main implements ActionListener {
 
         lblLink = new JLabel("Login");
         lblLink.setFont(new Font("roman", Font.BOLD, 13));
+
+        lblLink.setBounds(475, 325, 210, 37);
+
         lblLink.setBounds(460, 325, 210, 37);
         lblLink.setForeground(new Color(0xffffff));
 
