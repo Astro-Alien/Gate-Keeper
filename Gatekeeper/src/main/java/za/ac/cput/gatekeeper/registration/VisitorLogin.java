@@ -456,7 +456,7 @@ public class VisitorLogin implements ActionListener {
         userN = txtUsername.getText();
        
         try {
-            String querysql = "update visitors set time_in='" + timeuser + "',date='" + dateuser + "' where first_name='" + userN + "' ";
+            String querysql = "update visitors set time_in='" + timeuser + "',date='" + dateuser + "' where firstName='" + userN + "' ";
             stmt = conn.prepareStatement(querysql);
             stmt.execute();
             System.out.println("It has worked!!!");
@@ -486,7 +486,7 @@ public class VisitorLogin implements ActionListener {
             try {
                 String username = txtUsername.getText();
                 
-                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
+                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username +"' ";
                 stmt = conn.prepareStatement(querysql);
                 stmt.execute();
                 System.out.println("Reason Updated!!!");
@@ -503,7 +503,7 @@ public class VisitorLogin implements ActionListener {
             String reasons = "Interview";
             try {
                 String username = txtUsername.getText();
-                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
+                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username +"' ";
                 stmt = conn.prepareStatement(querysql);
                 stmt.execute();
                 System.out.println("Reason Updated!!!");
@@ -519,7 +519,7 @@ public class VisitorLogin implements ActionListener {
             String reasons = "Visiting";
             try {
                 String username = txtUsername.getText();
-                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
+                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username +"' ";
                 stmt = conn.prepareStatement(querysql);
                 stmt.execute();
                 System.out.println("Reason Updated!!!");
@@ -535,7 +535,7 @@ public class VisitorLogin implements ActionListener {
             String reasons = "Delivery";
             try {
                 String username = txtUsername.getText();
-                String querysql = "update visitors set reason='" + reasons + "' where first_name='" + username +"' ";
+                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username +"' ";
                 stmt = conn.prepareStatement(querysql);
                 stmt.execute();
                 System.out.println("Reason Updated!!!");

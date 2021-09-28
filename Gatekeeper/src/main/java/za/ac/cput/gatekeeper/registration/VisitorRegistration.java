@@ -3,14 +3,10 @@
 package za.ac.cput.gatekeeper.registration;
 
 //AWT imports
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 
 //Swing imports
 import javax.swing.JButton;
@@ -19,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 //Webcam imports
 import com.github.sarxos.webcam.Webcam;
@@ -30,13 +25,21 @@ import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
+import java.io.ByteArrayOutputStream;
 
 //Image and File imports
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -65,6 +68,8 @@ public class VisitorRegistration extends JFrame implements ActionListener{
     
     private JButton btnReturn;
     
+    
+    Connection conn = null;
     
     /**
      * Launch the application.
@@ -104,17 +109,18 @@ public class VisitorRegistration extends JFrame implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent ae)
             {
+                 
+                
                 try
                 {
                     /*
                     writes the image that was recieved from the time the webcam was opened
                     and saves it
                     */
-                    
                     ImageIO.write(w.getImage(), "jpg", new File("images\\image.jpg"));
+                    w.close();
                     webcamWindow.setVisible(false);
                 }
-                
                 catch(IOException e)
                 {
                     e.printStackTrace();
@@ -127,8 +133,8 @@ public class VisitorRegistration extends JFrame implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                webcamWindow.setVisible(false);
                 w.close();//switches off the webcam
+                webcamWindow.setVisible(false);
             }
         });
         
@@ -143,6 +149,8 @@ public class VisitorRegistration extends JFrame implements ActionListener{
      */
 
     public void VisitorRegistrationGUI() {
+        conn = DbConnection.ConnectDb();
+        System.out.println("Connection Made");
         window = new JFrame();
         window.setSize(876, 497);
         window.setResizable(false);
@@ -316,7 +324,7 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                 
                 String firstName = firstname.getText();
                 String lastName = lastname.getText();
-                String Company = company.getText();
+                String companyName = company.getText();
                 String mobileNumber = mob.getText();
                 String date = dateuser;
                 String time_In = timeuser;
@@ -326,34 +334,83 @@ public class VisitorRegistration extends JFrame implements ActionListener{
                
                 String msg = "" + firstName;
                 msg += " \n";
-                if (len != 10) {
+                if (len != 10)
+                {
                     JOptionPane.showMessageDialog(btnNewButton, "Enter a valid mobile number");
                 }
                 
                 //Inserts registration form data into database.
 
-                try {
-                    Class.forName("org.sqlite.JDBC");
-                    Connection connection = DriverManager.getConnection("jdbc:sqlite:Database\\visitors.db");
-                    System.out.println("Connection established");
-                    String query = "INSERT INTO visitors values('" + firstName + "','" + lastName + "','" + mobileNumber + "','" + Company +"','"+ time_In+"','"+ date+"','"+reason+"')";
+                try 
+                {
+                     
                     
-                    Statement sta = connection.createStatement();
-                    int x = sta.executeUpdate(query);
+                    FileInputStream fis;
+                    int numberOfRows = 0;
+                    File img = new File("images\\image.jpg");
+                    fis = new FileInputStream(img);
                     
-                    if(x == 0) {
-                        JOptionPane.showMessageDialog(btnNewButton, "This user already exists");
+                    //creating byte array 
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    for(int readNumber;(readNumber = fis.read(buffer)) != -1;){
+                    
+                        baos.write(buffer, 0, readNumber);
+                    }
+                    fis.close();
+                    
+                    
+                    String query = "INSERT INTO visitors(mobileNumber,firstName,lastName,company,time_in,date,reason,image) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+                    
+                    PreparedStatement p = conn.prepareStatement(query);
+                    
+                    p.setString(1, mobileNumber);
+                    p.setString(2, firstName);
+                    p.setString(3, lastName);
+                    p.setString(4, companyName);
+                    p.setString(5, timeuser);
+                    p.setString(6, dateuser);
+                    p.setString(7, reason);
+                    p.setBytes(8, baos.toByteArray());
+                    
+                    numberOfRows = p.executeUpdate();
+                    if(numberOfRows > 0){
+                        System.out.println("Data has been stored");
+                    }
+                    //Fetches current records for comparison
+                    String numberVerification = "SELECT mobileNumber FROM visitors";
+                    
+                    PreparedStatement pTwo = conn.prepareStatement(numberVerification);
+                    
+                    pTwo.setString(1, mobileNumber);
+                    
+                    ResultSet r = pTwo.executeQuery();
+                    
+                    //Statement sta = conn.createStatement();
+                    //int x = sta.executeUpdate(query);
+                    
+                    if(r.next())
+                    {
+                        JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
+                        
+                        //JOptionPane.showMessageDialog(btnNewButton, "This user already exists");
                     } 
-                    else{
+                    else
+                    {
                         JOptionPane.showMessageDialog(btnNewButton,
                             "Welcome, " + msg + "Your account is sucessfully created");
                     }
-                    //Catch error if the mobile number is in use by another user.
-                    connection.close();
-                } catch(Exception exception) {
-                    JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
-                    exception.printStackTrace();
-                    
+                    p.close();
+                    pTwo.close();
+                    conn.close();
+                } 
+                catch(SQLException ex) 
+                {
+                    System.out.println("Error is: "+ ex); 
+                } catch (FileNotFoundException ex) {
+                    System.out.println("Image Error: "+ex);;
+                } catch (IOException ex) {
+                    System.out.println("Error is:" + ex);
                 }
             }
         });

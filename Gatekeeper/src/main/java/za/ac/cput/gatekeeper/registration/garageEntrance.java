@@ -13,8 +13,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -47,7 +51,7 @@ public class garageEntrance implements ActionListener {
     private JTextField txtUsername;
     //Lastname
     private JLabel lblLastname;
-    private JTextField txtLastname;
+    private JPasswordField txtLastname;
     //Buttons
     private JButton btnLogin;
     private JButton btnReturn;
@@ -71,21 +75,34 @@ public class garageEntrance implements ActionListener {
     private String timeuser;
 
     private String userN;
-
+    
+    JFrame parking_allo;
+    JLabel greeting;
+    JLabel parking_spot_label;
+    JPanel parking_panel;
+    
+    Connection conn;
+    
+    //PARKING SPOT ASSIGNMENT-----------------------------------------------
+    Random rnd_num = new Random();
+    int i = (int) (1 + rnd_num.nextInt(25));
+    String parking = "Bay " + i;
+    //----------------------------------------------------------------------
+    
     public garageEntrance() {
 
         //--------Login frame labels and buttons----------------//
         //---------------------------------------------------Username label and textfield
-        lblUsername = new JLabel("Enter Your Name");
+        lblUsername = new JLabel("USERNAME");
         txtUsername = new JTextField(16);
 
-        lblLastname = new JLabel("Enter Your Surname");
-        txtLastname = new JTextField(16);
+        lblLastname = new JLabel("PASSWORD");
+        txtLastname = new JPasswordField(16);
 
         imgPanel = new JPanel();
 
         //---------------------------------------------------Login button & Registration button
-        btnLogin = new JButton("SEARCH");
+        btnLogin = new JButton("LOGIN");
         btnReturn = new JButton("RETURN");
 
         //---------------------------------------------------option welcome message
@@ -102,8 +119,42 @@ public class garageEntrance implements ActionListener {
         btnCheckIn = new JButton("CHECKIN");
         lblIcon = new JLabel();
         //-----------------------------------------------------//
+        
+        greeting = new JLabel();
     }
+    
+    public void greetingFrame()
+    {
+        parking_allo = new JFrame("Gatekeeper");
+        parking_allo.getContentPane().setBackground(new Color(0x005ba3));
+        parking_allo.setSize(876, 497);
+        parking_allo.setLocationRelativeTo(null);
+        parking_allo.setVisible(true);
+        parking_allo.getContentPane().setLayout(null);
+        
+        parking_spot_label = new JLabel();
+        parking_panel = new JPanel();
 
+        parking_panel.setLayout(null);
+        parking_panel.setBounds(30, 22, 800, 405);
+        parking_panel.setBackground(new Color(0x03a9f4));
+        parking_panel.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+
+        greeting.setFont(new Font("SourceSansPro", Font.BOLD, 30));
+        greeting.setForeground(Color.BLACK);
+        greeting.setBounds(250, 50, 400, 60);
+        parking_panel.add(greeting);
+
+        parking_spot_label.setFont(new Font("SourceSansPro", Font.BOLD, 20));
+        parking_spot_label.setForeground(Color.BLACK);
+        parking_spot_label.setBounds(230, 300, 400, 60);
+        parking_spot_label.setText("Your parking spot for today is: " + parking);
+        parking_panel.add(parking_spot_label);
+
+        parking_allo.add(parking_panel);
+    }
+    
+    
     //takes and verifies username and password credentials
     public void loginFrame() {
 
@@ -168,7 +219,9 @@ public class garageEntrance implements ActionListener {
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
-
+        
+        
+        
         //--------------------------------------------------returns the user to the main page
         btnReturn.addActionListener(new ActionListener() {
 
@@ -411,124 +464,67 @@ public class garageEntrance implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnLogin){
-            images.setVisible(false);
-            imgPanel.setVisible(true);
-            optionPanelDesign();
-        
-        
-        }
-    }
-    /* //USER ICON-------------------------------------------------------------
-        JLabel image_label = new JLabel();
-        ImageIcon user_image = new ImageIcon("images\\icon.png");
-        image_label.setBounds(50, 30, 200, 180);
-
-        Image img = user_image.getImage();
-        Image scale_img = img.getScaledInstance(200, 180, Image.SCALE_SMOOTH);
-        ImageIcon scaled_img = new ImageIcon(scale_img);
-        image_label.setIcon(scaled_img);
-        panel_outline.add(image_label);
-        //----------------------------------------------------------------------
-
-        parking_bay_frame.add(panel_outline);
-
-        //----------------------------------------------------------------------
-        //PARKING SPOT ASSIGNMENT-----------------------------------------------
-        Random rnd_num = new Random();
-        int i = (int) (1 + rnd_num.nextInt(25));
-        String spot_selector = "Bay " + i;
-
-        //----------------------------------------------------------------------
-        //PARKING ALLOCATION FRAME
-        JFrame parking_allo = new JFrame("Group 24 inc.");
-        parking_allo.getContentPane().setBackground(new Color(0x005ba3));
-        parking_allo.setSize(876, 497);
-        parking_allo.setLocationRelativeTo(null);
-        parking_allo.setVisible(false);
-        parking_allo.getContentPane().setLayout(null);
-
-        JLabel greeting = new JLabel("Good morning Beth!");
-        JLabel parking_spot_label = new JLabel();
-        JPanel parking_panel = new JPanel();
-
-        parking_panel.setLayout(null);
-        parking_panel.setBounds(30, 22, 800, 405);
-        parking_panel.setBackground(new Color(0x03a9f4));
-        parking_panel.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
-
-        greeting.setFont(new Font("SourceSansPro", Font.BOLD, 30));
-        greeting.setForeground(Color.BLACK);
-        greeting.setBounds(250, 50, 400, 60);
-        parking_panel.add(greeting);
-
-        parking_spot_label.setFont(new Font("SourceSansPro", Font.BOLD, 20));
-        parking_spot_label.setForeground(Color.BLACK);
-        parking_spot_label.setBounds(230, 300, 400, 60);
-        parking_spot_label.setText("Your parking spot for today is: " + spot_selector);
-        parking_panel.add(parking_spot_label);
-
-        parking_allo.add(parking_panel);
-
-        parking_bay_frame.setLocationRelativeTo(null);
-        parking_bay_frame.setVisible(true);
-    }*/
-
- /* login.addActionListener(new ActionListener() 
-        {
-            @Override
-            public void actionPerformed(ActionEvent ae)
+            try
             {
-                try
-                {
-                    
-                    String fetch_username = "SELECT * FROM LOGIN WHERE USER_NAME = ?";
-                    String fetch_pass = "SELECT * FROM LOGIN WHERE USER_PASS = ?";
-                    String fetch_user = "SELECT EMP_NAME FROM EMPLOYEE";
-                    
-                    PreparedStatement user_state = db.conn.prepareStatement(fetch_username);
-                    PreparedStatement pass_state = db.conn.prepareStatement(fetch_pass);
-                    PreparedStatement name_state = db.conn.prepareStatement(fetch_user);
-                    
-                    user_state.setString(1, username_field.getText());
-                    pass_state.setString(1, pass_field.getText());
-                    name_state.setString(1, fetch_user);
-                    
-                    ResultSet user_results, pass_results, name_results;
-                    
-                    user_results = user_state.executeQuery();
-                    pass_results = pass_state.executeQuery();
-                    name_results = name_state.executeQuery();
-                    
-                    if(pass_results.next())
-                    {
-                        parking_bay_frame.setVisible(false);
-                        parking_allo.setVisible(true);
-                        
-                        while(name_results.next())
-                        {
-                            //greeting.setText("Good morning "+name_results.getString(1)+"!");
-                        }                        
-                        greeting.setBounds(100,80,700,300);
-                        
-                        parking_allo.add(greeting);
+                conn = DbConnection.ConnectEmpDb();
+                
+                String user;
+                ResultSet userResults;
+                PreparedStatement userStatement;
 
-                        user_state.close();
-                        pass_state.close();
-                        //name_state.close();
-                        user_results.close();
-                        pass_results.close();
-                        //name_results.close();
-                        db.conn.close();
-                    }
-                    else
-                    {
-                        JOptionPane.showMessageDialog(null, "Login credentials not found.");
-                    }
-                }
-                catch(Exception e)
+                user  = "SELECT * FROM employee WHERE  id_no = ? AND password = ?";
+                
+                userStatement = conn.prepareStatement(user);
+                
+                userStatement.setString(1, txtUsername.getText());
+                userStatement.setString(2, txtLastname.getText());
+
+                userResults = userStatement.executeQuery();
+                
+                if(userResults.next())
                 {
-                    e.printStackTrace();
+                    String name = userResults.getString("first_name");
+                    greeting.setText("Good morning "+name+"!");
+                    checkInTime();
+                    greetingFrame();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "Login credentials not found.");
                 }
             }
-        });*/
+            catch(SQLException s)
+            {
+                s.printStackTrace();
+            }
+        }
+    }
+    
+    public void checkInTime() 
+    {
+        //------------------------------------------------check in time method code will be added here
+        Date recentDate = new Date();
+        PreparedStatement stmt;
+
+        SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
+        String dateuser = dateStamp.format(recentDate);
+        String timeuser = timeStamp.format(recentDate);
+
+        String id = txtUsername.getText();
+        
+        try {
+            String querysql = "update employee set time_in='" + timeuser + "',date='" + dateuser+ "'"+ ", parking_spot = '"+ parking + "' where id_no='" + id + "' ";
+            stmt = conn.prepareStatement(querysql);
+            stmt.execute();
+            
+            conn.close();
+           
+        } catch (SQLException e) {
+
+            System.out.println("Failed to update");
+
+        }
+
+    }
 }
