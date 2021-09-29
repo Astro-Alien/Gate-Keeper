@@ -126,7 +126,6 @@ public class Main implements ActionListener {
                 newUser.setBackground(new Color(0x005ba3));
 
             }
-
             @Override
             public void mouseExited(MouseEvent e) {
                 newUser.setBackground(new Color(0x424242));
