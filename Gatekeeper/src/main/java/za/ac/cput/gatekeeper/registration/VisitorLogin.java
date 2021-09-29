@@ -273,38 +273,15 @@ public class VisitorLogin implements ActionListener {
     public void optionPanelDesign() {
 
         //call image from database when code is written to save the image in the database
-       
-        try {
-            Connection conn = DbConnection.ConnectDb();
-            String sql = "select image from visitors where firstName = ? AND lastName = ?";
-            
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, txtUsername.getText());
-            stmt.setString(2, txtLastname.getText());
-            results = stmt.executeQuery();
-            
-            if(results.next()){
-                
-                byte[] imageData = results.getBytes("image");
-                ImageIcon userimage = new ImageIcon(imageData);
-                label.setBounds(150, 15, 180, 160);
-                label.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
-                Image img = userimage.getImage();
-                Image imgScale = img.getScaledInstance(180, 160, Image.SCALE_SMOOTH);
-                ImageIcon ScaledIcon = new ImageIcon(imgScale);
-                label.setIcon(ScaledIcon);
-                imgPanel.add(label);
-            
-            }
-             else{
-             
-                 JOptionPane.showMessageDialog(null, "No Data Was Retrieved");
-             
-            } conn.close();
-        } catch (Exception ex) {
+        ImageIcon userimage = new ImageIcon("images\\default.jpg");
+        label.setBounds(150, 15, 180, 160);
+        label.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        Image img = userimage.getImage();
+        Image imgScale = img.getScaledInstance(180, 160, Image.SCALE_SMOOTH);
+        ImageIcon ScaledIcon = new ImageIcon(imgScale);
+        label.setIcon(ScaledIcon);
+        imgPanel.add(label);
 
-            ex.printStackTrace();
-        }
         //welcome message and name 
         imgPanel.add(lblWelcome);
         lblWelcome.setBounds(190, 180, 150, 35);
@@ -477,15 +454,15 @@ public class VisitorLogin implements ActionListener {
         String timeuser = timeStamp.format(recentDate);
 
         userN = txtUsername.getText();
-
+       
         try {
             String querysql = "update visitors set time_in='" + timeuser + "',date='" + dateuser + "' where firstName='" + userN + "' ";
             stmt = conn.prepareStatement(querysql);
             stmt.execute();
             System.out.println("It has worked!!!");
-
+            
             conn.close();
-
+           
         } catch (SQLException e) {
 
             System.out.println("Failed to update");
@@ -500,14 +477,16 @@ public class VisitorLogin implements ActionListener {
         if (e.getSource() == btnLogin) {
             userVerification();
 
-        } else if (e.getSource() == btnMeeting) {
+        } 
+        
+        else if (e.getSource() == btnMeeting) {
 
             String reasons = "Meeting";
 
             try {
                 String username = txtUsername.getText();
-
-                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username + "' ";
+                
+                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username +"' ";
                 stmt = conn.prepareStatement(querysql);
                 stmt.execute();
                 System.out.println("Reason Updated!!!");
@@ -518,11 +497,13 @@ public class VisitorLogin implements ActionListener {
 
             }
 
-        } else if (e.getSource() == btnInterview) {
+        } 
+        
+        else if (e.getSource() == btnInterview) {
             String reasons = "Interview";
             try {
                 String username = txtUsername.getText();
-                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username + "' ";
+                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username +"' ";
                 stmt = conn.prepareStatement(querysql);
                 stmt.execute();
                 System.out.println("Reason Updated!!!");
@@ -532,11 +513,13 @@ public class VisitorLogin implements ActionListener {
                 System.out.println("Failed to update");
 
             }
-        } else if (e.getSource() == btnVisitor) {
+        } 
+        
+        else if (e.getSource() == btnVisitor) {
             String reasons = "Visiting";
             try {
                 String username = txtUsername.getText();
-                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username + "' ";
+                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username +"' ";
                 stmt = conn.prepareStatement(querysql);
                 stmt.execute();
                 System.out.println("Reason Updated!!!");
@@ -546,11 +529,13 @@ public class VisitorLogin implements ActionListener {
                 System.out.println("Failed to update");
 
             }
-        } else if (e.getSource() == btnDelivery) {
+        } 
+        
+        else if (e.getSource() == btnDelivery) {
             String reasons = "Delivery";
             try {
                 String username = txtUsername.getText();
-                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username + "' ";
+                String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username +"' ";
                 stmt = conn.prepareStatement(querysql);
                 stmt.execute();
                 System.out.println("Reason Updated!!!");
@@ -561,7 +546,7 @@ public class VisitorLogin implements ActionListener {
 
             }
 
-        } else if (e.getSource() == btnCheckIn) {
+        }else if (e.getSource() == btnCheckIn) {
 
             // save the time stamp to the database
             checkInTime();
