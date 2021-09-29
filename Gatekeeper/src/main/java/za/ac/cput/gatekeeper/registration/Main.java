@@ -71,9 +71,6 @@ public class Main implements ActionListener {
 
         lblLink = new JLabel("Login");
         lblLink.setFont(new Font("roman", Font.BOLD, 13));
-
-        lblLink.setBounds(475, 325, 210, 37);
-
         lblLink.setBounds(460, 325, 210, 37);
         lblLink.setForeground(new Color(0xffffff));
 
@@ -129,7 +126,6 @@ public class Main implements ActionListener {
                 newUser.setBackground(new Color(0x005ba3));
 
             }
-
             @Override
             public void mouseExited(MouseEvent e) {
                 newUser.setBackground(new Color(0x424242));
