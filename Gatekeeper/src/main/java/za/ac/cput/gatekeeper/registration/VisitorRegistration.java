@@ -113,6 +113,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
                     ImageIO.write(w.getImage(), "jpg", new File("images\\image.jpg"));
                     w.close();
                     webcamWindow.setVisible(false);
+                    
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -231,6 +232,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         label.setIcon(ScaledIcon);
         thirdBorder.add(label);
 
+        
         webcamBtn = new JButton("Verify your identity");
         webcamBtn.setFont(new Font("SourceSansPro", Font.BOLD, 14));
         webcamBtn.setBounds(58, 210, 180, 37);

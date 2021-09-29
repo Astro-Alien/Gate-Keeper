@@ -273,11 +273,14 @@ public class VisitorLogin implements ActionListener {
     public void optionPanelDesign() {
 
         //call image from database when code is written to save the image in the database
-        int value = 11;
+       
         try {
             Connection conn = DbConnection.ConnectDb();
-            String sql = "select image from visitors where visitorID ='" + value + "' ";
+            String sql = "select image from visitors where firstName = ? AND lastName = ?";
+            
             stmt = conn.prepareStatement(sql);
+            stmt.setString(1, txtUsername.getText());
+            stmt.setString(2, txtLastname.getText());
             results = stmt.executeQuery();
             
             if(results.next()){
