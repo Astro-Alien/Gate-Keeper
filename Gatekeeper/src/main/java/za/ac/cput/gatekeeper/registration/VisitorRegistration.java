@@ -1,14 +1,10 @@
 package za.ac.cput.gatekeeper.registration;
 
 //AWT imports
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 
 //Swing imports
 import javax.swing.JButton;
@@ -17,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 //Webcam imports
 import com.github.sarxos.webcam.Webcam;
@@ -28,7 +23,7 @@ import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
+
 import java.io.ByteArrayOutputStream;
 
 //Image and File imports
@@ -36,8 +31,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -56,6 +54,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
     private JPanel thirdBorder;
     private JLabel lblIcon;
     private JLabel label;
+    private JLabel lblImage;
     private JTextField firstname;
     private JTextField lastname;
     private JTextField company;
@@ -68,26 +67,48 @@ public class VisitorRegistration extends JFrame implements ActionListener {
 
     private JButton btnReturn;
 
+    private JButton takePic;
+    private JButton exitCam;
+
+    private Webcam w;
+    private JFrame webcamWindow;
+
     Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
 
     /**
      * Launch the application. Main method
      */
+    public VisitorRegistration() {
 
-    public JFrame verifyIdentityWindow() {
-        JFrame webcamWindow = new JFrame("Camera");
+        webcamWindow = new JFrame("Camera");
+        window = new JFrame("GateKeeper");
+        border = new JPanel();
+        secondBorder = new JPanel();
+        thirdBorder = new JPanel();
 
-        JButton takePic = new JButton("Take picture");
-        JButton exitCam = new JButton("Exit camera");
+        lblIcon = new JLabel();
+        label = new JLabel();
+        lblImage = new JLabel();
 
+        takePic = new JButton("Take picture");
+        exitCam = new JButton("Exit camera");
+        webcamBtn = new JButton("Verify your identity");
+    }
+
+    public void VisitorRegistrationGUI() {
+        conn = DbConnection.ConnectDb();
+        //----------------------------------------------------------------------Start Webcam window code
+        //author : Zondi
         webcamWindow.getContentPane();
         webcamWindow.setSize(450, 550);
         webcamWindow.setLocationRelativeTo(null);
-        webcamWindow.setVisible(true);
+        webcamWindow.setVisible(false);
 
         webcamWindow.getContentPane().setLayout(null);
 
-        Webcam w = Webcam.getDefault();
+        w = Webcam.getDefault();
 
         //setting the size of the webcam display, then add the display to the frame
         w.setViewSize(WebcamResolution.VGA.getSize());
@@ -97,74 +118,35 @@ public class VisitorRegistration extends JFrame implements ActionListener {
 
         //setting button size & position, then adding the buttons to the frame
         takePic.setBounds(70, 460, 150, 30);
+        //takePic.addActionListener(this);
         exitCam.setBounds(240, 460, 150, 30);
+        //exitCam.addActionListener(this);
         webcamWindow.add(takePic);
         webcamWindow.add(exitCam);
-
-        takePic.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                try {
-                    /*
-                    writes the image that was recieved from the time the webcam was opened
-                    and saves it
-                     */
-
-                    ImageIO.write(w.getImage(), "jpg", new File("images\\image.jpg"));
-                    w.close();
-                    webcamWindow.setVisible(false);
-                    
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        exitCam.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-
-                w.close();//switches off the webcam
-                webcamWindow.setVisible(false);
-            }
-        });
-
-        return webcamWindow;
-    }
-
-    /**
-     * Create the frame.
-     */
-    /**
-     * Create the frame.
-     */
-    public void VisitorRegistrationGUI() {
-        conn = DbConnection.ConnectDb();
-        window = new JFrame();
+        //----------------------------------------------------------------------end of Webcam window code
         window.setSize(876, 497);
         window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        border = new JPanel();
         border.setSize(876, 497);
         border.setLayout(null);
         window.add(border);
 
-        lblIcon = new JLabel();
-
-        secondBorder = new JPanel();
         secondBorder.setBounds(50, 37, 450, 385);
         secondBorder.setLayout(null);
         border.add(secondBorder);
         secondBorder.add(lblIcon);
         iconImg();
 
-        label = new JLabel();
-        thirdBorder = new JPanel();
         thirdBorder.setBounds(525, 37, 290, 385);
         thirdBorder.setLayout(null);
+
+        lblImage.setVisible(false);
+
         border.add(thirdBorder);
+
         thirdBorder.add(label);
+        thirdBorder.add(lblImage);
 
         JLabel lblNewUserRegister = new JLabel("Gatekeeper Visitor Registration");
         lblNewUserRegister.setFont(new Font("SourceSansPro", Font.BOLD, 25));
@@ -175,48 +157,48 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         JLabel lblName = new JLabel("First Name");
         lblName.setFont(new Font("SourceSansPro", Font.BOLD, 18));
         lblName.setForeground(Color.BLACK);
-        lblName.setBounds(32, 200, 100, 30);
+        lblName.setBounds(25, 200, 100, 30);
         secondBorder.add(lblName);
 
         firstname = new JTextField();
         firstname.setFont(new Font("SourceSansPro", Font.BOLD, 12));
-        firstname.setBounds(140, 200, 200, 26);
+        firstname.setBounds(133, 200, 200, 26);
         secondBorder.add(firstname);
         firstname.setColumns(10);
 
         JLabel lblLName = new JLabel("Last name");
         lblLName.setFont(new Font("SourceSansPro", Font.BOLD, 18));
         lblLName.setForeground(Color.BLACK);
-        lblLName.setBounds(32, 240, 100, 30);
+        lblLName.setBounds(25, 240, 100, 30);
         secondBorder.add(lblLName);
 
         lastname = new JTextField();
         lastname.setFont(new Font("SourceSansPro", Font.BOLD, 12));
-        lastname.setBounds(140, 240, 200, 26);
+        lastname.setBounds(133, 240, 200, 26);
         secondBorder.add(lastname);
         lastname.setColumns(10);
 
         JLabel lblMobileNumber = new JLabel("Mobile No");
         lblMobileNumber.setFont(new Font("SourceSansPro", Font.BOLD, 18));
         lblMobileNumber.setForeground(Color.BLACK);
-        lblMobileNumber.setBounds(32, 280, 100, 30);
+        lblMobileNumber.setBounds(25, 280, 100, 30);
         secondBorder.add(lblMobileNumber);
 
         mob = new JTextField();
         mob.setFont(new Font("SourceSansPro", Font.BOLD, 12));
-        mob.setBounds(140, 280, 200, 26);
+        mob.setBounds(133, 280, 200, 26);
         secondBorder.add(mob);
         mob.setColumns(10);
 
         JLabel lblCompany = new JLabel("Company");
         lblCompany.setFont(new Font("SourceSansPro", Font.BOLD, 18));
         lblCompany.setForeground(Color.BLACK);
-        lblCompany.setBounds(32, 320, 100, 30);
+        lblCompany.setBounds(25, 320, 100, 30);
         secondBorder.add(lblCompany);
 
         company = new JTextField();
         company.setFont(new Font("SourceSansPro", Font.BOLD, 12));
-        company.setBounds(140, 320, 200, 26);
+        company.setBounds(133, 320, 200, 26);
         secondBorder.add(company);
         company.setColumns(10);
 
@@ -232,15 +214,15 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         label.setIcon(ScaledIcon);
         thirdBorder.add(label);
 
-        
-        webcamBtn = new JButton("Verify your identity");
         webcamBtn.setFont(new Font("SourceSansPro", Font.BOLD, 14));
         webcamBtn.setBounds(58, 210, 180, 37);
+        webcamBtn.addActionListener(this);
         thirdBorder.add(webcamBtn);
 
         btnNewButton = new JButton("Register");
         btnNewButton.setFont(new Font("SourceSansPro", Font.BOLD, 14));
         btnNewButton.setBounds(90, 260, 120, 37);
+        btnNewButton.addActionListener(this);
         thirdBorder.add(btnNewButton);
 
         btnReturn = new JButton("Return");
@@ -298,85 +280,35 @@ public class VisitorRegistration extends JFrame implements ActionListener {
                 btnNewButton.setBackground(new Color(0x424242));
             }
         });
-        btnNewButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Date recentDate = new Date();
 
-                SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
-                SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
-                String dateuser = dateStamp.format(recentDate);
-                String timeuser = timeStamp.format(recentDate);
+        takePic.addActionListener(new ActionListener() {
 
-                String firstName = firstname.getText();
-                String lastName = lastname.getText();
-                String companyName = company.getText();
-                String mobileNumber = mob.getText();
-                String date = dateuser;
-                String time_In = timeuser;
-                String reason = "default";
-
-                int len = mobileNumber.length();
-
-                String msg = "" + firstName;
-                msg += " \n";
-                if (len != 10) {
-                    JOptionPane.showMessageDialog(btnNewButton, "Enter a valid mobile number");
-                }
-
-                //Inserts registration form data into database.
-                try {
-
-                    FileInputStream fis;
-                    int numberOfRows = 0;
-                    File img = new File("images\\image.jpg");
-                    fis = new FileInputStream(img);
-
-                    //creating byte array 
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    byte[] buffer = new byte[1024];
-                    for (int readNumber; (readNumber = fis.read(buffer)) != -1;) {
-
-                        baos.write(buffer, 0, readNumber);
-                    }
-                    fis.close();
-
-                    String query = "INSERT INTO visitors(mobileNumber,firstName,lastName,company,time_in,date,reason,image)VALUES(?,?,?,?,?,?,?,?)";
-
-                    PreparedStatement stmt = conn.prepareStatement(query);
-                    stmt.setString(1, mobileNumber);
-                    stmt.setString(2, firstName);
-                    stmt.setString(3, lastName);
-                    stmt.setString(4, companyName);
-                    stmt.setString(5, time_In);
-                    stmt.setString(6, date);
-                    stmt.setString(7, reason);
-                    stmt.setBytes(8, baos.toByteArray());
-
-                    int x = stmt.executeUpdate();
-
-                    if (x == 0) {
-                        JOptionPane.showMessageDialog(btnNewButton, "This user already exists");
-                    } else {
-                        JOptionPane.showMessageDialog(btnNewButton,
-                                "Welcome, " + msg + "Your account is sucessfully created");
-                    }
-                    //Catch error if the mobile number is in use by another user.
-                    conn.close();
-                } catch (Exception exception) {
-                    JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
-                    exception.printStackTrace();
-
-                }
-            }
-        });
-
-        webcamBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                VisitorRegistration v = new VisitorRegistration();
-                v.verifyIdentityWindow();
+                try {
+                    /*
+                writes the image that was recieved from the time the webcam was opened
+                and saves it
+                     */
+
+                    ImageIO.write(w.getImage(), "jpg", new File("images\\image.jpg"));
+
+                } catch (IOException ex) {
+                    Logger.getLogger(VisitorRegistration.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
+
+        });
+        exitCam.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                w.close();//switches off the webcam
+                webcamWindow.setVisible(false);
+                setImage();
+            }
+
         });
 
         //----------------------------------------------------------------------Design
@@ -429,13 +361,368 @@ public class VisitorRegistration extends JFrame implements ActionListener {
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        window.setVisible(false);
-        Main rg = new Main();
-        rg.startProgram();
-        dispose();
+    public void setImage() {
+        label.setVisible(false);
+        lblImage.setVisible(true);
+        ImageIcon userimageTwo = new ImageIcon("images\\image.jpg");
+        lblImage.setBounds(58, 30, 180, 160);
+        lblImage.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        Image imgTwo = userimageTwo.getImage();
+        Image imgScaleTwo = imgTwo.getScaledInstance(180, 160, Image.SCALE_SMOOTH);
+        ImageIcon ScaledIconTwo = new ImageIcon(imgScaleTwo);
+        lblImage.setIcon(ScaledIconTwo);
+        thirdBorder.add(lblImage);
 
     }
+
+    public void userRegistration() {
+        Date recentDate = new Date();
+
+        SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
+        String dateuser = dateStamp.format(recentDate);
+        String timeuser = timeStamp.format(recentDate);
+
+        String firstName = firstname.getText();
+        String lastName = lastname.getText();
+        String companyName = company.getText();
+        String mobileNumber = mob.getText();
+        String date = dateuser;
+        String time_In = timeuser;
+        String reason = "default";
+
+        int len = mobileNumber.length();
+
+        String msg = "" + firstName;
+        msg += " \n";
+        if (len != 10) {
+            JOptionPane.showMessageDialog(btnNewButton, "Enter a valid mobile number");
+        }
+
+        //Inserts registration form data into database.
+        try {
+
+            FileInputStream fis;
+            int numberOfRows = 0;
+            File img = new File("images\\image.jpg");
+            fis = new FileInputStream(img);
+
+            //creating byte array 
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            for (int readNumber; (readNumber = fis.read(buffer)) != -1;) {
+
+                baos.write(buffer, 0, readNumber);
+            }
+            fis.close();
+
+            String query = "INSERT INTO visitors(mobileNumber,firstName,lastName,company,time_in,date,reason,image)VALUES(?,?,?,?,?,?,?,?)";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, mobileNumber);
+            stmt.setString(2, firstName);
+            stmt.setString(3, lastName);
+            stmt.setString(4, companyName);
+            stmt.setString(5, time_In);
+            stmt.setString(6, date);
+            stmt.setString(7, reason);
+            stmt.setBytes(8, baos.toByteArray());
+
+            int x = stmt.executeUpdate();
+            if (x > 0) {
+                JOptionPane.showMessageDialog(btnNewButton, "This user already exists");
+
+            } else {
+                JOptionPane.showMessageDialog(btnNewButton,
+                        "Welcome, " + msg + "Your account is sucessfully created");
+            }
+            //Catch error if the mobile number is in use by another user.
+            conn.close();
+        } catch (Exception exception) {
+            JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
+            exception.printStackTrace();
+
+        }
+
+    }
+
+    public void userResgistrationValidation() {
+        Date recentDate = new Date();
+        SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
+        String dateuser = dateStamp.format(recentDate);
+        String timeuser = timeStamp.format(recentDate);
+
+        String firstName = firstname.getText();
+        String lastName = lastname.getText();
+        String companyName = company.getText();
+        String mobileNumber = mob.getText();
+        String date = dateuser;
+        String time_In = timeuser;
+        String reason = "default";
+        int len = mobileNumber.length();
+        String sql = "SELECT 1 FROM visitors WHERE mobileNumber = ?";
+        try {
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, mob.getText());
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                JOptionPane.showMessageDialog(null, "This mobile number is in use by another user");
+                mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                mob.setText("");
+
+            } else {
+                if (firstname.getText().isEmpty() && lastname.getText().isEmpty() && mob.getText().isEmpty() && company.getText().isEmpty()) {
+
+                    firstname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    lastname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    company.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'First Name, Last Name, Mobile Number and Company Name'");
+                    firstname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    lastname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    company.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (firstname.getText().isEmpty() && mob.getText().isEmpty() && company.getText().isEmpty()) {
+
+                    firstname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    company.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'First Name, Mobile Number and Company Name'");
+
+                    firstname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    company.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (lastname.getText().isEmpty() && mob.getText().isEmpty() && company.getText().isEmpty()) {
+
+                    lastname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    company.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'Last Name, Mobile Number and Company Name'");
+
+                    lastname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    company.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (firstname.getText().isEmpty() && lastname.getText().isEmpty() && company.getText().isEmpty()) {
+
+                    firstname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    lastname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    company.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'First Name, Last Name and Company Name'");
+
+                    firstname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    lastname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    company.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (firstname.getText().isEmpty() && lastname.getText().isEmpty() && mob.getText().isEmpty()) {
+
+                    firstname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    lastname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'First Name, Last Name and Mobile Number'");
+
+                    firstname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    lastname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (lastname.getText().isEmpty() && company.getText().isEmpty()) {
+
+                    lastname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    company.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'Last Name and Company Name'");
+
+                    lastname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    company.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (firstname.getText().isEmpty() && mob.getText().isEmpty()) {
+
+                    firstname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'First Name and Mobile Number'");
+
+                    firstname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    company.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (firstname.getText().isEmpty() && lastname.getText().isEmpty()) {
+
+                    lastname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    firstname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'First Name and Last Name'");
+
+                    lastname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    firstname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (mob.getText().isEmpty() && company.getText().isEmpty()) {
+
+                    mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    company.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'Mobile Number and Company Name'");
+
+                    mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    company.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (mob.getText().isEmpty() && lastname.getText().isEmpty()) {
+
+                    mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    lastname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'Mobile Number and Last Name'");
+
+                    mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    lastname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (firstname.getText().isEmpty() && company.getText().isEmpty()) {
+
+                    firstname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    company.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'First Name and Company Name'");
+
+                    firstname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                    company.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+                } else if (firstname.getText().isEmpty()) {
+
+                    firstname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'First Name'");
+
+                    firstname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+
+                } else if (lastname.getText().isEmpty()) {
+
+                    lastname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'Last Name'");
+
+                    lastname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+
+                } else if (mob.getText().isEmpty()) {
+
+                    mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'Mobile Number'");
+
+                    mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+
+                } else if (company.getText().isEmpty()) {
+
+                    company.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter the missing values 'Company Name'");
+
+                    company.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+
+                }
+                else if (len <= 10) {
+
+                    mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter a valid Mobile Number");
+
+                    mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+
+                }
+                
+                else {
+                    String query = "INSERT INTO visitors(mobileNumber,firstName,lastName,company,time_in,date,reason,image) VALUES(?,?,?,?,?,?,?,?)";
+                    ps = conn.prepareStatement(query);
+                    try {
+                        FileInputStream fis;
+                        int numberOfRows = 0;
+                        File img = new File("images\\image.jpg");
+                        fis = new FileInputStream(img);
+
+                        //creating byte array 
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        byte[] buffer = new byte[1024];
+                        for (int readNumber; (readNumber = fis.read(buffer)) != -1;) {
+
+                            baos.write(buffer, 0, readNumber);
+                        }
+                        fis.close();
+
+                        ps.setString(1, mobileNumber);
+                        ps.setString(2, firstName);
+                        ps.setString(3, lastName);
+                        ps.setString(4, companyName);
+                        ps.setString(5, time_In);
+                        ps.setString(6, date);
+                        ps.setString(7, reason);
+                        ps.setBytes(8, baos.toByteArray());
+
+                        int x = ps.executeUpdate();
+                        String name = firstname.getText();
+                        String surname = lastname.getText();
+                        if (x > 0) {
+                            JOptionPane.showMessageDialog(null, "Welcome " + name + " "+ surname + " Your account is sucessfully created");
+                            firstname.setText("");
+                            lastname.setText("");
+                            mob.setText("");
+                            company.setText("");
+                            lblImage.setVisible(false);
+                            label.setVisible(true);
+                        }
+                    } catch (Exception e) {
+
+                        System.out.println("The Error in the registration is: " + e);
+
+                    }
+                }
+
+            }
+
+        } catch (Exception e) {
+            System.out.println("The Error is: " + e);
+        }
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnReturn) {
+            window.setVisible(false);
+            Main rg = new Main();
+            rg.startProgram();
+            dispose();
+        }
+        if (e.getSource() == btnNewButton) {
+
+            userResgistrationValidation();
+
+        }
+        if (e.getSource() == webcamBtn) {
+
+            webcamWindow.setVisible(true);
+
+        }
+        /*if(e.getSource() == takePic){
+            try {
+                
+                writes the image that was recieved from the time the webcam was opened
+                and saves it
+                
+                
+                ImageIO.write(w.getImage(), "jpg", new File("images\\image.jpg"));
+                
+                
+            } catch (IOException ex) {
+                Logger.getLogger(VisitorRegistration.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        
+        }*/
+ /*if (e.getSource() == exitCam) {
+
+            w.close();//switches off the webcam
+            webcamWindow.setVisible(false);
+
+        }*/
+    }
+
 }
