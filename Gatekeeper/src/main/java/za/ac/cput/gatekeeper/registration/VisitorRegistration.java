@@ -374,78 +374,6 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         thirdBorder.add(lblImage);
 
     }
-
-    public void userRegistration() {
-        Date recentDate = new Date();
-
-        SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat timeStamp = new SimpleDateFormat("h:mm:ss a");
-        String dateuser = dateStamp.format(recentDate);
-        String timeuser = timeStamp.format(recentDate);
-
-        String firstName = firstname.getText();
-        String lastName = lastname.getText();
-        String companyName = company.getText();
-        String mobileNumber = mob.getText();
-        String date = dateuser;
-        String time_In = timeuser;
-        String reason = "default";
-
-        int len = mobileNumber.length();
-
-        String msg = "" + firstName;
-        msg += " \n";
-        if (len != 10) {
-            JOptionPane.showMessageDialog(btnNewButton, "Enter a valid mobile number");
-        }
-
-        //Inserts registration form data into database.
-        try {
-
-            FileInputStream fis;
-            int numberOfRows = 0;
-            File img = new File("images\\image.jpg");
-            fis = new FileInputStream(img);
-
-            //creating byte array 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            for (int readNumber; (readNumber = fis.read(buffer)) != -1;) {
-
-                baos.write(buffer, 0, readNumber);
-            }
-            fis.close();
-
-            String query = "INSERT INTO visitors(mobileNumber,firstName,lastName,company,time_in,date,reason,image)VALUES(?,?,?,?,?,?,?,?)";
-
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, mobileNumber);
-            stmt.setString(2, firstName);
-            stmt.setString(3, lastName);
-            stmt.setString(4, companyName);
-            stmt.setString(5, time_In);
-            stmt.setString(6, date);
-            stmt.setString(7, reason);
-            stmt.setBytes(8, baos.toByteArray());
-
-            int x = stmt.executeUpdate();
-            if (x > 0) {
-                JOptionPane.showMessageDialog(btnNewButton, "This user already exists");
-
-            } else {
-                JOptionPane.showMessageDialog(btnNewButton,
-                        "Welcome, " + msg + "Your account is sucessfully created");
-            }
-            //Catch error if the mobile number is in use by another user.
-            conn.close();
-        } catch (Exception exception) {
-            JOptionPane.showMessageDialog(btnNewButton, "Mobile number in use by another user.");
-            exception.printStackTrace();
-
-        }
-
-    }
-
     public void userResgistrationValidation() {
         Date recentDate = new Date();
         SimpleDateFormat dateStamp = new SimpleDateFormat("dd/MM/yyyy");
@@ -619,7 +547,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
                     company.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
 
                 }
-                else if (len <= 10) {
+                else if (len <= 9) {
 
                     mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 
@@ -628,6 +556,16 @@ public class VisitorRegistration extends JFrame implements ActionListener {
                     mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
 
                 }
+                else if (len > 10) {
+
+                    mob.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+
+                    JOptionPane.showMessageDialog(null, "Please Enter a valid Mobile Number");
+
+                    mob.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+
+                }
+                
                 
                 else {
                     String query = "INSERT INTO visitors(mobileNumber,firstName,lastName,company,time_in,date,reason,image) VALUES(?,?,?,?,?,?,?,?)";
