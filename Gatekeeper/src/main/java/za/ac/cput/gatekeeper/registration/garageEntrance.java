@@ -38,9 +38,11 @@ public class garageEntrance implements ActionListener {
 
     DbConnection db;
 
+    private JPanel border;
     private JLabel label;
     private JLabel lblIcon;
-    private JPanel images;
+    private JLabel lblIconTwo;
+    private JLabel backgroundIconTwo;
     private JFrame window;
     private JPanel outline;
 
@@ -59,6 +61,8 @@ public class garageEntrance implements ActionListener {
     //Secondary panel
     private JPanel imgPanel;
     private JLabel lblName;
+    private JLabel lblWMsg;
+    private JLabel lblMsg;
     private JLabel lblSurname;
     private JLabel lblWelcome;
     private JLabel lblInstruction;
@@ -95,18 +99,20 @@ public class garageEntrance implements ActionListener {
         //---------------------------------------------------Username label and textfield
         lblUsername = new JLabel("USERNAME");
         txtUsername = new JTextField(16);
-
+        border = new JPanel();
         lblLastname = new JLabel("PASSWORD");
         txtLastname = new JPasswordField(16);
-
+        backgroundIconTwo = new JLabel();
         imgPanel = new JPanel();
 
         //---------------------------------------------------Login button & Registration button
-        btnLogin = new JButton("LOGIN");
-        btnReturn = new JButton("RETURN");
+        btnLogin = new JButton("LOG IN");
+        btnReturn = new JButton("BACK");
 
         //---------------------------------------------------option welcome message
         lblWelcome = new JLabel("WELCOME");
+        lblWMsg = new JLabel("WELCOME");
+        lblMsg = new JLabel("Log in to receive your parking bay number");
         lblName = new JLabel();
         lblSurname = new JLabel();
         lblInstruction = new JLabel("Please select the reason for your visit today.");
@@ -118,6 +124,7 @@ public class garageEntrance implements ActionListener {
         btnDelivery = new JButton("Delivery");
         btnCheckIn = new JButton("CHECKIN");
         lblIcon = new JLabel();
+        lblIconTwo = new JLabel();
         //-----------------------------------------------------//
         
         greeting = new JLabel();
@@ -165,22 +172,25 @@ public class garageEntrance implements ActionListener {
         window.setResizable(false);
 
         //---------------------------------------------------Creating panel to place textfields and labels in
-        JPanel border = new JPanel();
+        
         window.add(border);
         border.setLayout(null);
+        
+        border.add(lblIconTwo);
+        scalingImgTwo();
         //---------------------------------------------------Login panel
         outline = new JPanel();
-        border.add(outline);
-        outline.setBounds(37, 22, 294, 420);
+        lblIconTwo.add(outline);
+        outline.setBounds(125,60, 294, 355);
         outline.setLayout(null);
 
-        images = new JPanel();
-        border.add(images);
-        label = new JLabel();
-        border.add(label);
+        
+        
         outline.add(lblIcon);
-        scalingImg();
+        
         iconImg();
+        lblIconTwo.add(backgroundIconTwo);
+        scalingImg();
         //---------------------------------------------------Secondary panel
         border.add(imgPanel);
 
@@ -199,22 +209,22 @@ public class garageEntrance implements ActionListener {
         outline.add(lblUser);
 
         //---------------------------------------------------positioning Username label and textfield
-        lblUsername.setBounds(47, 180, 150, 40);
+        lblUsername.setBounds(47, 135, 150, 40);
         outline.add(lblUsername);
-        txtUsername.setBounds(47, 215, 200, 30);
+        txtUsername.setBounds(47, 170, 200, 30);
         outline.add(txtUsername);
 
-        lblLastname.setBounds(47, 238, 200, 40);
+        lblLastname.setBounds(47, 195, 200, 40);
         outline.add(lblLastname);
-        txtLastname.setBounds(47, 273, 200, 30);
+        txtLastname.setBounds(47, 230, 200, 30);
         outline.add(txtLastname);
         //---------------------------------------------------positioning login button and adding action listener
-        btnLogin.setBounds(82, 320, 130, 33);
+        btnLogin.setBounds(82, 268, 130, 33);
         outline.add(btnLogin);
         btnLogin.addActionListener(this);
 
         //---------------------------------------------------positioning  Submit button 
-        btnReturn.setBounds(82, 365, 130, 33);
+        btnReturn.setBounds(82, 305, 130, 33);
         outline.add(btnReturn);
 
         window.setLocationRelativeTo(null);
@@ -244,28 +254,28 @@ public class garageEntrance implements ActionListener {
         //---------------------------------------------------Design JPanels
         //Panel Colour
         border.setBackground(new Color(0x005ba3));
-        outline.setBackground(new Color(0x03a9f4));
-        images.setBackground(new Color(0x005ba3));
-        outline.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        outline.setBackground(new Color(0xffffff));
+       
+        outline.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 4));
         //---------------------------------------------------Design JLabel
-        lblUsername.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 16));
+        lblUsername.setFont(new Font("SourceSansPro", Font.BOLD, 15));
         lblUsername.setForeground(Color.BLACK);
-        txtUsername.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        txtUsername.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
         txtUsername.setBackground(new Color(0x424242));
         txtUsername.setForeground(Color.WHITE);
         txtUsername.setCaretColor(Color.WHITE);
         txtUsername.setCaretColor(Color.WHITE);
-        lblLastname.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 16));
+        lblLastname.setFont(new Font("SourceSansPro", Font.BOLD, 15));
         lblLastname.setForeground(Color.BLACK);
-        txtLastname.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        txtLastname.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
         txtLastname.setBackground(new Color(0x424242));
         txtLastname.setForeground(Color.WHITE);
         txtLastname.setCaretColor(Color.WHITE);
         txtLastname.setCaretColor(Color.WHITE);
 
         //---------------------------------------------------Design JButton
-        btnLogin.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
-        btnReturn.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        btnLogin.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
+        btnReturn.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
         btnLogin.setBackground(new Color(0x424242));
         btnLogin.setForeground(Color.WHITE);
         btnReturn.setBackground(new Color(0x424242));
@@ -273,7 +283,17 @@ public class garageEntrance implements ActionListener {
 
         btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnReturn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
+        
+        lblWMsg.setBounds(570, 85, 150, 33);
+        lblWMsg.setForeground(Color.WHITE);
+        lblWMsg.setFont(new Font("SourceSansPro", Font.BOLD, 29));
+        
+        lblMsg.setBounds(490, 110, 350, 33);
+        lblMsg.setForeground(Color.WHITE);
+        lblMsg.setFont(new Font("SourceSansPro", Font.BOLD, 15));
+        
+        lblIconTwo.add(lblWMsg);
+        lblIconTwo.add(lblMsg);
         //Hover colour change when the cursor hovers over the Login Jbutton
         btnLogin.addMouseListener(new MouseAdapter() {
             @Override
@@ -299,28 +319,39 @@ public class garageEntrance implements ActionListener {
         });
 
     }
+     public void scalingImgTwo() {
 
+        ImageIcon userimg = new ImageIcon("images\\backgroundColour.png");
+        lblIconTwo.setBounds(0, 0, 876, 497);
+        Image img = userimg.getImage();
+        
+        Image imgScale = img.getScaledInstance(876, 497, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        lblIconTwo.setIcon(scaledIcon);
+        border.add(lblIconTwo);
+
+    }
     public void scalingImg() {
+        
+        ImageIcon userimg = new ImageIcon("images\\parking.png");
+        backgroundIconTwo.setBounds(500, 159, 271, 271);
+        Image img = userimg.getImage();
+        
+        Image imgScale = img.getScaledInstance(271, 271, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        backgroundIconTwo.setIcon(scaledIcon);
+        lblIconTwo.add(backgroundIconTwo);
 
-        images.setBounds(400, 0, 462, 462);
-
-        ImageIcon icon = new ImageIcon("images\\bg1.png ");
-        label.setLocation(400, 2);
-        Image img = icon.getImage();
-        Image imgScale = img.getScaledInstance(462, 462, Image.SCALE_SMOOTH);
-        ImageIcon ScaledIcon = new ImageIcon(imgScale);
-        label.setIcon(ScaledIcon);
-        images.add(label);
 
     }
 
     public void iconImg() {
 
         ImageIcon userimage = new ImageIcon("images\\icon.png");
-        lblIcon.setBounds(50, 30, 200, 180);
+        lblIcon.setBounds(85, 30, 130, 130);
 
         Image img = userimage.getImage();
-        Image imgScale = img.getScaledInstance(200, 180, Image.SCALE_SMOOTH);
+        Image imgScale = img.getScaledInstance(130, 130, Image.SCALE_SMOOTH);
         ImageIcon ScaledIcon = new ImageIcon(imgScale);
         lblIcon.setIcon(ScaledIcon);
         outline.add(lblIcon);
@@ -527,4 +558,5 @@ public class garageEntrance implements ActionListener {
         }
 
     }
+    
 }
