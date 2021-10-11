@@ -30,9 +30,12 @@ public class VisitorLogin implements ActionListener {
 
     private JLabel label;
     private JLabel lblIcon;
+    private JLabel backgroundIcon;
+    private JLabel backgroundIconTwo;
     private JPanel images;
     private JFrame window;
     private JPanel outline;
+    private JPanel border;
 
     private String temp;
     //--------------------------------------------------------------------------J Labels and Textfields
@@ -72,7 +75,7 @@ public class VisitorLogin implements ActionListener {
         //---------------------------------------------------Username label and textfield
         lblUsername = new JLabel("Enter Your Name");
         txtUsername = new JTextField(16);
-
+        border = new JPanel();
         lblLastname = new JLabel("Enter Your Surname");
         txtLastname = new JTextField(16);
 
@@ -80,21 +83,24 @@ public class VisitorLogin implements ActionListener {
 
         //---------------------------------------------------Login button & Registration button
         btnLogin = new JButton("SEARCH");
-        btnReturn = new JButton("RETURN");
+        btnReturn = new JButton("BACK");
 
         //---------------------------------------------------option welcome message
         lblWelcome = new JLabel("WELCOME");
         lblName = new JLabel();
         lblSurname = new JLabel();
         lblInstruction = new JLabel("Please select the reason for your visit today.");
-
+        images = new JPanel();
         //---------------------------------------------------secondary panel buttons
         btnMeeting = new JButton("Meeting");
         btnInterview = new JButton("Interview");
         btnVisitor = new JButton("Visiting");
         btnDelivery = new JButton("Delivery");
-        btnCheckIn = new JButton("CHECKIN");
+        btnCheckIn = new JButton("CHECK IN");
         lblIcon = new JLabel();
+        backgroundIcon = new JLabel();
+        backgroundIconTwo = new JLabel();
+        label = new JLabel();
 
     }
 
@@ -110,24 +116,30 @@ public class VisitorLogin implements ActionListener {
         window.setResizable(false);
 
         //---------------------------------------------------Creating panel to place textfields and labels in
-        JPanel border = new JPanel();
+      
         window.add(border);
         border.setLayout(null);
+        
+        border.add(backgroundIcon);
+        scalingImgTwo();
         //---------------------------------------------------Login panel
         outline = new JPanel();
-        border.add(outline);
+        backgroundIcon.add(outline);
         outline.setBounds(37, 22, 294, 420);
         outline.setLayout(null);
 
-        images = new JPanel();
-        border.add(images);
-        label = new JLabel();
-        border.add(label);
+        //images JPanel
+        /*images.setBounds(400, 0, 462, 497);
+        backgroundIcon.add(images);*/
+        /*label = new JLabel();
+        backgroundIcon.add(label);*/
         outline.add(lblIcon);
-        scalingImg();
         iconImg();
+        
+        backgroundIcon.add(backgroundIconTwo);
+        scalingImg();
         //---------------------------------------------------Secondary panel
-        border.add(imgPanel);
+        backgroundIcon.add(imgPanel);
 
         //layout and size
         imgPanel.setLayout(null);
@@ -186,9 +198,9 @@ public class VisitorLogin implements ActionListener {
         window.getRootPane().setDefaultButton(btnLogin);
         //---------------------------------------------------Design JPanels
         //Panel Colour
-        border.setBackground(new Color(0x005ba3));
+        
         outline.setBackground(new Color(0x03a9f4));
-        images.setBackground(new Color(0x005ba3));
+       
         outline.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
         //---------------------------------------------------Design JLabel
         lblUsername.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 16));
@@ -243,17 +255,29 @@ public class VisitorLogin implements ActionListener {
 
     }
 
+     public void scalingImgTwo() {
+
+        ImageIcon userimg = new ImageIcon("images\\backgroundColour.png");
+        backgroundIcon.setBounds(0, 0, 876, 497);
+        Image img = userimg.getImage();
+        
+        Image imgScale = img.getScaledInstance(876, 497, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        backgroundIcon.setIcon(scaledIcon);
+        border.add(backgroundIcon);
+
+    }
     public void scalingImg() {
-
-        images.setBounds(400, 0, 462, 462);
-
-        ImageIcon icon = new ImageIcon("images\\bg1.png ");
-        label.setLocation(400, 2);
-        Image img = icon.getImage();
+        
+        ImageIcon userimg = new ImageIcon("images\\bg1.png");
+        backgroundIconTwo.setBounds(400, 2, 462, 462);
+        Image img = userimg.getImage();
+        
         Image imgScale = img.getScaledInstance(462, 462, Image.SCALE_SMOOTH);
-        ImageIcon ScaledIcon = new ImageIcon(imgScale);
-        label.setIcon(ScaledIcon);
-        images.add(label);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        backgroundIconTwo.setIcon(scaledIcon);
+        backgroundIcon.add(backgroundIconTwo);
+
 
     }
 
@@ -442,7 +466,7 @@ public class VisitorLogin implements ActionListener {
 
             if (results.next()) {
 
-                images.setVisible(false);
+                backgroundIconTwo.setVisible(false);
                 imgPanel.setVisible(true);
                 String userName = results.getString("firstName");
                 lblName.setText(userName);
@@ -579,4 +603,5 @@ public class VisitorLogin implements ActionListener {
 
     }
 
+   
 }

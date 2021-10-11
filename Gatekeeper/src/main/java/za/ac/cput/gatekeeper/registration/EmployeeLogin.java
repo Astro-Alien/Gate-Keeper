@@ -38,10 +38,11 @@ public class EmployeeLogin implements ActionListener {
     PreparedStatement stmt = null;
     ResultSet results = null;
 
-    private JLabel label;
-    private JPanel images;
+    
     private JFrame window;
     private JPanel outline;
+    private JPanel outlineTwo;
+    private JPanel border;
     //--------------------------------------------------------------------------J Labels and Textfields
     //Username
     private JLabel lblUsername;
@@ -50,9 +51,12 @@ public class EmployeeLogin implements ActionListener {
     //Password
     private JLabel lblPassword;
     private JPasswordField pwdPassword;
-
+    private JLabel lblMsg;
+    private JLabel lblMsgTwo;
     //image
     private JLabel lblIcon;
+    private JLabel lblIconTwo;
+    private JLabel lblIconThree;
     
     //Buttons
     private JButton btnLogin;
@@ -62,7 +66,11 @@ public class EmployeeLogin implements ActionListener {
     public EmployeeLogin() {
 
         outline = new JPanel();
+        outlineTwo = new JPanel();
         lblIcon = new JLabel();
+        lblIconTwo = new JLabel();
+        lblIconThree = new JLabel();
+        border = new JPanel();
         //---------------------------------------------------Username label and textfield
         lblUsername = new JLabel("Username");
         txtUsername = new JTextField(16);
@@ -71,9 +79,11 @@ public class EmployeeLogin implements ActionListener {
         lblPassword = new JLabel("Password");
         pwdPassword = new JPasswordField(16);
 
+        lblMsg = new JLabel("Welcome");
+        lblMsgTwo = new JLabel("To the administrator Log in");
         //---------------------------------------------------Login button & Registration button
-        btnLogin = new JButton("SIGNIN");
-        btnReturn = new JButton("RETURN");
+        btnLogin = new JButton("SIGN IN");
+        btnReturn = new JButton("BACK");
 
     }
 
@@ -89,49 +99,58 @@ public class EmployeeLogin implements ActionListener {
         window.setResizable(false);
 
         //---------------------------------------------------Creating panel to place textfields and labels in
-        JPanel border = new JPanel();
+        
         window.add(border);
         border.setLayout(null);
+        border.add(lblIconTwo);
+        scalingImgTwo();
         //---------------------------------------------------Login panel
         
-        border.add(outline);
-        outline.setBounds(37, 22, 294, 420);
+        lblIconTwo.add(outline);
+        outline.setBounds(165, 65, 536, 334);
         outline.setLayout(null);
         
         outline.add(lblIcon);
         iconImg();
         
-   
-        images = new JPanel();
-        border.add(images);
-        label = new JLabel();
-        border.add(label);
+        outlineTwo.setLayout(null);
+        outlineTwo.setBounds(5,6,234,321);
+        outline.add(outlineTwo);
+        outlineTwo.add(lblIconThree);
+        iconImgTwo();
 
-        scalingImg();
+        lblMsg.setBounds(65,220,150,33);
+        lblMsg.setFont(new Font("SourceSansPro", Font.BOLD, 25));
+        lblMsg.setForeground(Color.BLACK);
+        lblMsgTwo.setBounds(20,240,320,33);
+        lblMsgTwo.setFont(new Font("SourceSansPro", Font.BOLD, 15));
+        lblMsgTwo.setForeground(Color.BLACK);
+        outlineTwo.add(lblMsg);
+        outlineTwo.add(lblMsgTwo);
         //---------------------------------------------------JLabel
         JLabel lblUser = new JLabel("ADMINISTRATOR");
         lblUser.setFont(new Font("SourceSansPro", Font.BOLD, 25));
         lblUser.setForeground(Color.BLACK);
-        lblUser.setBounds(45, 5, 210, 60);
+        lblUser.setBounds(280, 2, 210, 60);
         outline.add(lblUser);
         //---------------------------------------------------positioning Username label and textfield
-        lblUsername.setBounds(47, 180, 150, 40);
+        lblUsername.setBounds(280, 128, 150, 40);
         outline.add(lblUsername);
-        txtUsername.setBounds(47, 215, 200, 30);
+        txtUsername.setBounds(280, 161, 200, 30);
         outline.add(txtUsername);
 
         //---------------------------------------------------positioning Password label and textfield
-        lblPassword.setBounds(47, 238, 200, 40);
+        lblPassword.setBounds(280, 184, 200, 40);
         outline.add(lblPassword);
-        pwdPassword.setBounds(47, 273, 200, 30);
+        pwdPassword.setBounds(280, 216, 200, 30);
         outline.add(pwdPassword);
 
         //---------------------------------------------------positioning login button and adding action listener
-        btnLogin.setBounds(82, 320, 130, 33);
+        btnLogin.setBounds(330, 253, 100, 33);
         outline.add(btnLogin);
         btnLogin.addActionListener(this);
         //---------------------------------------------------positioning  Submit button 
-        btnReturn.setBounds(82, 365, 130, 33);
+        btnReturn.setBounds(330, 291, 100, 33);
         outline.add(btnReturn);
 
         window.setLocationRelativeTo(null);
@@ -158,17 +177,18 @@ public class EmployeeLogin implements ActionListener {
         window.getRootPane().setDefaultButton(btnLogin);
         //---------------------------------------------------Design JPanels
         //Panel Colour
-        border.setBackground(new Color(0x005ba3));
-        outline.setBackground(new Color(0x03a9f4));
-        images.setBackground(new Color(0x005ba3));
+      
+        outline.setBackground(Color.WHITE);
+        outlineTwo.setBackground(new Color(0x03a9f4));
+        
         outline.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
         //---------------------------------------------------Design JLabel
-        lblUsername.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 18));
+        lblUsername.setFont(new Font("SourceSansPro", Font.BOLD, 15));
         lblUsername.setForeground(Color.BLACK);
-        lblPassword.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 18));
+        lblPassword.setFont(new Font("SourceSansPro", Font.BOLD, 15));
         lblPassword.setForeground(Color.BLACK);
-        txtUsername.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
-        pwdPassword.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        txtUsername.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
+        pwdPassword.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
         txtUsername.setBackground(new Color(0x424242));
         pwdPassword.setBackground(new Color(0x424242));
         txtUsername.setForeground(Color.WHITE);
@@ -178,8 +198,8 @@ public class EmployeeLogin implements ActionListener {
         pwdPassword.setCaretColor(Color.WHITE);
 
         //---------------------------------------------------Design JButton
-        btnLogin.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
-        btnReturn.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
+        btnLogin.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
+        btnReturn.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
         btnLogin.setBackground(new Color(0x424242));
         btnLogin.setForeground(Color.WHITE);
         btnReturn.setBackground(new Color(0x424242));
@@ -209,36 +229,45 @@ public class EmployeeLogin implements ActionListener {
         });
 
     }
+     public void scalingImgTwo() {
 
-    public void scalingImg() {
-
-        //images.setLayout(null);
-        images.setBounds(400, 0, 462, 462);
-
-        ImageIcon icon = new ImageIcon("images\\bg1.png ");
-        label.setLocation(400, 2);
-        Image img = icon.getImage();
-        Image imgScale = img.getScaledInstance(462, 462, Image.SCALE_SMOOTH);
-        ImageIcon ScaledIcon = new ImageIcon(imgScale);
-        label.setIcon(ScaledIcon);
-        images.add(label);
+        ImageIcon userimg = new ImageIcon("images\\backgroundColour.png");
+        lblIconTwo.setBounds(0, 0, 876, 497);
+        Image img = userimg.getImage();
+        
+        Image imgScale = img.getScaledInstance(876, 497, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        lblIconTwo.setIcon(scaledIcon);
+        border.add(lblIconTwo);
 
     }
-    
-
     public void iconImg(){
        
         ImageIcon userimg = new ImageIcon("images\\icon.png");
-        lblIcon.setBounds(50, 30, 200, 180);
+        lblIcon.setBounds(320, 28, 130, 130);
         Image img = userimg.getImage();
         
-        Image imgScale = img.getScaledInstance(200, 180, Image.SCALE_SMOOTH);
+        Image imgScale = img.getScaledInstance(130, 130, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(imgScale);
         lblIcon.setIcon(scaledIcon);
         outline.add(lblIcon);
         
         
     
+    
+    
+    }
+    public void iconImgTwo(){
+       
+        ImageIcon userimg = new ImageIcon("images\\adminIcon.png");
+        lblIconThree.setBounds(50, 50, 151, 168);
+        Image img = userimg.getImage();
+        
+        Image imgScale = img.getScaledInstance(151, 168, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        lblIconThree.setIcon(scaledIcon);
+        outlineTwo.add(lblIconThree);
+
     
     
     }
