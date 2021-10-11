@@ -55,6 +55,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
     private JLabel lblIcon;
     private JLabel label;
     private JLabel lblImage;
+    private JLabel backgroundIcon;
     private JTextField firstname;
     private JTextField lastname;
     private JTextField company;
@@ -89,6 +90,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         thirdBorder = new JPanel();
 
         lblIcon = new JLabel();
+        backgroundIcon = new JLabel();
         label = new JLabel();
         lblImage = new JLabel();
 
@@ -132,18 +134,21 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         border.setLayout(null);
         window.add(border);
 
+        border.add(backgroundIcon);
+        scalingImg();
+        
         secondBorder.setBounds(50, 37, 450, 385);
         secondBorder.setLayout(null);
-        border.add(secondBorder);
+        backgroundIcon.add(secondBorder);
         secondBorder.add(lblIcon);
         iconImg();
-
+        
         thirdBorder.setBounds(525, 37, 290, 385);
         thirdBorder.setLayout(null);
 
         lblImage.setVisible(false);
 
-        border.add(thirdBorder);
+        backgroundIcon.add(thirdBorder);
 
         thirdBorder.add(label);
         thirdBorder.add(lblImage);
@@ -292,7 +297,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
                      */
 
                     ImageIO.write(w.getImage(), "jpg", new File("images\\image.jpg"));
-
+                    
                 } catch (IOException ex) {
                     Logger.getLogger(VisitorRegistration.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -312,7 +317,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         });
 
         //----------------------------------------------------------------------Design
-        border.setBackground(new Color(0x005ba3));
+        
         secondBorder.setBackground(new Color(0x03a9f4));
         secondBorder.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
         thirdBorder.setBackground(new Color(0x03a9f4));
@@ -347,7 +352,18 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         window.setVisible(true);
 
     }
+    public void scalingImg() {
 
+        ImageIcon userimg = new ImageIcon("images\\backgroundColour.png");
+        backgroundIcon.setBounds(0, 0, 876, 497);
+        Image img = userimg.getImage();
+        
+        Image imgScale = img.getScaledInstance(876, 497, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        backgroundIcon.setIcon(scaledIcon);
+        border.add(backgroundIcon);
+
+    }
     public void iconImg() {
 
         ImageIcon userimage = new ImageIcon("images\\icon.png");
@@ -606,6 +622,8 @@ public class VisitorRegistration extends JFrame implements ActionListener {
                             lblImage.setVisible(false);
                             label.setVisible(true);
                         }
+                        conn.close();
+                        ps.close();
                     } catch (Exception e) {
 
                         System.out.println("The Error in the registration is: " + e);
@@ -627,6 +645,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
             window.setVisible(false);
             Main rg = new Main();
             rg.startProgram();
+            w.close();
             dispose();
         }
         if (e.getSource() == btnNewButton) {
@@ -639,28 +658,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
             webcamWindow.setVisible(true);
 
         }
-        /*if(e.getSource() == takePic){
-            try {
-                
-                writes the image that was recieved from the time the webcam was opened
-                and saves it
-                
-                
-                ImageIO.write(w.getImage(), "jpg", new File("images\\image.jpg"));
-                
-                
-            } catch (IOException ex) {
-                Logger.getLogger(VisitorRegistration.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
-        
-        }*/
- /*if (e.getSource() == exitCam) {
-
-            w.close();//switches off the webcam
-            webcamWindow.setVisible(false);
-
-        }*/
     }
 
+   
 }

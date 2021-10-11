@@ -18,14 +18,20 @@ import javax.swing.*;
  */
 public class Main implements ActionListener {
 
+    private JPanel border;
     private JButton regUser;
     private JButton newUser;
     private JButton btnEmp;
-    private ImageIcon icon;
-    private Image image;
     private JFrame welcome;
+    private JLabel lblIcon;
     private JLabel lblLink;
     private JLabel lblQ;
+
+    public Main() {
+
+        lblIcon = new JLabel();
+        border = new JPanel();
+    }
 
     public void welcomeWindow() {
 
@@ -33,45 +39,47 @@ public class Main implements ActionListener {
         welcome.setSize(876, 497);
         welcome.setResizable(false);
 
-        JPanel border = new JPanel();
+        
         border.setSize(876, 497);
         border.setLayout(null);
-        border.setBackground(new Color(0x005ba3));
+        //border.setBackground(new Color(0x005ba3));
         welcome.add(border);
 
+        border.add(lblIcon);
+        scalingImg();
         //----------------------------------------------------------------------Secondary Panel
         JPanel secondBorder = new JPanel();
         secondBorder.setLayout(null);
         secondBorder.setBackground(new Color(0x03a9f4));
         secondBorder.setBorder(BorderFactory.createLineBorder(new Color(0xffffff), 3));
-        secondBorder.setBounds(39, 43, 785, 370);
-        border.add(secondBorder);
+        secondBorder.setBounds(90, 43, 680, 370);
+        lblIcon.add(secondBorder);
 
         JLabel lblNewUserRegister = new JLabel("Gatekeeper");
         secondBorder.add(lblNewUserRegister);
         lblNewUserRegister.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 60));
         lblNewUserRegister.setForeground(Color.BLACK);
-        lblNewUserRegister.setBounds(255, 35, 500, 50);
+        lblNewUserRegister.setBounds(210, 35, 500, 50);
 
-        regUser = new JButton("VISITOR");
+        regUser = new JButton("SEARCH");
         regUser.setFont(new Font("roman", Font.BOLD, 14));
-        regUser.setBounds(290, 190, 210, 37);
+        regUser.setBounds(250, 190, 210, 37);
 
-        newUser = new JButton("NEW VISITOR");
+        newUser = new JButton("REGISTER");
         newUser.setFont(new Font("roman", Font.BOLD, 14));
-        newUser.setBounds(290, 240, 210, 37);
+        newUser.setBounds(250, 240, 210, 37);
 
         btnEmp = new JButton("EMPLOYEE");
         btnEmp.setFont(new Font("roman", Font.BOLD, 14));
-        btnEmp.setBounds(290, 290, 210, 37);
+        btnEmp.setBounds(250, 290, 210, 37);
 
         lblQ = new JLabel("Logging in via the garage?");
         lblQ.setFont(new Font("roman", Font.BOLD, 13));
-        lblQ.setBounds(290, 325, 210, 37);
+        lblQ.setBounds(250, 325, 210, 37);
 
-        lblLink = new JLabel("Login");
+        lblLink = new JLabel("Log in");
         lblLink.setFont(new Font("roman", Font.BOLD, 13));
-        lblLink.setBounds(460, 325, 210, 37);
+        lblLink.setBounds(420, 325, 210, 37);
         lblLink.setForeground(new Color(0xffffff));
 
         //----------------------------------------------------------------------HyperLink
@@ -126,6 +134,7 @@ public class Main implements ActionListener {
                 newUser.setBackground(new Color(0x005ba3));
 
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
                 newUser.setBackground(new Color(0x424242));
@@ -202,6 +211,19 @@ public class Main implements ActionListener {
          */
 
         new Main().welcomeWindow();
+
+    }
+
+    public void scalingImg() {
+
+        ImageIcon userimg = new ImageIcon("images\\backgroundColour.png");
+        lblIcon.setBounds(0, 0, 876, 497);
+        Image img = userimg.getImage();
+        
+        Image imgScale = img.getScaledInstance(876, 497, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        lblIcon.setIcon(scaledIcon);
+        border.add(lblIcon);
 
     }
 

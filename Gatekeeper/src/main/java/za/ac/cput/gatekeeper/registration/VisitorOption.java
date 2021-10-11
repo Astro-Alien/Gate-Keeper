@@ -7,12 +7,11 @@ package za.ac.cput.gatekeeper.registration;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.Image;
 import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,11 +24,14 @@ public class VisitorOption extends DbConnection {
     private JFrame window;
     private JLabel lblThankYou;
     private JLabel lblEnjoy;
+    private JLabel lblIcon;
+    private JPanel border;
 
     public VisitorOption() {
         lblThankYou = new JLabel("                THANK YOU");
         lblEnjoy = new JLabel("           ENJOY YOUR DAY");
-     
+        lblIcon = new JLabel();
+        border = new JPanel();
     }
 
     public void optionsGUI() {
@@ -41,13 +43,15 @@ public class VisitorOption extends DbConnection {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //----------------------------------------Initial borders
-        JPanel border = new JPanel();
+        
         border.setLayout(null);
         window.add(border);
         
         lblThankYou.setFont(new Font("SourceSansPro", Font.BOLD, 40));
         lblEnjoy.setFont(new Font("SourceSansPro", Font.BOLD, 40));
         
+        border.add(lblIcon);
+        scalingImg();
         //----------------------------------------Secondary borders
         
         JPanel imgPanel = new JPanel();
@@ -60,7 +64,7 @@ public class VisitorOption extends DbConnection {
         lblThankYou.setBounds(100,20,700,300);
         lblEnjoy.setBounds(100,80,700,300);
         //add to initial panel
-        border.add(imgPanel);
+        lblIcon.add(imgPanel);
    
         JLabel lblUser = new JLabel("OPTION PANEL");
         
@@ -82,7 +86,18 @@ public class VisitorOption extends DbConnection {
         window.setVisible(true);
 
     }
+   public void scalingImg() {
 
+        ImageIcon userimg = new ImageIcon("images\\backgroundColour.png");
+        lblIcon.setBounds(0, 0, 876, 497);
+        Image img = userimg.getImage();
+        
+        Image imgScale = img.getScaledInstance(876, 497, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        lblIcon.setIcon(scaledIcon);
+        border.add(lblIcon);
+
+    }
    public void Start(){
         optionsGUI();
         Timer time = new Timer();
@@ -103,5 +118,7 @@ public class VisitorOption extends DbConnection {
         
     
     }
-    
+    public static void main(String[] args) {
+        new VisitorOption().Start();
+    }
 }
