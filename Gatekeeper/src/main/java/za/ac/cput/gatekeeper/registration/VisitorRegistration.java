@@ -230,7 +230,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         btnNewButton.addActionListener(this);
         thirdBorder.add(btnNewButton);
 
-        btnReturn = new JButton("Back");
+        btnReturn = new JButton("Return");
         btnReturn.setBounds(90, 310, 120, 37);
         btnReturn.addActionListener(this);
         thirdBorder.add(btnReturn);
