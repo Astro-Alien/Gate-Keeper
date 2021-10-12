@@ -118,7 +118,5 @@ public class VisitorOption extends DbConnection {
         
     
     }
-    public static void main(String[] args) {
-        new VisitorOption().Start();
-    }
+   
 }
