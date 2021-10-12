@@ -202,10 +202,10 @@ public class garageEntrance implements ActionListener {
 
         imgPanel.setVisible(false);
         //---------------------------------------------------JLabel
-        JLabel lblUser = new JLabel("GATEKEEPER");
+        JLabel lblUser = new JLabel("Garage Enterance");
         lblUser.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 25));
         lblUser.setForeground(Color.BLACK);
-        lblUser.setBounds(59, 5, 210, 60);
+        lblUser.setBounds(40, 5, 300, 60);
         outline.add(lblUser);
 
         //---------------------------------------------------positioning Username label and textfield

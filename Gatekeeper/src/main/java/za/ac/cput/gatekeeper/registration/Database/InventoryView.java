@@ -13,8 +13,10 @@ package za.ac.cput.gatekeeper.registration.Database;
 
 import java.util.*;
 import java.awt.*;
+import static java.awt.SystemColor.window;
 import java.awt.event.*;
 import javax.swing.*;
+import za.ac.cput.gatekeeper.registration.Main;
 
 /**
  * GUI Class
@@ -48,6 +50,7 @@ public class InventoryView extends JFrame implements ActionListener {
     private JButton btnDelete;
     private JButton btnDisplay;
     private JButton btnClose;
+    private JButton btnReturn;
     
     //Display Area
     private JTextArea txtDisplay;
@@ -193,6 +196,11 @@ public class InventoryView extends JFrame implements ActionListener {
        this.btnDisplay.setPreferredSize(new Dimension(180, 25));
        this.btnDisplay.addActionListener(this);
        this.panelInputs.add(this.btnDisplay);
+       
+       this.btnReturn = new JButton("Return");
+       this.btnReturn.setPreferredSize(new Dimension(180, 25));
+       this.btnReturn.addActionListener(this);
+       this.panelInputs.add(this.btnReturn);
        
        this.btnClose = new JButton("Close");
        this.btnClose.setPreferredSize(new Dimension(180, 25));
@@ -385,6 +393,13 @@ public class InventoryView extends JFrame implements ActionListener {
         // Implement later
         Object src = event.getSource();
         
+        
+        if (src.equals(this.btnReturn)) {
+            Main rg = new Main();
+            rg.startProgram();
+            dispose();
+        }
+        
         if(src.equals(this.cboVisitors)){
           selectVisitor();  
         }else if(src.equals(this.btnAdd)) {
@@ -398,5 +413,8 @@ public class InventoryView extends JFrame implements ActionListener {
         }else if(src.equals(btnDisplay)){
            displayVisitors(); 
         }
+        
     }
+    
+    
 }
