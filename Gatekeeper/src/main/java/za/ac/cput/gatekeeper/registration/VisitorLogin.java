@@ -73,10 +73,10 @@ public class VisitorLogin implements ActionListener {
     public VisitorLogin() {
 
         //---------------------------------------------------Username label and textfield
-        lblUsername = new JLabel("Enter Your Name");
+        lblUsername = new JLabel("Enter Name");
         txtUsername = new JTextField(16);
         border = new JPanel();
-        lblLastname = new JLabel("Enter Your Surname");
+        lblLastname = new JLabel("Enter Surname");
         txtLastname = new JTextField(16);
 
         imgPanel = new JPanel();
@@ -94,8 +94,8 @@ public class VisitorLogin implements ActionListener {
         //---------------------------------------------------secondary panel buttons
         btnMeeting = new JButton("Meeting");
         btnInterview = new JButton("Interview");
-        btnVisitor = new JButton("Visiting");
-        btnDelivery = new JButton("Delivery");
+        btnVisitor = new JButton("Delivery");
+        btnDelivery = new JButton("Other");
         btnCheckIn = new JButton("CHECK IN");
         lblIcon = new JLabel();
         backgroundIcon = new JLabel();
@@ -478,7 +478,14 @@ public class VisitorLogin implements ActionListener {
 
             } else {
 
+                txtUsername.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                txtLastname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
                 JOptionPane.showMessageDialog(null, "     USER NOT FOUND");
+                txtUsername.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
+                txtLastname.setBorder(BorderFactory.createLineBorder(Color.WHITE, 3));
+                
+                txtUsername.setText("");
+                txtLastname.setText("");
 
             }
 
@@ -557,7 +564,7 @@ public class VisitorLogin implements ActionListener {
 
             }
         } else if (e.getSource() == btnVisitor) {
-            String reasons = "Visiting";
+            String reasons = "Delivery";
             try {
                 String username = txtUsername.getText();
                 String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username + "' ";
@@ -571,7 +578,7 @@ public class VisitorLogin implements ActionListener {
 
             }
         } else if (e.getSource() == btnDelivery) {
-            String reasons = "Delivery";
+            String reasons = JOptionPane.showInputDialog("Enter reason:");
             try {
                 String username = txtUsername.getText();
                 String querysql = "update visitors set reason='" + reasons + "' where firstName='" + username + "' ";

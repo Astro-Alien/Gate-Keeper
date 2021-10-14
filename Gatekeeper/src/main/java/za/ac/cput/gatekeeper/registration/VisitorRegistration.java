@@ -159,19 +159,19 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         lblNewUserRegister.setBounds(60, 5, 500, 50);
         secondBorder.add(lblNewUserRegister);
 
-        JLabel lblName = new JLabel("First Name");
+        JLabel lblName = new JLabel("First Name:");
         lblName.setFont(new Font("SourceSansPro", Font.BOLD, 18));
         lblName.setForeground(Color.BLACK);
-        lblName.setBounds(25, 200, 100, 30);
+        lblName.setBounds(25, 200, 110, 30);
         secondBorder.add(lblName);
 
         firstname = new JTextField();
         firstname.setFont(new Font("SourceSansPro", Font.BOLD, 12));
-        firstname.setBounds(133, 200, 200, 26);
+        firstname.setBounds(133, 200, 240, 26);
         secondBorder.add(firstname);
         firstname.setColumns(10);
 
-        JLabel lblLName = new JLabel("Last name");
+        JLabel lblLName = new JLabel("Last Name:");
         lblLName.setFont(new Font("SourceSansPro", Font.BOLD, 18));
         lblLName.setForeground(Color.BLACK);
         lblLName.setBounds(25, 240, 100, 30);
@@ -179,11 +179,11 @@ public class VisitorRegistration extends JFrame implements ActionListener {
 
         lastname = new JTextField();
         lastname.setFont(new Font("SourceSansPro", Font.BOLD, 12));
-        lastname.setBounds(133, 240, 200, 26);
+        lastname.setBounds(133, 240, 240, 26);
         secondBorder.add(lastname);
         lastname.setColumns(10);
 
-        JLabel lblMobileNumber = new JLabel("Mobile No");
+        JLabel lblMobileNumber = new JLabel("Mobile No:");
         lblMobileNumber.setFont(new Font("SourceSansPro", Font.BOLD, 18));
         lblMobileNumber.setForeground(Color.BLACK);
         lblMobileNumber.setBounds(25, 280, 100, 30);
@@ -191,11 +191,11 @@ public class VisitorRegistration extends JFrame implements ActionListener {
 
         mob = new JTextField();
         mob.setFont(new Font("SourceSansPro", Font.BOLD, 12));
-        mob.setBounds(133, 280, 200, 26);
+        mob.setBounds(133, 280, 240, 26);
         secondBorder.add(mob);
         mob.setColumns(10);
 
-        JLabel lblCompany = new JLabel("Company");
+        JLabel lblCompany = new JLabel("Company:");
         lblCompany.setFont(new Font("SourceSansPro", Font.BOLD, 18));
         lblCompany.setForeground(Color.BLACK);
         lblCompany.setBounds(25, 320, 100, 30);
@@ -203,7 +203,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
 
         company = new JTextField();
         company.setFont(new Font("SourceSansPro", Font.BOLD, 12));
-        company.setBounds(133, 320, 200, 26);
+        company.setBounds(133, 320, 240, 26);
         secondBorder.add(company);
         company.setColumns(10);
 
@@ -230,7 +230,7 @@ public class VisitorRegistration extends JFrame implements ActionListener {
         btnNewButton.addActionListener(this);
         thirdBorder.add(btnNewButton);
 
-        btnReturn = new JButton("Return");
+        btnReturn = new JButton("Back");
         btnReturn.setBounds(90, 310, 120, 37);
         btnReturn.addActionListener(this);
         thirdBorder.add(btnReturn);
