@@ -79,20 +79,20 @@ public class garageEntrance implements ActionListener {
     private String timeuser;
 
     private String userN;
-    
+
     JFrame parking_allo;
     JLabel greeting;
     JLabel parking_spot_label;
     JPanel parking_panel;
-    
+
     Connection conn;
-    
+
     //PARKING SPOT ASSIGNMENT-----------------------------------------------
     Random rnd_num = new Random();
     int i = (int) (1 + rnd_num.nextInt(25));
     String parking = "Bay " + i;
     //----------------------------------------------------------------------
-    
+
     public garageEntrance() {
 
         //--------Login frame labels and buttons----------------//
@@ -106,13 +106,13 @@ public class garageEntrance implements ActionListener {
         imgPanel = new JPanel();
 
         //---------------------------------------------------Login button & Registration button
-        btnLogin = new JButton("LOG IN");
+        btnLogin = new JButton("LOGIN");
         btnReturn = new JButton("BACK");
 
         //---------------------------------------------------option welcome message
         lblWelcome = new JLabel("WELCOME");
         lblWMsg = new JLabel("WELCOME");
-        lblMsg = new JLabel("Log in to receive your parking bay number");
+        lblMsg = new JLabel("Login to receive your parking bay number");
         lblName = new JLabel();
         lblSurname = new JLabel();
         lblInstruction = new JLabel("Please select the reason for your visit today.");
@@ -126,19 +126,18 @@ public class garageEntrance implements ActionListener {
         lblIcon = new JLabel();
         lblIconTwo = new JLabel();
         //-----------------------------------------------------//
-        
+
         greeting = new JLabel();
     }
-    
-    public void greetingFrame()
-    {
+
+    public void greetingFrame() {
         parking_allo = new JFrame("Gatekeeper");
         parking_allo.getContentPane().setBackground(new Color(0x005ba3));
         parking_allo.setSize(876, 497);
         parking_allo.setLocationRelativeTo(null);
         parking_allo.setVisible(true);
         parking_allo.getContentPane().setLayout(null);
-        
+
         parking_spot_label = new JLabel();
         parking_panel = new JPanel();
 
@@ -160,8 +159,7 @@ public class garageEntrance implements ActionListener {
 
         parking_allo.add(parking_panel);
     }
-    
-    
+
     //takes and verifies username and password credentials
     public void loginFrame() {
 
@@ -172,22 +170,19 @@ public class garageEntrance implements ActionListener {
         window.setResizable(false);
 
         //---------------------------------------------------Creating panel to place textfields and labels in
-        
         window.add(border);
         border.setLayout(null);
-        
+
         border.add(lblIconTwo);
         scalingImgTwo();
         //---------------------------------------------------Login panel
         outline = new JPanel();
         lblIconTwo.add(outline);
-        outline.setBounds(125,60, 294, 355);
+        outline.setBounds(125, 60, 294, 355);
         outline.setLayout(null);
 
-        
-        
         outline.add(lblIcon);
-        
+
         iconImg();
         lblIconTwo.add(backgroundIconTwo);
         scalingImg();
@@ -202,7 +197,7 @@ public class garageEntrance implements ActionListener {
 
         imgPanel.setVisible(false);
         //---------------------------------------------------JLabel
-        JLabel lblUser = new JLabel("Garage Enterance");
+        JLabel lblUser = new JLabel("Garage Entrance");
         lblUser.setFont(new Font("SourceSansPro", Font.BOLD | Font.ITALIC, 25));
         lblUser.setForeground(Color.BLACK);
         lblUser.setBounds(40, 5, 300, 60);
@@ -229,9 +224,7 @@ public class garageEntrance implements ActionListener {
 
         window.setLocationRelativeTo(null);
         window.setVisible(true);
-        
-        
-        
+
         //--------------------------------------------------returns the user to the main page
         btnReturn.addActionListener(new ActionListener() {
 
@@ -255,7 +248,7 @@ public class garageEntrance implements ActionListener {
         //Panel Colour
         border.setBackground(new Color(0x005ba3));
         outline.setBackground(new Color(0xffffff));
-       
+
         outline.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 4));
         //---------------------------------------------------Design JLabel
         lblUsername.setFont(new Font("SourceSansPro", Font.BOLD, 15));
@@ -283,15 +276,15 @@ public class garageEntrance implements ActionListener {
 
         btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnReturn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         lblWMsg.setBounds(570, 85, 150, 33);
         lblWMsg.setForeground(Color.WHITE);
         lblWMsg.setFont(new Font("SourceSansPro", Font.BOLD, 29));
-        
+
         lblMsg.setBounds(490, 110, 350, 33);
         lblMsg.setForeground(Color.WHITE);
         lblMsg.setFont(new Font("SourceSansPro", Font.BOLD, 15));
-        
+
         lblIconTwo.add(lblWMsg);
         lblIconTwo.add(lblMsg);
         //Hover colour change when the cursor hovers over the Login Jbutton
@@ -319,29 +312,30 @@ public class garageEntrance implements ActionListener {
         });
 
     }
-     public void scalingImgTwo() {
+
+    public void scalingImgTwo() {
 
         ImageIcon userimg = new ImageIcon("images\\backgroundColour.png");
         lblIconTwo.setBounds(0, 0, 876, 497);
         Image img = userimg.getImage();
-        
+
         Image imgScale = img.getScaledInstance(876, 497, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(imgScale);
         lblIconTwo.setIcon(scaledIcon);
         border.add(lblIconTwo);
 
     }
+
     public void scalingImg() {
-        
+
         ImageIcon userimg = new ImageIcon("images\\parking.png");
         backgroundIconTwo.setBounds(500, 159, 271, 271);
         Image img = userimg.getImage();
-        
+
         Image imgScale = img.getScaledInstance(271, 271, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(imgScale);
         backgroundIconTwo.setIcon(scaledIcon);
         lblIconTwo.add(backgroundIconTwo);
-
 
     }
 
@@ -357,6 +351,7 @@ public class garageEntrance implements ActionListener {
         outline.add(lblIcon);
 
     }
+
     public void optionPanelDesign() {
 
         //call image from database when code is written to save the image in the database
@@ -491,48 +486,47 @@ public class garageEntrance implements ActionListener {
             }
         });
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnLogin){
-            try
-            {
+        if (e.getSource() == btnLogin) {
+            try {
                 conn = DbConnection.ConnectEmpDb();
-                
+
                 String user;
                 ResultSet userResults;
                 PreparedStatement userStatement;
 
-                user  = "SELECT * FROM employee WHERE  id_no = ? AND password = ?";
-                
+                user = "SELECT * FROM employee WHERE  id_no = ? AND password = ?";
+
                 userStatement = conn.prepareStatement(user);
-                
+
                 userStatement.setString(1, txtUsername.getText());
                 userStatement.setString(2, txtLastname.getText());
 
                 userResults = userStatement.executeQuery();
-                
-                if(userResults.next())
-                {
+
+                if (userResults.next()) {
                     String name = userResults.getString("first_name");
-                    greeting.setText("Good morning "+name+"!");
+                    greeting.setText("Good morning " + name + "!");
                     checkInTime();
                     greetingFrame();
-                }
-                else
-                {
+                } else {
+
+                    txtUsername.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                    txtLastname.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
                     JOptionPane.showMessageDialog(null, "Login credentials not found.");
+                    txtUsername.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
+                    txtLastname.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
+                    
                 }
-            }
-            catch(SQLException s)
-            {
+            } catch (SQLException s) {
                 s.printStackTrace();
             }
         }
     }
-    
-    public void checkInTime() 
-    {
+
+    public void checkInTime() {
         //------------------------------------------------check in time method code will be added here
         Date recentDate = new Date();
         PreparedStatement stmt;
@@ -543,14 +537,14 @@ public class garageEntrance implements ActionListener {
         String timeuser = timeStamp.format(recentDate);
 
         String id = txtUsername.getText();
-        
+
         try {
-            String querysql = "update employee set time_in='" + timeuser + "',date='" + dateuser+ "'"+ ", parking_spot = '"+ parking + "' where id_no='" + id + "' ";
+            String querysql = "update employee set time_in='" + timeuser + "',date='" + dateuser + "'" + ", parking_spot = '" + parking + "' where id_no='" + id + "' ";
             stmt = conn.prepareStatement(querysql);
             stmt.execute();
-            
+
             conn.close();
-           
+
         } catch (SQLException e) {
 
             System.out.println("Failed to update");
@@ -558,5 +552,5 @@ public class garageEntrance implements ActionListener {
         }
 
     }
-    
+
 }
