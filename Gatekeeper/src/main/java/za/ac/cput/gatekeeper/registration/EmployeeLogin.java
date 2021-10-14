@@ -80,9 +80,9 @@ public class EmployeeLogin implements ActionListener {
         pwdPassword = new JPasswordField(16);
 
         lblMsg = new JLabel("Welcome");
-        lblMsgTwo = new JLabel("To the administrator Log in");
+        lblMsgTwo = new JLabel("To the administrator Login");
         //---------------------------------------------------Login button & Registration button
-        btnLogin = new JButton("SIGN IN");
+        btnLogin = new JButton("LOGIN");
         btnReturn = new JButton("BACK");
 
     }
@@ -293,7 +293,14 @@ public class EmployeeLogin implements ActionListener {
                  
             } else {
 
-                JOptionPane.showMessageDialog(null, "USER NOT FOUND");
+                txtUsername.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                pwdPassword.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+                JOptionPane.showMessageDialog(null, "     USER NOT FOUND");
+                txtUsername.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
+                pwdPassword.setBorder(BorderFactory.createLineBorder(new Color(0x03a9f4), 3));
+                
+                txtUsername.setText("");
+                pwdPassword.setText("");
 
             }
 
